@@ -6,7 +6,7 @@ namespace BTimeLogger.Domain
 	public interface IActivityRepository
 	{
 		Task<IQueryable<Activity>> GetActivities();
-		Task<Activity> GetActivity(int id);
-		Task<bool> ActivityExists(int id);
+		Task<Activity> GetActivity(string name);
+		Task<bool> ActivityExists(string name);
 	}
 }
