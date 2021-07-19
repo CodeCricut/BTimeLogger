@@ -4,6 +4,7 @@
 		xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
 		xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 		xmlns:local="clr-namespace:BTimeLogger.Wpf"
+		xmlns:view="clr-namespace:BTimeLogger.Wpf.View"
 		mc:Ignorable="d"
 		Title="MainWindow"
 		Height="450"
@@ -23,8 +24,6 @@
 			<Grid.ColumnDefinitions>
 				<ColumnDefinition Width="Auto" />
 				<ColumnDefinition Width="*" />
-				<ColumnDefinition Width="Auto" />
-				<ColumnDefinition Width="Auto" />
 				<ColumnDefinition Width="Auto" />
 			</Grid.ColumnDefinitions>
 			<!--TODO: behavior-->
@@ -46,46 +45,16 @@
 					   FontSize="14"
 					   Text="{StaticResource appTitle}">
 			</TextBlock>
+            <view:WindowButtons ViewModel="{Binding ViewModel.WindowButtonsViewModel}"
+                                Grid.Column="2">
+                <view:WindowButtons.Style>
+                    <Style>
+                        <Setter Property="WindowChrome.IsHitTestVisibleInChrome"
+                                Value="True" />
+                    </Style>
+                </view:WindowButtons.Style>
+            </view:WindowButtons>
 
-			<Button Grid.Column="2"
-					RenderOptions.EdgeMode="Aliased"
-					Style="{StaticResource TitleBarButtonStyle}">
-				<Path Width="46"
-					  Height="32"
-					  Data="M 18,15 H 28"
-					  Stroke="{Binding Path=Foreground,
-							 RelativeSource={RelativeSource AncestorType={x:Type Button}}}"
-					  StrokeThickness="1" />
-			</Button>
-			<Button Name="maximizeButton"
-					Grid.Column="3"
-					Style="{StaticResource TitleBarButtonStyle}">
-				<Path Width="46"
-					  Height="32"
-					  Data="M 18.5,10.5 H 27.5 V 19.5 H 18.5 Z"
-					  Stroke="{Binding Path=Foreground,
-							 RelativeSource={RelativeSource AncestorType={x:Type Button}}}"
-					  StrokeThickness="1" />
-			</Button>
-			<Button Name="restoreButton"
-					Grid.Column="3"
-					Style="{StaticResource TitleBarButtonStyle}">
-				<Path Width="46"
-					  Height="32"
-					  Data="M 18.5,12.5 H 25.5 V 19.5 H 18.5 Z M 20.5,12.5 V 10.5 H 27.5 V 17.5 H 25.5"
-					  Stroke="{Binding Path=Foreground,
-							 RelativeSource={RelativeSource AncestorType={x:Type Button}}}"
-					  StrokeThickness="1" />
-			</Button>
-			<Button Grid.Column="4"
-					Style="{StaticResource TitleBarCloseButtonStyle}">
-				<Path Width="46"
-					  Height="32"
-					  Data="M 18,11 27,20 M 18,20 27,11"
-					  Stroke="{Binding Path=Foreground,
-							 RelativeSource={RelativeSource AncestorType={x:Type Button}}}"
-					  StrokeThickness="1" />
-			</Button>
 		</Grid>
 		<Grid Background="{StaticResource cardBackground}"
 			  Grid.Row="1">

@@ -7,9 +7,17 @@
 
 	class MainWindowViewModelFactory : IMainWindowViewModelFactory
 	{
+		private readonly IWindowButtonsViewModelFactory _windowButtonsViewModel;
+
+		public MainWindowViewModelFactory(IWindowButtonsViewModelFactory windowButtonsViewModel)
+		{
+			_windowButtonsViewModel = windowButtonsViewModel;
+		}
+
 		public MainWindowViewModel Create()
 		{
-			return new();
+			WindowButtonsViewModel windowButtonsVM = _windowButtonsViewModel.Create();
+			return new(windowButtonsVM);
 		}
 	}
 }
