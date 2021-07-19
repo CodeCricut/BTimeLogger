@@ -22,7 +22,6 @@ namespace BTimeLogger.Csv
 		public Task<IQueryable<Activity>> GetActivities()
 		{
 			throw new NotImplementedException();
-			return Task.FromResult(_reportReader.ReadActivities().AsQueryable());
 		}
 
 		public Task<Activity> GetActivity(string name)

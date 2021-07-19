@@ -10,7 +10,10 @@ namespace BTimeLogger.Csv
 		{
 			services.AddSingleton<ICsvPrincipal, CsvPrincipal>();
 			services.AddSingleton<ICsvReportReader, CsvReportReader>();
+
 			services.AddSingleton<IActivityRepository, CsvActivityRepository>();
+			services.AddSingleton<IIntervalRepository, CsvIntervalRepository>();
+			services.AddSingleton<IStatisticsRepository, CsvStatisticRepository>();
 
 			return services;
 		}
