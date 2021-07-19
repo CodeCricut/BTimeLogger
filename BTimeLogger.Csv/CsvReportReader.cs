@@ -3,24 +3,31 @@
 	// TODO: csv should only be read once, perhaps with the option to refresh results
 	interface ICsvReportReader
 	{
-		Interval[] ReadIntervals(string csvReportFileLoc);
-		Activity[] ReadActivities(string csvReportFileLoc);
-		Statistic[] ReadStatistics(string csvReportFileLoc);
+		Interval[] ReadIntervals();
+		Activity[] ReadActivities();
+		Statistic[] ReadStatistics();
 	}
 
 	class CsvReportReader : ICsvReportReader
 	{
-		public Activity[] ReadActivities(string csvReportFileLoc)
+		private readonly ICsvPrincipal _csvPrincipal;
+
+		public CsvReportReader(ICsvPrincipal csvPrincipal)
+		{
+			_csvPrincipal = csvPrincipal;
+		}
+
+		public Activity[] ReadActivities()
 		{
 			throw new System.NotImplementedException();
 		}
 
-		public Interval[] ReadIntervals(string csvReportFileLoc)
+		public Interval[] ReadIntervals()
 		{
 			throw new System.NotImplementedException();
 		}
 
-		public Statistic[] ReadStatistics(string csvReportFileLoc)
+		public Statistic[] ReadStatistics()
 		{
 			throw new System.NotImplementedException();
 		}
