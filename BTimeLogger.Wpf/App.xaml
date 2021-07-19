@@ -1,0 +1,43 @@
+﻿<Application x:Class="BTimeLogger.Wpf.App"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:local="clr-namespace:BTimeLogger.Wpf"
+             xmlns:resources="clr-namespace:ATimeLogger.WPF.Resources">
+    <Application.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <resources:SkinResourceDictionary LightSource="Styles/LightTheme.xaml"
+                                                  DarkSource="Styles/DarkTheme.xaml" />
+
+                <ResourceDictionary Source="Styles/DefaultStyles.xaml" />
+
+                <ResourceDictionary Source="Resources/StringResources.xaml" />
+
+                <ResourceDictionary Source="Resources/DataTemplates.xaml" />
+
+                <ResourceDictionary Source="Styles/CardBorderStyle.xaml" />
+                <ResourceDictionary Source="Styles/CheckBoxStyle.xaml" />
+                <ResourceDictionary Source="Styles/ComboBoxStyle.xaml" />
+                <ResourceDictionary Source="Styles/ComboBoxItemContainerStyle.xaml" />
+                <ResourceDictionary Source="Styles/DatePickerStyle.xaml" />
+                <ResourceDictionary Source="Styles/DatePickerCalendarStyle.xaml" />
+                <ResourceDictionary Source="Styles/DatePickerTextBoxStyle.xaml" />
+                <ResourceDictionary Source="Styles/CalendarItemStyle.xaml" />
+                <ResourceDictionary Source="Styles/ExitButtonStyle.xaml" />
+                <ResourceDictionary Source="Styles/ListViewStyle.xaml" />
+                <ResourceDictionary Source="Styles/ListViewItemContainerStyle.xaml" />
+                <ResourceDictionary Source="Styles/ListViewBorderStyle.xaml" />
+                <ResourceDictionary Source="Styles/MenuButtonStyle.xaml" />
+                <ResourceDictionary Source="Styles/MenuSeparatorStyle.xaml" />
+                <ResourceDictionary Source="Styles/ButtonStyle.xaml" />
+                <ResourceDictionary Source="Styles/PasswordBoxStyle.xaml" />
+                <ResourceDictionary Source="Styles/ScrollViewerStyle.xaml" />
+                <ResourceDictionary Source="Styles/TextBlockStyle.xaml" />
+                <ResourceDictionary Source="Styles/TextBoxStyle.xaml" />
+                <ResourceDictionary Source="Styles/WindowStyle.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+
+            <BooleanToVisibilityConverter x:Key="boolToVis" />
+        </ResourceDictionary>
+    </Application.Resources>
+</Application>

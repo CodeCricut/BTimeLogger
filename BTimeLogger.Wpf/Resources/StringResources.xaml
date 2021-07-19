@@ -1,0 +1,20 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:system="clr-namespace:System;assembly=mscorlib">
+    <system:String x:Key="appTitle">ATimeLogger</system:String>
+    <system:String x:Key="appShortDesc">A time tracking app</system:String>
+    <system:String x:Key="fromDate">From</system:String>
+    <system:String x:Key="toDate">To</system:String>
+    <system:String x:Key="span">Span</system:String>
+    <system:String x:Key="typeFilter">Type filter</system:String>
+    <system:String x:Key="load">Load</system:String>
+    <system:String x:Key="home">Home</system:String>
+    <system:String x:Key="summary">Summary</system:String>
+    <system:String x:Key="activities">Activities</system:String>
+    <system:String x:Key="loading">Loading...</system:String>
+    <system:String x:Key="invalidUserInfo">Invalid user information.</system:String>
+    <system:String x:Key="login">Login</system:String>
+    <system:String x:Key="noActivitiesInRange">No matching activities were found in this range.</system:String>
+    <system:String x:Key="loadMore">Load more</system:String>
+    <system:String x:Key="reload">Reload</system:String>
+</ResourceDictionary>

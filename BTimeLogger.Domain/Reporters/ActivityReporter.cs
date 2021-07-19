@@ -21,7 +21,7 @@ namespace BTimeLogger.Domain
 			_intervalRepository = intervalRepository;
 		}
 
-		public async Task<ActivityReport> Report(DateTime from, DateTime to)
+		public Task<ActivityReport> Report(DateTime from, DateTime to)
 		{
 			//Statistic[] statistics = (await _statisticsRepository.GetStatistics()).ToArray();
 
@@ -37,7 +37,7 @@ namespace BTimeLogger.Domain
 			//	Statistics = statistics
 			//};
 
-			return new ActivityReport();
+			throw new NotImplementedException();
 		}
 	}
 }
