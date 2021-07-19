@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.31410.357
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BTimeLogger", "BTimeLogger\BTimeLogger.csproj", "{06347EEF-8D5C-4018-9226-749065210979}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BTimeLogger.Domain", "BTimeLogger.Domain\BTimeLogger.Domain.csproj", "{D6982CAC-8FE1-4C7E-91DC-825D1A61A80B}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{06347EEF-8D5C-4018-9226-749065210979}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{06347EEF-8D5C-4018-9226-749065210979}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{06347EEF-8D5C-4018-9226-749065210979}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{06347EEF-8D5C-4018-9226-749065210979}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D6982CAC-8FE1-4C7E-91DC-825D1A61A80B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D6982CAC-8FE1-4C7E-91DC-825D1A61A80B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D6982CAC-8FE1-4C7E-91DC-825D1A61A80B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D6982CAC-8FE1-4C7E-91DC-825D1A61A80B}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {67092692-7522-4E8E-A3CC-C1A7B175DB0A}
+	EndGlobalSection
+EndGlobal
