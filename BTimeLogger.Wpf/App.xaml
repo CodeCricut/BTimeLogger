@@ -34,6 +34,10 @@
                 <ResourceDictionary Source="Styles/ScrollViewerStyle.xaml" />
                 <ResourceDictionary Source="Styles/TextBlockStyle.xaml" />
                 <ResourceDictionary Source="Styles/TextBoxStyle.xaml" />
+                <ResourceDictionary Source="Styles/MenuItemStyle.xaml" />
+                <ResourceDictionary Source="Styles/MenuStyle.xaml" />
+                <ResourceDictionary Source="Styles/TitleBarButtonStyle.xaml" />
+                <ResourceDictionary Source="Styles/TitleBarMenuStyle.xaml" />
                 <ResourceDictionary Source="Styles/WindowStyle.xaml" />
             </ResourceDictionary.MergedDictionaries>
 

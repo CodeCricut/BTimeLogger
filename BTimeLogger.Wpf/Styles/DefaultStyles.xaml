@@ -16,6 +16,8 @@
         <ResourceDictionary Source="./DatePickerCalendarStyle.xaml" />
         <ResourceDictionary Source="./DatePickerTextBoxStyle.xaml" />
         <ResourceDictionary Source="./CalendarItemStyle.xaml" />
+        <ResourceDictionary Source="./MenuStyle.xaml" />
+        <ResourceDictionary Source="./MenuItemStyle.xaml" />
 
     </ResourceDictionary.MergedDictionaries>
     <Style TargetType="{x:Type Button}"
@@ -47,4 +49,9 @@
            BasedOn="{StaticResource DatePickerTextBoxStyle}" />
     <Style TargetType="{x:Type CalendarItem}"
            BasedOn="{StaticResource CalendarItemStyle}" />
+
+    <Style TargetType="{x:Type Menu}"
+           BasedOn="{StaticResource MenuStyle}" />
+    <Style TargetType="{x:Type MenuItem}"
+           BasedOn="{StaticResource MenuItemStyle}" />
 </ResourceDictionary>
