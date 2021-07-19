@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BTimeLogger.Domain", "BTime
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BTimeLogger.Domain.Tests", "BTimeLogger.Domain.Tests\BTimeLogger.Domain.Tests.csproj", "{C997D2FB-68B7-4796-A0F2-E51612AFF6B6}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BTimeLogger.Csv", "BTimeLogger.Csv\BTimeLogger.Csv.csproj", "{4C9A7A84-C1E9-4B0B-9EF4-D56A2A23BEE4}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{C997D2FB-68B7-4796-A0F2-E51612AFF6B6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C997D2FB-68B7-4796-A0F2-E51612AFF6B6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C997D2FB-68B7-4796-A0F2-E51612AFF6B6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4C9A7A84-C1E9-4B0B-9EF4-D56A2A23BEE4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4C9A7A84-C1E9-4B0B-9EF4-D56A2A23BEE4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4C9A7A84-C1E9-4B0B-9EF4-D56A2A23BEE4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4C9A7A84-C1E9-4B0B-9EF4-D56A2A23BEE4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
