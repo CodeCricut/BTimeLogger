@@ -4,6 +4,7 @@ namespace BTimeLogger
 {
 	public class Interval
 	{
+		public int Id { get; set; }
 		public Activity Activity { get; set; }
 		public TimeSpan Duration { get; set; }
 		public DateTime From { get; set; }
