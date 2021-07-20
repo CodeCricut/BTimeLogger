@@ -18,4 +18,7 @@
     <system:String x:Key="noActivitiesInRange">No matching activities were found in this range.</system:String>
     <system:String x:Key="loadMore">Load more</system:String>
     <system:String x:Key="reload">Reload</system:String>
+    <system:String x:Key="cancel">Cancel</system:String>
+    <system:String x:Key="create">Create</system:String>
+    <system:String x:Key="createReport">Create Report</system:String>
 </ResourceDictionary>

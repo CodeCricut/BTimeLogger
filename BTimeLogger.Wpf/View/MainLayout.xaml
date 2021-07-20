@@ -37,6 +37,7 @@
                          Command="{Binding ViewModel.SelectIntervalsCommand}" />
             <RadioButton Content="{StaticResource statistics}"
                          Command="{Binding ViewModel.SelectStatisticsCommand}" />
+            <Button Command="{Binding ViewModel.CreateReportCommand}">Create report...</Button>
         </StackPanel>
 
         <!--Main Content-->
