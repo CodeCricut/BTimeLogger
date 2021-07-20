@@ -14,7 +14,8 @@
         <WindowChrome CaptionHeight="32"
                       ResizeBorderThickness="{x:Static SystemParameters.WindowResizeBorderThickness}" />
     </WindowChrome.WindowChrome>
-    <Grid DataContext="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type local:MainWindow}}}">
+    <Grid DataContext="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type local:MainWindow}}}"
+          Background="{StaticResource skinBackgroundBrush}">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
@@ -48,15 +49,11 @@
                        Text="{StaticResource appTitle}">
             </TextBlock>
             <view:WindowButtons Grid.Column="2"
-                                DisableCloseInteraction="True"
                                 ViewModel="{Binding ViewModel.WindowButtonsViewModel}" />
 
         </Grid>
-        <Grid Background="{StaticResource cardBackground}"
-              Grid.Row="1">
-            <TextBlock Text="Hello world!"
-                       FontSize="20" />
-        </Grid>
+        <view:MainLayout ViewModel="{Binding ViewModel.MainLayoutViewModel}"
+                         Grid.Row="1" />
     </Grid>
 
 </Window>

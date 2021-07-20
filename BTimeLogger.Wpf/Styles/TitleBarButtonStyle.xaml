@@ -3,7 +3,7 @@
     <Style x:Key="TitleBarButtonStyle"
            TargetType="Button">
         <Setter Property="Foreground"
-                Value="{DynamicResource WindowTextBrush}" />
+                Value="{DynamicResource skinFontSecondaryBrush}" />
         <Setter Property="Padding"
                 Value="0" />
         <Setter Property="WindowChrome.IsHitTestVisibleInChrome"
@@ -29,7 +29,7 @@
                                  Value="true">
                             <Setter TargetName="border"
                                     Property="Background"
-                                    Value="{DynamicResource MouseOverOverlayBackgroundBrush}" />
+                                    Value="{DynamicResource skinBackgroundLightBrush}" />
                         </Trigger>
                         <Trigger Property="IsPressed"
                                  Value="true">
@@ -46,7 +46,7 @@
     <Style x:Key="TitleBarCloseButtonStyle"
            TargetType="Button">
         <Setter Property="Foreground"
-                Value="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}" />
+                Value="{DynamicResource skinFontSecondaryBrush}" />
         <Setter Property="Padding"
                 Value="0" />
         <Setter Property="WindowChrome.IsHitTestVisibleInChrome"
@@ -72,7 +72,7 @@
                                  Value="true">
                             <Setter TargetName="border"
                                     Property="Background"
-                                    Value="{DynamicResource MouseOverWindowCloseButtonBackgroundBrush}" />
+                                    Value="{DynamicResource skinBackgroundLightBrush}" />
                             <Setter Property="Foreground"
                                     Value="{DynamicResource MouseOverWindowCloseButtonForegroundBrush}" />
                         </Trigger>

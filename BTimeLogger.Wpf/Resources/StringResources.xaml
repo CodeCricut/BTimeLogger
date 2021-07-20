@@ -9,8 +9,9 @@
     <system:String x:Key="typeFilter">Type filter</system:String>
     <system:String x:Key="load">Load</system:String>
     <system:String x:Key="home">Home</system:String>
-    <system:String x:Key="summary">Summary</system:String>
-    <system:String x:Key="activities">Activities</system:String>
+    <system:String x:Key="intervals">Intervals</system:String>
+    <system:String x:Key="statistics">Statistics</system:String>
+    
     <system:String x:Key="loading">Loading...</system:String>
     <system:String x:Key="invalidUserInfo">Invalid user information.</system:String>
     <system:String x:Key="login">Login</system:String>

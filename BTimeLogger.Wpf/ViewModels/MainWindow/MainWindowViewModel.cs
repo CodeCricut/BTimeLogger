@@ -4,13 +4,15 @@ namespace BTimeLogger.Wpf.ViewModels
 {
 	public class MainWindowViewModel : BaseViewModel
 	{
-		// TODO: move to abstract WindowViewModel
-		// Create BaseWindow view which responds to window button commands
 		public WindowButtonsViewModel WindowButtonsViewModel { get; set; }
+		public MainLayoutViewModel MainLayoutViewModel { get; }
 
-		public MainWindowViewModel(WindowButtonsViewModel windowButtonsViewModel)
+		public MainWindowViewModel(
+			WindowButtonsViewModel windowButtonsViewModel,
+			MainLayoutViewModel mainLayoutViewModel)
 		{
 			WindowButtonsViewModel = windowButtonsViewModel;
+			MainLayoutViewModel = mainLayoutViewModel;
 		}
 	}
 }
