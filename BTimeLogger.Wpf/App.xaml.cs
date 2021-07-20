@@ -7,6 +7,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Windows;
+using WpfCore;
 
 namespace BTimeLogger.Wpf
 {
@@ -44,13 +45,15 @@ namespace BTimeLogger.Wpf
 		{
 			services.AddDomain(config);
 			services.AddCsv(config);
+			services.AddWpfCore(config);
 			services.AddWpf(config);
 		}
 
 		private void OpenLoginWindow()
 		{
 			Services.GetRequiredService<IMediator>()
-							.Send(new OpenMainWindowRequest());
+				.Send(new OpenMainWindowRequest())
+				.GetAwaiter().GetResult();
 		}
 	}
 }

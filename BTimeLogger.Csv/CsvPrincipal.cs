@@ -7,6 +7,7 @@
 
 	class CsvPrincipal : ICsvPrincipal
 	{
-		public string CsvFileLocation { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }
+		// TODO: file location verification
+		public string CsvFileLocation { get; set; }
 	}
 }

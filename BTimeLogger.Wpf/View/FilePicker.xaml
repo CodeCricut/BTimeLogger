@@ -7,12 +7,31 @@
              mc:Ignorable="d">
     <Grid DataContext="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type local:FilePicker}}}">
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="3*"/>
             <ColumnDefinition />
+            <ColumnDefinition Width="Auto" />
         </Grid.ColumnDefinitions>
-        <TextBox HorizontalAlignment="Stretch"
-                 Text="{Binding Text, Mode=OneWay}" />
+        <Grid.RowDefinitions>
+            <RowDefinition />
+            <RowDefinition />
+        </Grid.RowDefinitions>
+        <TextBlock HorizontalAlignment="Stretch"
+                   TextWrapping="Wrap"
+                 Text="{Binding Text, Mode=OneWay}" Foreground="{StaticResource skinFontSecondaryBrush}"
+                   VerticalAlignment="Center"
+                   FontSize="10" 
+                   Grid.Row="1"
+                   Grid.RowSpan="2"/>
+        <TextBlock HorizontalAlignment="Stretch"
+                   TextWrapping="Wrap"
+                   Text="{Binding Description, Mode=OneWay}"
+                   FontSize="15"
+                   Visibility="{Binding }"/>
+        
         <Button Grid.Column="1"
-                Click="BrowseFolder">...</Button>
+                Grid.Row="1"
+                Click="BrowseFolder"
+                Content="{StaticResource elipses}" 
+                Padding="20 0 20 10"
+                />
     </Grid>
 </UserControl>

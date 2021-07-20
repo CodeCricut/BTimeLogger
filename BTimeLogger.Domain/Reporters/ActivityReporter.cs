@@ -36,7 +36,7 @@ namespace BTimeLogger.Domain
 			//	Intervals = intervals,
 			//	Statistics = statistics
 			//};
-
+			return Task.FromResult(new ActivityReport());
 			throw new NotImplementedException();
 		}
 	}

@@ -40,6 +40,7 @@
            BasedOn="{StaticResource TextBlockStyle}" />
     <Style TargetType="{x:Type TextBox}"
            BasedOn="{StaticResource TextBoxStyle}" />
+    
     <Style TargetType="{x:Type DatePicker}"
            BasedOn="{StaticResource DatePickerStyle}">
         <Setter Property="CalendarStyle"
@@ -49,6 +50,7 @@
            BasedOn="{StaticResource DatePickerTextBoxStyle}" />
     <Style TargetType="{x:Type CalendarItem}"
            BasedOn="{StaticResource CalendarItemStyle}" />
+    
 
     <Style TargetType="{x:Type Menu}"
            BasedOn="{StaticResource MenuStyle}" />

@@ -9,6 +9,10 @@ namespace BTimeLogger.Wpf.Mediator
 {
 	public class OpenMainWindowRequest : IRequest
 	{
+		public OpenMainWindowRequest()
+		{
+
+		}
 	}
 
 	public class OpenMainWindowHandler : IRequestHandler<OpenMainWindowRequest>

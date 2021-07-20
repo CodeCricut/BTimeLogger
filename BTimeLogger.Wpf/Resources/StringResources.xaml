@@ -21,4 +21,5 @@
     <system:String x:Key="cancel">Cancel</system:String>
     <system:String x:Key="create">Create</system:String>
     <system:String x:Key="createReport">Create Report</system:String>
+    <system:String x:Key="elipses">...</system:String>
 </ResourceDictionary>
