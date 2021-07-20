@@ -16,11 +16,11 @@ namespace BTimeLogger.Wpf.Services.ViewManagement
 			_viewFinder = viewFinder;
 		}
 
+		// TODO: reduce duplicate with ShowDialog
 		public void Show<TViewModel>(TViewModel viewModel)
 			where TViewModel : BaseViewModel
 		{
-			if (_activeViews.ContainsKey(viewModel))
-				throw new ViewAlreadyShowingException($"View for {viewModel} view model already showing. Ensure that the view is closed before opening it again.");
+			AssertAssociatedViewNotActive(viewModel);
 
 			Window view = _viewFinder.FindViewForViewModel(viewModel);
 
@@ -31,6 +31,22 @@ namespace BTimeLogger.Wpf.Services.ViewManagement
 
 				_activeViews.Add(viewModel, view);
 			});
+		}
+
+		public bool? ShowDialog<TViewModel>(TViewModel viewModel) where TViewModel : BaseViewModel
+		{
+			AssertAssociatedViewNotActive(viewModel);
+
+			Window view = _viewFinder.FindViewForViewModel(viewModel);
+
+			Application.Current.Dispatcher.Invoke(() =>
+			{
+				((IHaveViewModel<TViewModel>)view).SetViewModel(viewModel);
+				_activeViews.Add(viewModel, view);
+
+				return view.ShowDialog();
+			});
+			return null;
 		}
 
 		public void Close(BaseViewModel viewModel)
@@ -45,6 +61,12 @@ namespace BTimeLogger.Wpf.Services.ViewManagement
 
 				return _activeViews.Remove(viewModel);
 			});
+		}
+
+		private void AssertAssociatedViewNotActive<TViewModel>(TViewModel viewModel) where TViewModel : BaseViewModel
+		{
+			if (_activeViews.ContainsKey(viewModel))
+				throw new ViewAlreadyShowingException($"View for {viewModel} view model already showing. Ensure that the view is closed before opening it again.");
 		}
 	}
 }
