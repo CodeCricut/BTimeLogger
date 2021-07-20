@@ -25,7 +25,6 @@
   
   <ItemGroup>
     <Folder Include="Model\" />
-    <Folder Include="Util\" />
   </ItemGroup>
 
   
