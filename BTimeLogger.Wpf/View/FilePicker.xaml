@@ -24,8 +24,7 @@
         <TextBlock HorizontalAlignment="Stretch"
                    TextWrapping="Wrap"
                    Text="{Binding Description, Mode=OneWay}"
-                   FontSize="15"
-                   Visibility="{Binding }"/>
+                   FontSize="15"/>
         
         <Button Grid.Column="1"
                 Grid.Row="1"

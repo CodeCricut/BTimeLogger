@@ -1,5 +1,4 @@
-﻿using BTimeLogger.Domain.Reporters;
-using Microsoft.Extensions.Configuration;
+﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace BTimeLogger.Domain
@@ -8,9 +7,9 @@ namespace BTimeLogger.Domain
 	{
 		public static IServiceCollection AddDomain(this IServiceCollection services, IConfiguration config)
 		{
-			services.AddSingleton<IActivityReporter, ActivityReporter>();
-			services.AddSingleton<IIntervalsReporter, IntervalsReporter>();
-			services.AddSingleton<IStatisticsReporter, StatisticsReporter>();
+			//services.AddSingleton<IActivityReporter, ActivityReporter>();
+			//services.AddSingleton<IIntervalsReporter, IntervalsReporter>();
+			//services.AddSingleton<IStatisticsReporter, StatisticsReporter>();
 
 			return services;
 		}

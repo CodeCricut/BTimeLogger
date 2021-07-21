@@ -1,8 +1,6 @@
 ﻿using BTimeLogger.Csv;
-using BTimeLogger.Domain;
 using BTimeLogger.Wpf.ViewModels.Messages;
 using System;
-using System.Threading.Tasks;
 using WpfCore.Commands;
 using WpfCore.MessageBus;
 using WpfCore.Services;
@@ -28,7 +26,6 @@ namespace BTimeLogger.Wpf.ViewModels
 
 		private string _reportFileLoc;
 		private readonly IViewManager _viewManager;
-		private readonly IActivityReporter _activityReporter;
 		private readonly ICsvPrincipal _csvPrincipal;
 		private readonly IEventAggregator _ea;
 
@@ -43,17 +40,15 @@ namespace BTimeLogger.Wpf.ViewModels
 		}
 
 		public DelegateCommand CancelCommand { get; set; }
-		public AsyncDelegateCommand CreateReportCommand { get; set; }
+		public DelegateCommand CreateReportCommand { get; set; }
 
 		public CreateReportWindowViewModel(IViewManager viewManager,
-			IActivityReporter activityReporter,
 			ICsvPrincipal csvPrincipal,
 			IEventAggregator ea)
 		{
 			CancelCommand = new DelegateCommand(Cancel);
-			CreateReportCommand = new AsyncDelegateCommand(CreateReport, CanCreateReport);
+			CreateReportCommand = new DelegateCommand(CreateReport, CanCreateReport);
 			_viewManager = viewManager;
-			_activityReporter = activityReporter;
 			_csvPrincipal = csvPrincipal;
 			_ea = ea;
 		}
@@ -63,14 +58,17 @@ namespace BTimeLogger.Wpf.ViewModels
 			return !string.IsNullOrWhiteSpace(_reportFileLoc);
 		}
 
-		private async Task CreateReport(object obj)
+		private void CreateReport(object obj)
 		{
 			try
 			{
 				// TODO: loading
 				_csvPrincipal.CsvFileLocation = ReportFileLoc;
-				ActivityReport report = await _activityReporter.Report(FromDate, ToDate);
-				_ea.SendMessage(new ActivityReportChanged(report));
+
+				_ea.SendMessage(new CsvLocationChanged(ReportFileLoc));// TODO
+
+				//ActivityReport report = await _activityReporter.Report(FromDate, ToDate);
+				//_ea.SendMessage(new ActivityReportChanged(report));
 			}
 			catch (Exception)
 			{

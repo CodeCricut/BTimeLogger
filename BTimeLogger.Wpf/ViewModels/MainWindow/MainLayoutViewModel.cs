@@ -52,7 +52,7 @@ namespace BTimeLogger.Wpf.ViewModels
 
 		private void CreateReport(object obj)
 		{
-			var reportWindow = _createReportWindowViewModelFactory.Create();
+			CreateReportWindowViewModel reportWindow = _createReportWindowViewModelFactory.Create();
 			_viewManager.ShowDialog(reportWindow);
 		}
 

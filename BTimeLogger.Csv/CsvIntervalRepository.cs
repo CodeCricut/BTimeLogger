@@ -17,5 +17,10 @@ namespace BTimeLogger.Csv
 		{
 			throw new NotImplementedException();
 		}
+
+		public Task<IQueryable<Interval>> GetIntervals(Activity[] activities, DateTime from, DateTime to)
+		{
+			throw new NotImplementedException();
+		}
 	}
 }
