@@ -20,7 +20,22 @@ namespace BTimeLogger.Csv
 
 		public Task<IQueryable<Interval>> GetIntervals(Activity[] activities, DateTime from, DateTime to)
 		{
-			throw new NotImplementedException();
+			// TODO
+			Interval interval = new Interval()
+			{
+				From = DateTime.Now,
+				To = DateTime.Now,
+				Activity = new Activity()
+				{
+					Children = Array.Empty<Activity>(),
+					IsGroup = false,
+					Name = "BOOB",
+					Parent = null
+				},
+				Comment = "this is a comment :)",
+				Duration = new TimeSpan(1, 2, 3)
+			};
+			return Task.FromResult(new Interval[] { interval }.AsQueryable());
 		}
 	}
 }

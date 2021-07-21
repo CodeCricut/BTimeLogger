@@ -6,7 +6,7 @@ namespace BTimeLogger.Wpf.Util
 	{
 		public static string DurationString(this TimeSpan ts)
 		{
-			return ts.Duration().ToString("HH:mm");
+			return ts.ToString("hh':'mm");
 		}
 	}
 }

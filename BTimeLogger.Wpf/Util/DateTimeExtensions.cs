@@ -4,7 +4,7 @@ namespace BTimeLogger.Wpf.Util
 {
 	public static class DateTimeExtensions
 	{
-		public static string DateString(this DateTime dt)
+		public static string DateTimeString(this DateTime dt)
 		{
 			return dt.ToString("g");
 		}

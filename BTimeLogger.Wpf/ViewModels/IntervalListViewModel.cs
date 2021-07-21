@@ -1,4 +1,4 @@
-﻿using BTimeLogger.Wpf.ViewModels.Domain;
+﻿using BTimeLogger.Wpf.ViewModels.Factories;
 using BTimeLogger.Wpf.ViewModels.Messages;
 using System;
 using System.Collections.ObjectModel;
@@ -40,6 +40,17 @@ namespace BTimeLogger.Wpf.ViewModels
 			set { _to = value; UpdateItemsCommand.Execute(); }
 		}
 
+		// TODO
+		private bool _loading;
+		public bool Loading
+		{
+			get { return _loading; }
+			set { _loading = value; }
+		}
+
+		// TODO
+		public bool IsEmpty;
+
 		public AsyncDelegateCommand UpdateItemsCommand { get; }
 
 		public IntervalListViewModel(IEventAggregator ea,
@@ -66,7 +77,7 @@ namespace BTimeLogger.Wpf.ViewModels
 			for (int i = 0; i < intervals.Length; i++)
 			{
 				Interval interval = intervals[i];
-				IntervalListItemViewModel intervalItem = _intervalItemVMFactory.Create(interval); // TODO: determine whether last on date
+				IntervalListItemViewModel intervalItem = _intervalItemVMFactory.Create(interval, isLastOnDate: false); // TODO: determine whether last on date
 				Items.Add(intervalItem);
 			}
 		}

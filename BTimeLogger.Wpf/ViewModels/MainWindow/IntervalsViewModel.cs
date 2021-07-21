@@ -4,8 +4,11 @@ namespace BTimeLogger.Wpf.ViewModels.MainWindow
 {
 	public class IntervalsViewModel : BaseViewModel
 	{
-		public IntervalsViewModel()
+		public IntervalListViewModel IntervalListViewModel { get; }
+
+		public IntervalsViewModel(IntervalListViewModel intervalListViewModel)
 		{
+			IntervalListViewModel = intervalListViewModel;
 		}
 	}
 }
