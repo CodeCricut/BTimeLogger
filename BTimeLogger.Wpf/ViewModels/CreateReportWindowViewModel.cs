@@ -10,34 +10,25 @@ namespace BTimeLogger.Wpf.ViewModels
 {
 	public class CreateReportWindowViewModel : BaseViewModel
 	{
-		private DateTime _fromDate = DateTime.Today;
-		public DateTime FromDate
-		{
-			get => _fromDate;
-			set => Set(ref _fromDate, value);
-		}
-
-		private DateTime _toDate = DateTime.Today;
-		public DateTime ToDate
-		{
-			get => _toDate;
-			set => Set(ref _toDate, value);
-		}
-
-		private string _reportFileLoc;
 		private readonly IViewManager _viewManager;
 		private readonly ICsvPrincipal _csvPrincipal;
 		private readonly IEventAggregator _ea;
 
-		public string ReportFileLoc
-		{
-			get => _reportFileLoc;
-			set
-			{
-				Set(ref _reportFileLoc, value);
-				CreateReportCommand.RaiseCanExecuteChanged();
-			}
-		}
+		private DateTime _fromDate = DateTime.Today;
+		public DateTime FromDate { get => _fromDate; set => Set(ref _fromDate, value); }
+
+		private DateTime _toDate = DateTime.Today;
+		public DateTime ToDate { get => _toDate; set => Set(ref _toDate, value); }
+
+		private string _reportFileLoc;
+		public string ReportFileLoc { get => _reportFileLoc; set { Set(ref _reportFileLoc, value); CreateReportCommand.RaiseCanExecuteChanged(); } }
+
+		private bool _loading;
+		public bool Loading { get => _loading; set { Set(ref _loading, value); RaisePropertyChanged(nameof(InvalidReportInfo)); } }
+
+		private bool _invalidReportInfo;
+		public bool InvalidReportInfo { get => _invalidReportInfo && !Loading; set { Set(ref _invalidReportInfo, value); } }
+
 
 		public DelegateCommand CancelCommand { get; set; }
 		public DelegateCommand CreateReportCommand { get; set; }
@@ -62,23 +53,30 @@ namespace BTimeLogger.Wpf.ViewModels
 		{
 			try
 			{
-				// TODO: loading
+				Loading = true;
+				InvalidReportInfo = false;
+
 				_csvPrincipal.CsvFileLocation = ReportFileLoc;
 
-				_ea.SendMessage(new CsvLocationChanged(ReportFileLoc));// TODO
+				_ea.SendMessage(new CsvLocationChanged(ReportFileLoc));
 
-				//ActivityReport report = await _activityReporter.Report(FromDate, ToDate);
-				//_ea.SendMessage(new ActivityReportChanged(report));
+				Loading = false;
+				CloseDialog();
 			}
 			catch (Exception)
 			{
-				// TODO: error message in creation window
-				throw;
+				Loading = false;
+				InvalidReportInfo = true;
 			}
 
 		}
 
 		private void Cancel(object obj)
+		{
+			CloseDialog();
+		}
+
+		private void CloseDialog()
 		{
 			_viewManager.Close(this);
 		}

@@ -36,6 +36,16 @@
                        Foreground="{StaticResource skinFontBrush}"
                        HorizontalAlignment="Center" Margin="20"/>
 
+            <TextBlock Text="{StaticResource loading}"
+                       HorizontalAlignment="Center"
+                       Foreground="{StaticResource skinFontSecondaryBrush}"
+                       Visibility="{Binding ViewModel.Loading, Converter={StaticResource boolToVis}}" />
+
+            <TextBlock Text="{StaticResource invalidReport}"
+                       HorizontalAlignment="Center"
+                       Foreground="{StaticResource skinFontWarningBrush}"
+                       Visibility="{Binding ViewModel.InvalidReportInfo, Converter={StaticResource boolToVis}}" />
+            
             <!--TODO: default date picker/calendar styles not being applied-->
             <DatePicker SelectedDate="{Binding ViewModel.FromDate}"
                         Text="{StaticResource fromDate}" />

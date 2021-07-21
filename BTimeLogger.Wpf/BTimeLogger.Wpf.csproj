@@ -24,11 +24,6 @@
 
   
   <ItemGroup>
-    <Folder Include="Model\" />
-  </ItemGroup>
-
-  
-  <ItemGroup>
     <ProjectReference Include="..\..\ATimeLogger\WpfCore\WpfCore.csproj" />
     <ProjectReference Include="..\BTimeLogger.Csv\BTimeLogger.Csv.csproj" />
     <ProjectReference Include="..\BTimeLogger.Domain\BTimeLogger.Domain.csproj" />

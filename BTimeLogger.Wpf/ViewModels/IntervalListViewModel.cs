@@ -1,6 +1,6 @@
-﻿using BTimeLogger.Wpf.ViewModels.Factories;
+﻿using BTimeLogger.Wpf.Model;
+using BTimeLogger.Wpf.ViewModels.Factories;
 using BTimeLogger.Wpf.ViewModels.Messages;
-using System;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
@@ -12,44 +12,18 @@ namespace BTimeLogger.Wpf.ViewModels
 {
 	public class IntervalListViewModel : BaseViewModel
 	{
-		private readonly IEventAggregator _ea;
 		private readonly IIntervalRepository _intervalRepository;
 		private readonly IIntervalListItemViewModelFactory _intervalItemVMFactory;
 
 		public ObservableCollection<IntervalListItemViewModel> Items { get; } = new();
 
-		// //////////////////////////// SEARCH FILTER VM
-		private Activity[] _includedActivities;
-		public Activity[] IncludedActivities
-		{
-			get { return _includedActivities; } // TODO
-			set { _includedActivities = value; UpdateItemsCommand.Execute(); }
-		}
+		public IntervalSearchFilter IntervalSearchFilter { get; } = new();
 
-		private DateTime _from;
-		public DateTime From
-		{
-			get { return _from; }
-			set { _from = value; UpdateItemsCommand.Execute(); }
-		}
-
-		private DateTime _to;
-		public DateTime To
-		{
-			get { return _to; }
-			set { _to = value; UpdateItemsCommand.Execute(); }
-		}
-
-		// TODO
 		private bool _loading;
-		public bool Loading
-		{
-			get { return _loading; }
-			set { _loading = value; }
-		}
+		public bool Loading { get => _loading; set { Set(ref _loading, value); RaisePropertyChanged(nameof(NotLoading)); } }
+		public bool NotLoading { get => !Loading; }
 
-		// TODO
-		public bool IsEmpty;
+		public bool IsEmpty { get => Items.Count <= 0 && NotLoading; }
 
 		public AsyncDelegateCommand UpdateItemsCommand { get; }
 
@@ -58,22 +32,38 @@ namespace BTimeLogger.Wpf.ViewModels
 			IIntervalListItemViewModelFactory intervalItemVMFactory
 			)
 		{
-			_ea = ea;
 			_intervalRepository = intervalRepository;
 			_intervalItemVMFactory = intervalItemVMFactory;
 
 			UpdateItemsCommand = new AsyncDelegateCommand(UpdateItems);
 
+			Items.CollectionChanged += Items_CollectionChanged;
+
 			ea.RegisterHandler<CsvLocationChanged>(msg => UpdateItemsCommand.Execute());
-			ea.RegisterHandler<IncludedActivitiesChanged>(msg => IncludedActivities = msg.NewIncludedActivities);
-			ea.RegisterHandler<SearchBetweenDatesChanged>(msg => { From = msg.From; To = msg.To; });
+			ea.RegisterHandler<IncludedActivitiesChanged>(msg => IntervalSearchFilter.IncludedActivities = msg.NewIncludedActivities);
+			ea.RegisterHandler<SearchBetweenDatesChanged>(msg => { IntervalSearchFilter.From = msg.From; IntervalSearchFilter.To = msg.To; });
+		}
+
+		private void Items_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+		{
+			RaisePropertyChanged(ALL_PROPS_CHANGED);
 		}
 
 		private async Task UpdateItems(object _ = null)
 		{
-			Interval[] intervals = (await _intervalRepository.GetIntervals(IncludedActivities, From, To)).ToArray();
+			Loading = true;
 
 			Items.Clear();
+
+			Interval[] intervals = (await _intervalRepository
+				.GetIntervals(
+					IntervalSearchFilter.IncludedActivities,
+					IntervalSearchFilter.From,
+					IntervalSearchFilter.To))
+				.ToArray();
+
+
+			Loading = false;
 			for (int i = 0; i < intervals.Length; i++)
 			{
 				Interval interval = intervals[i];

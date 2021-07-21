@@ -18,8 +18,9 @@ namespace BTimeLogger.Csv
 			throw new NotImplementedException();
 		}
 
-		public Task<IQueryable<Interval>> GetIntervals(Activity[] activities, DateTime from, DateTime to)
+		public async Task<IQueryable<Interval>> GetIntervals(Activity[] activities, DateTime from, DateTime to)
 		{
+			await Task.Delay(10000);
 			// TODO
 			Interval interval = new Interval()
 			{
@@ -35,7 +36,7 @@ namespace BTimeLogger.Csv
 				Comment = "this is a comment :)",
 				Duration = new TimeSpan(1, 2, 3)
 			};
-			return Task.FromResult(new Interval[] { interval }.AsQueryable());
+			return new Interval[] { interval }.AsQueryable();
 		}
 	}
 }
