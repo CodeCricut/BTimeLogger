@@ -1,4 +1,5 @@
 ﻿using BTimeLogger.Wpf.Model;
+using BTimeLogger.Wpf.Util;
 using BTimeLogger.Wpf.ViewModels.Factories;
 using BTimeLogger.Wpf.ViewModels.Messages;
 using System.Collections.ObjectModel;
@@ -67,7 +68,8 @@ namespace BTimeLogger.Wpf.ViewModels
 			for (int i = 0; i < intervals.Length; i++)
 			{
 				Interval interval = intervals[i];
-				IntervalListItemViewModel intervalItem = _intervalItemVMFactory.Create(interval, isLastOnDate: false); // TODO: determine whether last on date
+				bool isLast = interval.IsLastOnDate(intervals);
+				IntervalListItemViewModel intervalItem = _intervalItemVMFactory.Create(interval, isLast);
 				Items.Add(intervalItem);
 			}
 		}
