@@ -1,0 +1,16 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <Style x:Key="ListBoxStyle"
+           TargetType="{x:Type ListBox}">
+        <Style.Setters>
+            <Setter Property="Foreground"
+                    Value="{DynamicResource skinFontBrush}" />
+            <Setter Property="Background"
+                    Value="{DynamicResource skinBackgroundLightBrush}" />
+            <Setter Property="BorderThickness"
+                    Value="0" />
+            <Setter Property="HorizontalContentAlignment"
+                    Value="Stretch" />
+        </Style.Setters>
+    </Style>
+</ResourceDictionary>

@@ -1,8 +1,8 @@
 ﻿namespace BTimeLogger.Wpf.ViewModels.Messages
 {
-	class CsvLocationChanged
+	class GlobalDataSourceChanged
 	{
-		public CsvLocationChanged(string newLocation)
+		public GlobalDataSourceChanged(string newLocation)
 		{
 			NewLocation = newLocation;
 		}

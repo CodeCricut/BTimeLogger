@@ -58,7 +58,7 @@ namespace BTimeLogger.Wpf.ViewModels
 
 				_csvPrincipal.CsvFileLocation = ReportFileLoc;
 
-				_ea.SendMessage(new CsvLocationChanged(ReportFileLoc));
+				_ea.SendMessage(new GlobalDataSourceChanged(ReportFileLoc));
 
 				Loading = false;
 				CloseDialog();

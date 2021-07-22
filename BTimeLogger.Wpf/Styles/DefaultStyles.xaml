@@ -1,5 +1,6 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:view="clr-namespace:BTimeLogger.Wpf.View">
     <ResourceDictionary.MergedDictionaries>
         <ResourceDictionary Source="./ButtonStyle.xaml" />
         <ResourceDictionary Source="./CardBorderStyle.xaml" />
@@ -18,6 +19,8 @@
         <ResourceDictionary Source="./CalendarItemStyle.xaml" />
         <ResourceDictionary Source="./MenuStyle.xaml" />
         <ResourceDictionary Source="./MenuItemStyle.xaml" />
+        <ResourceDictionary Source="./ListBoxStyle.xaml" />
+        <ResourceDictionary Source="./ListBoxItemContainerStyle.xaml" />
 
     </ResourceDictionary.MergedDictionaries>
     <Style TargetType="{x:Type Button}"
@@ -56,4 +59,11 @@
            BasedOn="{StaticResource MenuStyle}" />
     <Style TargetType="{x:Type MenuItem}"
            BasedOn="{StaticResource MenuItemStyle}" />
+
+    <Style TargetType="{x:Type ListBox}"
+           BasedOn="{StaticResource ListBoxStyle}" />
+    <Style TargetType="{x:Type ListBoxItem}"
+           BasedOn="{StaticResource ListBoxItemContainerStyle}" />
+    <Style TargetType="{x:Type view:MultiSelectListBox}"
+           BasedOn="{StaticResource ListBoxStyle}" />
 </ResourceDictionary>

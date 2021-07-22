@@ -15,6 +15,7 @@ namespace BTimeLogger.Wpf.ViewModels.Factories
 		private readonly IStatisticsViewModelFactory _statisticsViewModelFactory;
 		private readonly ICreateReportWindowViewModelFactory _createReportWindowViewModelFactory;
 		private readonly IIntervalListViewModelFactory _intervalListViewModelFactory;
+		private readonly IGroupedActivityFilterViewModelFactory _groupedActivityFilterViewModel;
 
 		public MainLayoutViewModelFactory(
 			IViewManager viewManager,
@@ -22,7 +23,8 @@ namespace BTimeLogger.Wpf.ViewModels.Factories
 			IIntervalsViewModelFactory intervalsViewModelFactory,
 			IStatisticsViewModelFactory statisticsViewModelFactory,
 			ICreateReportWindowViewModelFactory createReportWindowViewModelFactory,
-			IIntervalListViewModelFactory intervalListViewModelFactory)
+			IIntervalListViewModelFactory intervalListViewModelFactory,
+			IGroupedActivityFilterViewModelFactory groupedActivityFilterViewModel)
 		{
 			_viewManager = viewManager;
 			_homeViewModelFactory = homeViewModelFactory;
@@ -30,13 +32,15 @@ namespace BTimeLogger.Wpf.ViewModels.Factories
 			_statisticsViewModelFactory = statisticsViewModelFactory;
 			_createReportWindowViewModelFactory = createReportWindowViewModelFactory;
 			_intervalListViewModelFactory = intervalListViewModelFactory;
+			_groupedActivityFilterViewModel = groupedActivityFilterViewModel;
 		}
 
 		public MainLayoutViewModel Create()
 		{
 			var homeVM = _homeViewModelFactory.Create();
 			var intervalListVM = _intervalListViewModelFactory.Create();
-			var intervalsVM = _intervalsViewModelFactory.Create(intervalListVM);
+			var groupedActivityFilterVM = _groupedActivityFilterViewModel.Create();
+			var intervalsVM = _intervalsViewModelFactory.Create(intervalListVM, groupedActivityFilterVM);
 			var statsVM = _statisticsViewModelFactory.Create();
 
 			return new MainLayoutViewModel(homeVM, intervalsVM, statsVM, _viewManager, _createReportWindowViewModelFactory);

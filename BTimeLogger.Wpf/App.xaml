@@ -39,6 +39,9 @@
                 <ResourceDictionary Source="Styles/TitleBarButtonStyle.xaml" />
                 <ResourceDictionary Source="Styles/TitleBarMenuStyle.xaml" />
                 <ResourceDictionary Source="Styles/WindowStyle.xaml" />
+
+                <ResourceDictionary Source="Styles/ListBoxStyle.xaml" />
+                <ResourceDictionary Source="Styles/ListBoxItemContainerStyle.xaml" />
             </ResourceDictionary.MergedDictionaries>
 
             <BooleanToVisibilityConverter x:Key="boolToVis" />

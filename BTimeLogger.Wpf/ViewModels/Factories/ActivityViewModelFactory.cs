@@ -11,7 +11,7 @@ namespace BTimeLogger.Wpf.ViewModels.Factories
 	{
 		public ActivityViewModel Create(Activity activity)
 		{
-			return new(activity);
+			return new ActivityViewModel(activity);
 		}
 	}
 }

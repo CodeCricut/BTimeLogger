@@ -5,7 +5,6 @@ namespace BTimeLogger.Wpf.ViewModels
 {
 	public class IntervalListItemViewModel : BaseViewModel
 	{
-		// TODO: make props wrap activity props
 		public IntervalViewModel Interval { get; }
 
 		public bool IsLastOnDate { get; }

@@ -16,13 +16,24 @@ namespace BTimeLogger.Wpf.ViewModels
 		private readonly IIntervalRepository _intervalRepository;
 		private readonly IIntervalListItemViewModelFactory _intervalItemVMFactory;
 
+		private readonly IntervalSearchFilter _intervalSearchFilter = new();
+
+
 		public ObservableCollection<IntervalListItemViewModel> Items { get; } = new();
 
-		public IntervalSearchFilter IntervalSearchFilter { get; } = new();
-
+		#region Loading
 		private bool _loading;
-		public bool Loading { get => _loading; set { Set(ref _loading, value); RaisePropertyChanged(nameof(NotLoading)); } }
+		public bool Loading
+		{
+			get => _loading;
+			set
+			{
+				Set(ref _loading, value);
+				RaisePropertyChanged(nameof(NotLoading));
+			}
+		}
 		public bool NotLoading { get => !Loading; }
+		#endregion
 
 		public bool IsEmpty { get => Items.Count <= 0 && NotLoading; }
 
@@ -40,14 +51,9 @@ namespace BTimeLogger.Wpf.ViewModels
 
 			Items.CollectionChanged += Items_CollectionChanged;
 
-			ea.RegisterHandler<CsvLocationChanged>(msg => UpdateItemsCommand.Execute());
-			ea.RegisterHandler<IncludedActivitiesChanged>(msg => IntervalSearchFilter.IncludedActivities = msg.NewIncludedActivities);
-			ea.RegisterHandler<SearchBetweenDatesChanged>(msg => { IntervalSearchFilter.From = msg.From; IntervalSearchFilter.To = msg.To; });
-		}
-
-		private void Items_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
-		{
-			RaisePropertyChanged(ALL_PROPS_CHANGED);
+			ea.RegisterHandler<GlobalDataSourceChanged>(msg => UpdateItemsCommand.Execute());
+			ea.RegisterHandler<IncludedActivitiesChanged>(HandleIncludedActivitiesChanged);
+			ea.RegisterHandler<SearchBetweenDatesChanged>(HandleSearchBetweenDatesChanged);
 		}
 
 		private async Task UpdateItems(object _ = null)
@@ -58,9 +64,9 @@ namespace BTimeLogger.Wpf.ViewModels
 
 			Interval[] intervals = (await _intervalRepository
 				.GetIntervals(
-					IntervalSearchFilter.IncludedActivities,
-					IntervalSearchFilter.From,
-					IntervalSearchFilter.To))
+					_intervalSearchFilter.IncludedActivities,
+					_intervalSearchFilter.From,
+					_intervalSearchFilter.To))
 				.ToArray();
 
 
@@ -72,6 +78,24 @@ namespace BTimeLogger.Wpf.ViewModels
 				IntervalListItemViewModel intervalItem = _intervalItemVMFactory.Create(interval, isLast);
 				Items.Add(intervalItem);
 			}
+		}
+
+		private void HandleIncludedActivitiesChanged(IncludedActivitiesChanged msg)
+		{
+			_intervalSearchFilter.IncludedActivities = msg.NewIncludedActivities;
+			UpdateItemsCommand.Execute();
+		}
+
+		private void HandleSearchBetweenDatesChanged(SearchBetweenDatesChanged msg)
+		{
+			_intervalSearchFilter.From = msg.From;
+			_intervalSearchFilter.To = msg.To;
+			UpdateItemsCommand.Execute();
+		}
+
+		private void Items_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+		{
+			RaisePropertyChanged(ALL_PROPS_CHANGED);
 		}
 	}
 }

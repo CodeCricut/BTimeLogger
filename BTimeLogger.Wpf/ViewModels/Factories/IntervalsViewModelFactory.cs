@@ -4,14 +4,14 @@ namespace BTimeLogger.Wpf.ViewModels.Factories
 {
 	public interface IIntervalsViewModelFactory
 	{
-		IntervalsViewModel Create(IntervalListViewModel intervalListViewModel);
+		IntervalsViewModel Create(IntervalListViewModel intervalListViewModel, GroupedActivityFilterViewModel groupedActivityFilterViewModel);
 	}
 
 	class IntervalsViewModelFactory : IIntervalsViewModelFactory
 	{
-		public IntervalsViewModel Create(IntervalListViewModel intervalListViewModel)
+		public IntervalsViewModel Create(IntervalListViewModel intervalListViewModel, GroupedActivityFilterViewModel groupedActivityFilterViewModel)
 		{
-			return new IntervalsViewModel(intervalListViewModel);
+			return new IntervalsViewModel(intervalListViewModel, groupedActivityFilterViewModel);
 		}
 	}
 }
