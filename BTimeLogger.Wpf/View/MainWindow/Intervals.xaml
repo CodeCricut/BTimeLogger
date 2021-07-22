@@ -13,10 +13,16 @@
             <ColumnDefinition />
             <ColumnDefinition />
         </Grid.ColumnDefinitions>
-        <StackPanel Orientation="Vertical">
-            <view:GroupedActivityFilter ViewModel="{Binding ViewModel.GroupedActivityFilterViewModel}" />
+        <Border Padding="20 0" >
+            
+        <StackPanel Orientation="Vertical" >
+                <Border Style="{DynamicResource CardBorderStyle}" Padding="10">
+                <view:GroupedActivityFilter ViewModel="{Binding ViewModel.GroupedActivityFilterViewModel}" 
+                                       />
+                </Border>
 
         </StackPanel>
+        </Border>
         <view:IntervalList ViewModel="{Binding ViewModel.IntervalListViewModel}"  Grid.Column="1"/>
     </Grid>
 </UserControl>

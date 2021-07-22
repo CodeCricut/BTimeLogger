@@ -11,7 +11,7 @@
         Orientation="Vertical"
         DataContext="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type local:GroupedActivityFilter}}}">
         
-        <TextBlock Text="{StaticResource group}" />
+        <TextBlock Text="{StaticResource group}" Margin="0 0 0 5" FontSize="15"/>
         <ComboBox ItemsSource="{Binding ViewModel.GroupsSource}" SelectedItem="{Binding ViewModel.SelectedGroupActivity}">
             <ComboBox.ItemTemplate>
                 <DataTemplate DataType="{x:Type dViewmodels:ActivityViewModel}">
@@ -20,7 +20,9 @@
             </ComboBox.ItemTemplate>
         </ComboBox>
 
-        <TextBlock Text="{StaticResource activities}" />
+        <TextBlock Text="{StaticResource activities}"
+                   Margin="0 10 0 5"
+                   FontSize="15" />
         <local:MultiSelectListBox ItemsSource="{Binding ViewModel.ActivitiesSource}"
                                   SelectedItemsList="{Binding ViewModel.SelectedActivities}">
             <ListBox.ItemTemplate>
