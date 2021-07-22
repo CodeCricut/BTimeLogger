@@ -2,9 +2,9 @@
 
 namespace BTimeLogger.Wpf.ViewModels.Messages
 {
-	class SearchBetweenDatesChanged
+	class TimeSpanChanged
 	{
-		public SearchBetweenDatesChanged(DateTime from, DateTime to)
+		public TimeSpanChanged(DateTime from, DateTime to)
 		{
 			From = from;
 			To = to;

@@ -53,7 +53,7 @@ namespace BTimeLogger.Wpf.ViewModels
 
 			ea.RegisterHandler<GlobalDataSourceChanged>(msg => UpdateItemsCommand.Execute());
 			ea.RegisterHandler<IncludedActivitiesChanged>(HandleIncludedActivitiesChanged);
-			ea.RegisterHandler<SearchBetweenDatesChanged>(HandleSearchBetweenDatesChanged);
+			ea.RegisterHandler<TimeSpanChanged>(HandleSearchBetweenDatesChanged);
 		}
 
 		private async Task UpdateItems(object _ = null)
@@ -86,7 +86,7 @@ namespace BTimeLogger.Wpf.ViewModels
 			UpdateItemsCommand.Execute();
 		}
 
-		private void HandleSearchBetweenDatesChanged(SearchBetweenDatesChanged msg)
+		private void HandleSearchBetweenDatesChanged(TimeSpanChanged msg)
 		{
 			_intervalSearchFilter.From = msg.From;
 			_intervalSearchFilter.To = msg.To;

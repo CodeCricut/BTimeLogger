@@ -16,6 +16,7 @@ namespace BTimeLogger.Wpf.ViewModels.Factories
 		private readonly ICreateReportWindowViewModelFactory _createReportWindowViewModelFactory;
 		private readonly IIntervalListViewModelFactory _intervalListViewModelFactory;
 		private readonly IGroupedActivityFilterViewModelFactory _groupedActivityFilterViewModel;
+		private readonly ITimeSpanPanelViewModelFactory _timeSpanPanelViewModelFactory;
 
 		public MainLayoutViewModelFactory(
 			IViewManager viewManager,
@@ -24,7 +25,8 @@ namespace BTimeLogger.Wpf.ViewModels.Factories
 			IStatisticsViewModelFactory statisticsViewModelFactory,
 			ICreateReportWindowViewModelFactory createReportWindowViewModelFactory,
 			IIntervalListViewModelFactory intervalListViewModelFactory,
-			IGroupedActivityFilterViewModelFactory groupedActivityFilterViewModel)
+			IGroupedActivityFilterViewModelFactory groupedActivityFilterViewModel,
+			ITimeSpanPanelViewModelFactory timeSpanPanelViewModelFactory)
 		{
 			_viewManager = viewManager;
 			_homeViewModelFactory = homeViewModelFactory;
@@ -33,6 +35,7 @@ namespace BTimeLogger.Wpf.ViewModels.Factories
 			_createReportWindowViewModelFactory = createReportWindowViewModelFactory;
 			_intervalListViewModelFactory = intervalListViewModelFactory;
 			_groupedActivityFilterViewModel = groupedActivityFilterViewModel;
+			_timeSpanPanelViewModelFactory = timeSpanPanelViewModelFactory;
 		}
 
 		public MainLayoutViewModel Create()
@@ -40,7 +43,8 @@ namespace BTimeLogger.Wpf.ViewModels.Factories
 			var homeVM = _homeViewModelFactory.Create();
 			var intervalListVM = _intervalListViewModelFactory.Create();
 			var groupedActivityFilterVM = _groupedActivityFilterViewModel.Create();
-			var intervalsVM = _intervalsViewModelFactory.Create(intervalListVM, groupedActivityFilterVM);
+			var timeSpanPanelVM = _timeSpanPanelViewModelFactory.Create();
+			var intervalsVM = _intervalsViewModelFactory.Create(intervalListVM, groupedActivityFilterVM, timeSpanPanelVM);
 			var statsVM = _statisticsViewModelFactory.Create();
 
 			return new MainLayoutViewModel(homeVM, intervalsVM, statsVM, _viewManager, _createReportWindowViewModelFactory);
