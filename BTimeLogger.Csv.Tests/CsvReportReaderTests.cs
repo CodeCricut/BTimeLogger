@@ -1,9 +1,12 @@
-﻿using NUnit.Framework;
+﻿using Moq;
+using NUnit.Framework;
 
 namespace BTimeLogger.Csv.Tests
 {
 	public class CsvReportReaderTests
 	{
+		private const string FILE_LOC = @"C:\Users\ajori\OneDrive\Documents\Personal\PRE-July14_2021.csv";
+
 		[Test]
 		public void ReadActivities_InvalidLoc_ThrowsFileNotFound()
 		{
@@ -27,7 +30,12 @@ namespace BTimeLogger.Csv.Tests
 		[Test]
 		public void ReadActivities_ValidLoc_ReturnsAllActivities()
 		{
-			Assert.Fail();
+			Mock<ICsvPrincipal> csvMock = new Mock<ICsvPrincipal>();
+			csvMock.Setup(csvp => csvp.CsvFileLocation).Returns(FILE_LOC);
+
+			ICsvReportReader reader = new CsvReportReader(csvMock.Object);
+
+			var activities = reader.ReadActivities();
 		}
 
 

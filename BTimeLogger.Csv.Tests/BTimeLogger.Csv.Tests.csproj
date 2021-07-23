@@ -7,11 +7,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="CsvReportReaderTests.cs" />
-    <Compile Remove="CsvStatisticRepositoryTests.cs" />
-  </ItemGroup>
-
-  <ItemGroup>
     <None Remove="TestReport.csv" />
   </ItemGroup>
 
@@ -23,9 +18,15 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.9.4" />
+    <PackageReference Include="Moq" Version="4.16.1" />
     <PackageReference Include="NUnit" Version="3.13.1" />
     <PackageReference Include="NUnit3TestAdapter" Version="3.17.0" />
     <PackageReference Include="coverlet.collector" Version="3.0.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\BTimeLogger.Csv\BTimeLogger.Csv.csproj" />
+    <ProjectReference Include="..\BTimeLogger.Domain\BTimeLogger.Domain.csproj" />
   </ItemGroup>
 
   <ItemGroup>
