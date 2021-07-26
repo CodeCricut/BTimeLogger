@@ -51,7 +51,7 @@ namespace BTimeLogger.Wpf.ViewModels
 
 			Items.CollectionChanged += Items_CollectionChanged;
 
-			ea.RegisterHandler<GlobalDataSourceChanged>(msg => UpdateItemsCommand.Execute());
+			ea.RegisterHandler<ReportSourceChanged>(msg => UpdateItemsCommand.Execute());
 			ea.RegisterHandler<IncludedActivitiesChanged>(HandleIncludedActivitiesChanged);
 			ea.RegisterHandler<TimeSpanChanged>(HandleSearchBetweenDatesChanged);
 		}

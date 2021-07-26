@@ -8,55 +8,42 @@ using System.Linq;
 namespace BTimeLogger.Csv
 {
 	// TODO: csv should only be read once, perhaps with the option to refresh results
-	interface ICsvReportReader
+	interface IIntervalsCsvReader
 	{
 		Interval[] ReadIntervals();
 		Activity[] ReadActivities();
-		Statistic[] ReadStatistics();
+		//Statistic[] ReadStatistics();
 	}
 
-	class CsvReportReader : ICsvReportReader
+	class IntervalsCsvReader : IIntervalsCsvReader
 	{
 		private const int BASE_INTERVAL_COLUMN_COUNT = 5;
 		private readonly ICsvPrincipal _csvPrincipal;
 
-		public CsvReportReader(ICsvPrincipal csvPrincipal)
+		public IntervalsCsvReader(ICsvPrincipal csvPrincipal)
 		{
 			_csvPrincipal = csvPrincipal;
 		}
 
 
 		private Dictionary<string, Activity> Activities = new();
-
-
 		private Dictionary<string, Activity> Intervals = new();
+
 		private int numGroupLvls;
 
 		public Activity[] ReadActivities()
 		{
 			AssertFileExists();
 
-			using var reader = new StreamReader(_csvPrincipal.CsvFileLocation);
+			using var reader = new StreamReader(_csvPrincipal.IntervalsCsvLocation);
 			using CsvReader csv = new(reader, CultureInfo.InvariantCulture);
 
 			csv.Read();
 			csv.ReadHeader();
 			numGroupLvls = GetActivityNumColumns(csv);
 
-
-			bool moreIntervalRows = true;
-			while (csv.Read() && moreIntervalRows)
-			{
-				try
-				{
-					ReadActivityRow(csv);
-				}
-				catch (Exception e)
-				{
-					moreIntervalRows = false;
-				}
-
-			}
+			while (csv.Read())
+				ReadActivityRow(csv);
 
 			return Activities.Values.ToArray();
 		}
@@ -151,15 +138,10 @@ namespace BTimeLogger.Csv
 			throw new NotImplementedException();
 		}
 
-		public Statistic[] ReadStatistics()
-		{
-			throw new System.NotImplementedException();
-		}
-
 		private void AssertFileExists()
 		{
-			if (!File.Exists(_csvPrincipal.CsvFileLocation))
-				throw new FileNotFoundException("Could not find the CSV file.", _csvPrincipal.CsvFileLocation);
+			if (!File.Exists(_csvPrincipal.IntervalsCsvLocation))
+				throw new FileNotFoundException("Could not find the CSV file.", _csvPrincipal.IntervalsCsvLocation);
 		}
 	}
 }

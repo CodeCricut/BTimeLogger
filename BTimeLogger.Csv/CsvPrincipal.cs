@@ -2,12 +2,14 @@
 {
 	public interface ICsvPrincipal
 	{
-		string CsvFileLocation { get; set; }
+		string IntervalsCsvLocation { get; set; }
+		string StatisticsCsvLocation { get; set; }
+
 	}
 
 	class CsvPrincipal : ICsvPrincipal
 	{
-		// TODO: file location verification
-		public string CsvFileLocation { get; set; }
+		public string IntervalsCsvLocation { get; set; }
+		public string StatisticsCsvLocation { get; set; }
 	}
 }

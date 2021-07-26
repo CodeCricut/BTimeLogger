@@ -3,9 +3,9 @@ using NUnit.Framework;
 
 namespace BTimeLogger.Csv.Tests
 {
-	public class CsvReportReaderTests
+	public class IntervalsCsvReaderTests
 	{
-		private const string FILE_LOC = @"C:\Users\ajori\OneDrive\Documents\Personal\PRE-July14_2021.csv";
+		private const string FILE_LOC = @"C:\Users\ajori\OneDrive\Documents\Personal\intervalsCSV.csv";
 
 		[Test]
 		public void ReadActivities_InvalidLoc_ThrowsFileNotFound()
@@ -22,18 +22,12 @@ namespace BTimeLogger.Csv.Tests
 
 
 		[Test]
-		public void ReadStatistics_InvalidLoc_ThrowsFileNotFound()
-		{
-			Assert.Fail();
-		}
-
-		[Test]
 		public void ReadActivities_ValidLoc_ReturnsAllActivities()
 		{
 			Mock<ICsvPrincipal> csvMock = new Mock<ICsvPrincipal>();
-			csvMock.Setup(csvp => csvp.CsvFileLocation).Returns(FILE_LOC);
+			csvMock.Setup(csvp => csvp.IntervalsCsvLocation).Returns(FILE_LOC);
 
-			ICsvReportReader reader = new CsvReportReader(csvMock.Object);
+			IIntervalsCsvReader reader = new IntervalsCsvReader(csvMock.Object);
 
 			var activities = reader.ReadActivities();
 		}
@@ -41,12 +35,6 @@ namespace BTimeLogger.Csv.Tests
 
 		[Test]
 		public void ReadIntervals_ValidLoc_ReturnsAllIntervals()
-		{
-			Assert.Fail();
-		}
-
-		[Test]
-		public void ReadStatistics_ValidLoc_ReturnsAllStatistics()
 		{
 			Assert.Fail();
 		}

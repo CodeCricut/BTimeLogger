@@ -9,7 +9,8 @@ namespace BTimeLogger.Csv
 		public static IServiceCollection AddCsv(this IServiceCollection services, IConfiguration config)
 		{
 			services.AddSingleton<ICsvPrincipal, CsvPrincipal>();
-			services.AddSingleton<ICsvReportReader, CsvReportReader>();
+			services.AddSingleton<IIntervalsCsvReader, IntervalsCsvReader>();
+			services.AddSingleton<IStatisticsCsvReader, StatisticsCsvReader>();
 
 			services.AddSingleton<IActivityRepository, CsvActivityRepository>();
 			services.AddSingleton<IIntervalRepository, CsvIntervalRepository>();

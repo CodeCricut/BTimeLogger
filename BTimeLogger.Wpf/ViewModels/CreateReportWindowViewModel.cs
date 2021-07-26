@@ -20,8 +20,20 @@ namespace BTimeLogger.Wpf.ViewModels
 		private DateTime _toDate = DateTime.Today;
 		public DateTime ToDate { get => _toDate; set => Set(ref _toDate, value); }
 
-		private string _reportFileLoc;
-		public string ReportFileLoc { get => _reportFileLoc; set { Set(ref _reportFileLoc, value); CreateReportCommand.RaiseCanExecuteChanged(); } }
+
+		private string _intervalsCsvLocation;
+		public string IntervalsCsvLocation
+		{
+			get => _intervalsCsvLocation;
+			set { Set(ref _intervalsCsvLocation, value); CreateReportCommand.RaiseCanExecuteChanged(); }
+		}
+
+		private string _statisticsCsvLocation;
+		public string StatisticsCsvLocation
+		{
+			get => _statisticsCsvLocation;
+			set { Set(ref _statisticsCsvLocation, value); CreateReportCommand.RaiseCanExecuteChanged(); }
+		}
 
 		private bool _loading;
 		public bool Loading { get => _loading; set { Set(ref _loading, value); RaisePropertyChanged(nameof(InvalidReportInfo)); } }
@@ -46,7 +58,7 @@ namespace BTimeLogger.Wpf.ViewModels
 
 		private bool CanCreateReport(object arg)
 		{
-			return !string.IsNullOrWhiteSpace(_reportFileLoc);
+			return !(string.IsNullOrWhiteSpace(StatisticsCsvLocation) || string.IsNullOrWhiteSpace(IntervalsCsvLocation));
 		}
 
 		private void CreateReport(object obj)
@@ -56,9 +68,10 @@ namespace BTimeLogger.Wpf.ViewModels
 				Loading = true;
 				InvalidReportInfo = false;
 
-				_csvPrincipal.CsvFileLocation = ReportFileLoc;
+				_csvPrincipal.IntervalsCsvLocation = IntervalsCsvLocation;
+				_csvPrincipal.StatisticsCsvLocation = StatisticsCsvLocation;
 
-				_ea.SendMessage(new GlobalDataSourceChanged(ReportFileLoc));
+				_ea.SendMessage(new ReportSourceChanged());
 
 				Loading = false;
 				CloseDialog();

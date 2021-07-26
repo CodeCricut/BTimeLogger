@@ -45,7 +45,7 @@ namespace BTimeLogger.Wpf.ViewModels
 
 			ReloadCommand = new AsyncDelegateCommand(Reload);
 
-			ea.RegisterHandler<GlobalDataSourceChanged>(msg => ReloadCommand.Execute());
+			ea.RegisterHandler<ReportSourceChanged>(msg => ReloadCommand.Execute());
 
 			PropertyChanged += (_, eventArgs) =>
 				{

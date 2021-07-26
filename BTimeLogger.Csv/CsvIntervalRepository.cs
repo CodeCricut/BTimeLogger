@@ -6,9 +6,9 @@ namespace BTimeLogger.Csv
 {
 	class CsvIntervalRepository : IIntervalRepository
 	{
-		private readonly ICsvReportReader _csvReportReader;
+		private readonly IIntervalsCsvReader _csvReportReader;
 
-		public CsvIntervalRepository(ICsvReportReader csvReportReader)
+		public CsvIntervalRepository(IIntervalsCsvReader csvReportReader)
 		{
 			_csvReportReader = csvReportReader;
 		}

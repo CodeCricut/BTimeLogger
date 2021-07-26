@@ -6,9 +6,9 @@
         xmlns:local="clr-namespace:BTimeLogger.Wpf.View"
         mc:Ignorable="d"
         Title="CreateReportWindow"
-        MinHeight="400"
+        MinHeight="430"
         MinWidth="350"
-        Height="400"
+        Height="450"
         Width="500"
         WindowStyle="None">
     <WindowChrome.WindowChrome>
@@ -51,10 +51,13 @@
                         Text="{StaticResource fromDate}" />
             <DatePicker SelectedDate="{Binding ViewModel.ToDate}"
                         Text="{StaticResource toDate}" />
-            
 
-            <local:FilePicker Description="CSV Report Location"
-                              Text="{Binding ViewModel.ReportFileLoc, Mode=TwoWay}" />
+
+            <local:FilePicker Description="Intervals Report Location (.csv)"
+                              Text="{Binding ViewModel.IntervalsCsvLocation, Mode=TwoWay}" />
+
+            <local:FilePicker Description="Statistics Report Location (.csv)"
+                              Text="{Binding ViewModel.StatisticsCsvLocation, Mode=TwoWay}" />
 
             <Grid >
                 <Grid.ColumnDefinitions>
