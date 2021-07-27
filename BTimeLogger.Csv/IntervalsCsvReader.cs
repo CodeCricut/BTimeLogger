@@ -12,7 +12,6 @@ namespace BTimeLogger.Csv
 	{
 		Interval[] ReadIntervals();
 		Activity[] ReadActivities();
-		//Statistic[] ReadStatistics();
 	}
 
 	class IntervalsCsvReader : IIntervalsCsvReader
@@ -25,13 +24,24 @@ namespace BTimeLogger.Csv
 			_csvPrincipal = csvPrincipal;
 		}
 
-
-		private Dictionary<string, Activity> Activities = new();
-		private Dictionary<string, Activity> Intervals = new();
+		private readonly Dictionary<string, Activity> _activities = new();
+		private readonly List<Interval> _intervals = new();
 
 		private int numGroupLvls;
 
 		public Activity[] ReadActivities()
+		{
+			ReadActivityAndIntervalData();
+			return _activities.Values.ToArray();
+		}
+
+		public Interval[] ReadIntervals()
+		{
+			ReadActivityAndIntervalData();
+			return _intervals.ToArray();
+		}
+
+		private void ReadActivityAndIntervalData()
 		{
 			AssertFileExists();
 
@@ -43,28 +53,58 @@ namespace BTimeLogger.Csv
 			numGroupLvls = GetActivityNumColumns(csv);
 
 			while (csv.Read())
-				ReadActivityRow(csv);
-
-			return Activities.Values.ToArray();
+				ReadRowActivityAndIntervalData(csv);
 		}
 
-		private void ReadActivityRow(CsvReader csv)
+		private void ReadRowActivityAndIntervalData(CsvReader csv)
 		{
 			CsvIntervalRecord record = csv.GetRecord<CsvIntervalRecord>();
 			record.Groups = ReadRecordGroupNames(csv);
-			AddRecordGroupActivities(record);
-			AddRecordActivity(record);
+
+			AddNewGroupActivitesFromRecord(record);
+			AddActivityFromRecord(record);
+			AddIntervalFromRecord(record);
 		}
 
-		private void AddRecordActivity(CsvIntervalRecord record)
+		private void AddIntervalFromRecord(CsvIntervalRecord record)
 		{
-			string parentName = string.Empty;
-			if (record.NumGroups > 0)
-				parentName = record.Groups[record.NumGroups - 1];
-			TryAddActivity(record.ActivityType, isGroup: false, parentName);
+			Interval interval = CreateIntervalFromRecord(record);
+			_intervals.Add(interval);
 		}
 
-		private void AddRecordGroupActivities(CsvIntervalRecord record)
+		private Interval CreateIntervalFromRecord(CsvIntervalRecord record)
+		{
+			Activity intervalActivity = _activities.GetValueOrDefault(record.ActivityType);
+			if (intervalActivity == null) throw new KeyNotFoundException("Cannot create interval when activity type is not added to collection.");
+
+			DateTime fromDate = CsvDateParser.Parse(record.From);
+			DateTime to = CsvDateParser.Parse(record.To);
+			TimeSpan duration = to - fromDate;
+
+			return new Interval()
+			{
+				Activity = intervalActivity,
+				Comment = record.Comment,
+				Duration = duration,
+				From = fromDate,
+				To = to
+			};
+		}
+
+		private void AddActivityFromRecord(CsvIntervalRecord record)
+		{
+			if (_activities.ContainsKey(record.ActivityType)) return;
+
+			string parentName = record.NumGroups > 0
+				? record.Groups[record.NumGroups - 1]
+				: string.Empty;
+
+			Activity immediateParent = _activities.GetValueOrDefault(parentName);
+			Activity activity = CreateActivityWithParentRelationship(record.ActivityType, immediateParent, isGroup: false);
+			_activities.Add(record.ActivityType, activity);
+		}
+
+		private void AddNewGroupActivitesFromRecord(CsvIntervalRecord record)
 		{
 			for (int i = 0; i < record.NumGroups; i++)
 			{
@@ -77,7 +117,12 @@ namespace BTimeLogger.Csv
 					if (x != null) groupParentName = x;
 				}
 
-				TryAddActivity(groupName, isGroup: true, groupParentName);
+				Activity parent = _activities.GetValueOrDefault(groupParentName);
+
+				if (_activities.ContainsKey(groupName)) return;
+
+				Activity group = CreateActivityWithParentRelationship(groupName, parent, isGroup: true);
+				_activities.Add(groupName, group);
 			}
 		}
 
@@ -96,19 +141,20 @@ namespace BTimeLogger.Csv
 			return groupNames.ToArray();
 		}
 
-		private bool TryAddActivity(string activityName, bool isGroup = false, string parentName = "")
+		private Activity CreateActivityWithParentRelationship(string activityName, Activity parent, bool isGroup)
 		{
 			if (activityName == null) throw new ArgumentNullException(nameof(activityName));
-			if (parentName == null) throw new ArgumentNullException(nameof(parentName));
+			//if (parentName == null) throw new ArgumentNullException(nameof(parentName));
 
-			Activity activity;
-			bool activityAlreadyAdded = Activities.TryGetValue(activityName, out activity);
+			bool activityAlreadyAdded = _activities.ContainsKey(activityName);
 
-			if (activityAlreadyAdded) return false;
+			if (activityAlreadyAdded)
+				throw new InvalidOperationException("Tried to create already existing activity.");
+			//return activity;
 
-			Activities.TryGetValue(parentName, out Activity parent);
+			//_activities.TryGetValue(parentName, out Activity parent);
 
-			activity = new Activity()
+			Activity activity = new()
 			{
 				Children = Array.Empty<Activity>(),
 				IsGroup = isGroup,
@@ -123,19 +169,15 @@ namespace BTimeLogger.Csv
 				parent.Children = parentChildren.ToArray();
 			}
 
-			Activities.Add(activityName, activity);
+			//_activities.Add(activityName, activity);
 
-			return true;
+			return activity;
+			//return true;
 		}
 
 		private static int GetActivityNumColumns(CsvReader csv)
 		{
 			return csv.GetFieldIndex("Comment") + 1 - BASE_INTERVAL_COLUMN_COUNT;
-		}
-
-		public Interval[] ReadIntervals()
-		{
-			throw new NotImplementedException();
 		}
 
 		private void AssertFileExists()
