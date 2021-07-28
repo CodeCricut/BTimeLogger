@@ -39,6 +39,8 @@
             <TextBlock Text="{StaticResource loading}"
                        HorizontalAlignment="Center"
                        Foreground="{StaticResource skinFontSecondaryBrush}"
+                       FontSize="18"
+                       Margin="0 0 0 10"
                        Visibility="{Binding ViewModel.Loading, Converter={StaticResource boolToVis}}" />
 
             <TextBlock Text="{StaticResource invalidReport}"

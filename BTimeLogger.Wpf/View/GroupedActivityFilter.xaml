@@ -13,8 +13,8 @@
 
         <Label Content="{StaticResource group}"
                Target="{Binding ElementName=GroupSource}"  />
-        <ComboBox ItemsSource="{Binding ViewModel.GroupsSource}"
-                  SelectedItem="{Binding ViewModel.SelectedGroupActivity}"
+        <ComboBox ItemsSource="{Binding ViewModel.GroupsSource.Items}"
+                  SelectedItem="{Binding ViewModel.GroupsSource.SelectedGroupActivity}"
                   x:Name="GroupSource">
             <ComboBox.ItemTemplate>
                 <DataTemplate DataType="{x:Type dViewmodels:ActivityViewModel}">

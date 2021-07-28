@@ -1,4 +1,5 @@
-﻿using System;
+﻿using BTimeLogger.Domain.Helpers;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -8,7 +9,7 @@ namespace BTimeLogger
 	public interface IIntervalRepository
 	{
 		Task<IEnumerable<Interval>> GetIntervals();
-		Task<IEnumerable<Interval>> GetIntervals(Activity[] activities, DateTime from, DateTime to);
+		Task<IEnumerable<Interval>> GetIntervals(Activity[] activities, DateTime? from, DateTime? to);
 		Task AddInterval(Interval interval);
 	}
 
@@ -26,10 +27,13 @@ namespace BTimeLogger
 			return Task.FromResult(_intervals.ToArray().AsEnumerable());
 		}
 
-		public Task<IEnumerable<Interval>> GetIntervals(Activity[] activities, DateTime from, DateTime to)
+		public async Task<IEnumerable<Interval>> GetIntervals(Activity[] activityTypes, DateTime? from, DateTime? to)
 		{
-			// TODO
-			return GetIntervals();
+			IEnumerable<Interval> activities = await GetIntervals();
+
+			return activities
+				.BetweenDates(from, to, useOnlyDate: true)
+				.OfActivityTypesOrAll(activityTypes);
 		}
 	}
 }

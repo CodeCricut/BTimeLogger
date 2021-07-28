@@ -17,6 +17,7 @@ namespace BTimeLogger.Wpf.View
 
 		void ListBoxCustom_SelectionChanged(object sender, SelectionChangedEventArgs e)
 		{
+			SelectionMode = SelectionMode.Extended;
 			SelectedItemsList.Clear();
 			foreach (var item in SelectedItems)
 			{

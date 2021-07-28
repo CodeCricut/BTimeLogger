@@ -3,6 +3,7 @@ using BTimeLogger.Wpf.Util;
 using BTimeLogger.Wpf.ViewModels.Domain;
 using BTimeLogger.Wpf.ViewModels.Messages;
 using MediatR;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
@@ -11,6 +12,7 @@ using System.Threading.Tasks;
 using WpfCore.Commands;
 using WpfCore.MessageBus;
 using WpfCore.ViewModel;
+using static BTimeLogger.Wpf.ViewModels.ActivityGroupSourceViewModel;
 
 namespace BTimeLogger.Wpf.ViewModels
 {
@@ -21,15 +23,10 @@ namespace BTimeLogger.Wpf.ViewModels
 
 		private IEnumerable<ActivityViewModel> _allActivityVMs;
 
-		public ObservableCollection<ActivityViewModel> GroupsSource { get; } = new();
-		public ObservableCollection<ActivityViewModel> ActivitiesSource { get; } = new();
 
-		private ActivityViewModel _selectedGroupActivity;
-		public ActivityViewModel SelectedGroupActivity
-		{
-			get => _selectedGroupActivity;
-			set => Set(ref _selectedGroupActivity, value);
-		}
+		public ActivityGroupSourceViewModel GroupsSource { get; } = new();
+
+		public ObservableCollection<ActivityViewModel> ActivitiesSource { get; } = new();
 
 		public ObservableCollection<ActivityViewModel> SelectedActivities { get; } = new();
 
@@ -46,18 +43,33 @@ namespace BTimeLogger.Wpf.ViewModels
 
 			ea.RegisterHandler<ReportSourceChanged>(msg => ReloadCommand.Execute());
 
-			PropertyChanged += (_, eventArgs) =>
+			GroupsSource.PropertyChanged += (_, args) =>
+			{
+				if (GroupsSource.NoActivityGroupSelected)
 				{
-					if (eventArgs.PropertyName.Equals(nameof(SelectedGroupActivity)))
-						RePopulateActivities();
-				};
+					_ea.SendMessage(new IncludedActivitiesChanged(Array.Empty<Activity>()));
+					RePopulateActivities();
+				}
+				else
+				{
+					_ea.SendMessage(new IncludedActivitiesChanged(new Activity[] { GroupsSource.SelectedGroupActivity.Activity }));
+					RePopulateActivities();
+				}
+			};
 
+			//PropertyChanged += (_, eventArgs) =>
+			//{
+			//	if (eventArgs.PropertyName.Equals(nameof(SelectedGroupActivity)))
+			//	{
+			//		if (SelectedGroupActivity is NoneItem) return;
+
+			//	}
+			//};
 			SelectedActivities.CollectionChanged += (object _, NotifyCollectionChangedEventArgs e) =>
-					_ea.SendMessage(new IncludedActivitiesChanged(SelectedActivities.SelectActivities().ToArray()));
+				_ea.SendMessage(new IncludedActivitiesChanged(SelectedActivities.SelectActivities().ToArray()));
 
 			ReloadCommand.Execute();
 		}
-
 
 		private async Task Reload(object param = null)
 		{
@@ -73,16 +85,18 @@ namespace BTimeLogger.Wpf.ViewModels
 
 		private void PopulateGroups()
 		{
-			GroupsSource.Clear();
+			GroupsSource.Items.Clear();
 			foreach (ActivityViewModel activity in _allActivityVMs)
 			{
-				if (activity.IsGroup) GroupsSource.Add(activity);
+				if (activity.IsGroup) GroupsSource.Items.Add(activity);
 			}
+			GroupsSource.Items.Add(new NoneItem());
 		}
 
 		private void RePopulateActivities()
 		{
-			if (SelectedGroupActivity == null) PopulateParentlessActivities();
+			if (GroupsSource.NoActivityGroupSelected)
+				PopulateParentlessActivities();
 			else PopulateActivitiesOfSelectedGroup();
 		}
 
@@ -103,7 +117,7 @@ namespace BTimeLogger.Wpf.ViewModels
 			foreach (
 				ActivityViewModel activityVM in _allActivityVMs)
 			{
-				if (SelectedGroupActivity.Activity.Children.Contains(activityVM.Activity) &&
+				if (GroupsSource.SelectedGroupActivity.Activity.Children.Contains(activityVM.Activity) &&
 					!activityVM.IsGroup)
 				{
 					ActivitiesSource.Add(activityVM);

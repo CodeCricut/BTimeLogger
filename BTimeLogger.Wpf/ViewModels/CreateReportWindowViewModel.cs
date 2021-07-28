@@ -80,12 +80,11 @@ namespace BTimeLogger.Wpf.ViewModels
 				Loading = false;
 				CloseDialog();
 			}
-			catch (Exception e)
+			catch (Exception)
 			{
 				Loading = false;
 				InvalidReportInfo = true;
 			}
-
 		}
 
 		private void Cancel(object obj)
