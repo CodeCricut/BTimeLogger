@@ -13,6 +13,7 @@ namespace BTimeLogger.Domain
 
 			services.AddSingleton<IActivityRepository, ActivityRepository>();
 			services.AddSingleton<IIntervalRepository, IntervalRepository>();
+			services.AddSingleton<IStatisticsRepository, StatisticsRepository>();
 
 			return services;
 		}

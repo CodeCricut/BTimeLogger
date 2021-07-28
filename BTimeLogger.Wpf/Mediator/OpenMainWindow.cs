@@ -20,7 +20,8 @@ namespace BTimeLogger.Wpf.Mediator
 		private readonly IMainWindowViewModelFactory _mainWindowViewModelFactory;
 		private readonly IViewManager _viewManager;
 
-		public OpenMainWindowHandler(IMainWindowViewModelFactory mainWindowViewModelFactory,
+		public OpenMainWindowHandler(
+			IMainWindowViewModelFactory mainWindowViewModelFactory,
 			IViewManager viewManager)
 		{
 			_mainWindowViewModelFactory = mainWindowViewModelFactory;

@@ -16,7 +16,8 @@ namespace BTimeLogger.Wpf.ViewModels.Factories
 		private readonly IStatisticsCsvReader _statisticsCsvReader;
 		private readonly IEventAggregator _ea;
 
-		public CreateReportWindowViewModelFactory(IViewManager viewManager,
+		public CreateReportWindowViewModelFactory(
+			IViewManager viewManager,
 			IIntervalsCsvReader intervalsCsvReader,
 			IStatisticsCsvReader statisticsCsvReader,
 			IEventAggregator ea)

@@ -2,8 +2,8 @@
 using BTimeLogger.Wpf.Util;
 using BTimeLogger.Wpf.ViewModels.Factories;
 using BTimeLogger.Wpf.ViewModels.Messages;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
 using System.Threading.Tasks;
 using WpfCore.Commands;
 using WpfCore.MessageBus;
@@ -62,31 +62,22 @@ namespace BTimeLogger.Wpf.ViewModels
 
 			Items.Clear();
 
-			IEnumerable<Interval> intervals = await _intervalRepository
+			Interval[] intervals = (await _intervalRepository
 				.GetIntervals(
 					_intervalSearchFilter.IncludedActivities,
 					_intervalSearchFilter.From,
-					_intervalSearchFilter.To);
+					_intervalSearchFilter.To))
+				.ToArray();
+
 
 			Loading = false;
-			await Task.Factory.StartNew(() =>
+			for (int i = 0; i < intervals.Length; i++)
 			{
-				foreach (var interval in intervals)
-				{
-					bool isLast = interval.IsLastOnDate(intervals);
-					IntervalListItemViewModel intervalItem = _intervalItemVMFactory.Create(interval, isLast);
-
-					App.Current.Dispatcher.Invoke(() => Items.Add(intervalItem));
-				}
-			});
-
-			//for (int i = 0; i < intervals.Length; i++)
-			//{
-			//	Interval interval = intervals[i];
-			//	bool isLast = interval.IsLastOnDate(intervals);
-			//	IntervalListItemViewModel intervalItem = _intervalItemVMFactory.Create(interval, isLast);
-			//	Items.Add(intervalItem);
-			//}
+				Interval interval = intervals[i];
+				bool isLast = interval.IsLastOnDate(intervals);
+				IntervalListItemViewModel intervalItem = _intervalItemVMFactory.Create(interval, isLast);
+				Items.Add(intervalItem);
+			}
 		}
 
 		private void HandleIncludedActivitiesChanged(IncludedActivitiesChanged msg)
