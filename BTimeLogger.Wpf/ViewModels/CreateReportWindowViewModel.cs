@@ -38,7 +38,17 @@ namespace BTimeLogger.Wpf.ViewModels
 		}
 
 		private bool _loading;
-		public bool Loading { get => _loading; set { Set(ref _loading, value); RaisePropertyChanged(nameof(InvalidReportInfo)); } }
+		public bool Loading
+		{
+			get => _loading; set
+			{
+				Set(ref _loading, value);
+				RaisePropertyChanged(nameof(InvalidReportInfo));
+				RaisePropertyChanged(nameof(NotLoading));
+			}
+		}
+
+		public bool NotLoading { get => !Loading; }
 
 		private bool _invalidReportInfo;
 		public bool InvalidReportInfo { get => _invalidReportInfo && !Loading; set { Set(ref _invalidReportInfo, value); } }

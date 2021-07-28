@@ -18,61 +18,75 @@
     <Border Padding="50"
             DataContext="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type local:CreateReportWindow}}}"
             Background="{StaticResource skinBackgroundLightBrush}">
-        <StackPanel Orientation="Vertical">
-            <StackPanel.Resources>
-                <Style TargetType="{x:Type DatePicker}" BasedOn="{StaticResource DatePickerStyle}">
-                    <Setter Property="Margin"
-                            Value="0 0 0 20" />
-                    <Setter Property="CalendarStyle"
-                            Value="{StaticResource DatePickerCalendarStyle}" />
-                </Style>
-                <Style TargetType="{x:Type local:FilePicker}">
-                    <Setter Property="Margin"
-                            Value="0 0 0 20" />
-                </Style>
-            </StackPanel.Resources>
-
-            <TextBlock Text="{StaticResource createReport}" FontSize="25"
-                       Foreground="{StaticResource skinFontBrush}"
-                       HorizontalAlignment="Center" Margin="20"/>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition />
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
 
             <TextBlock Text="{StaticResource loading}"
                        HorizontalAlignment="Center"
+                       VerticalAlignment="Center"
                        Foreground="{StaticResource skinFontSecondaryBrush}"
                        FontSize="18"
-                       Margin="0 0 0 10"
                        Visibility="{Binding ViewModel.Loading, Converter={StaticResource boolToVis}}" />
-
-            <TextBlock Text="{StaticResource invalidReport}"
-                       HorizontalAlignment="Center"
-                       Foreground="{StaticResource skinFontWarningBrush}"
-                       Visibility="{Binding ViewModel.InvalidReportInfo, Converter={StaticResource boolToVis}}" />
             
-            <!--TODO: default date picker/calendar styles not being applied-->
-            <DatePicker SelectedDate="{Binding ViewModel.FromDate}"
-                        Text="{StaticResource fromDate}" />
-            <DatePicker SelectedDate="{Binding ViewModel.ToDate}"
-                        Text="{StaticResource toDate}" />
+            <StackPanel Orientation="Vertical"
+                        Visibility="{Binding ViewModel.NotLoading, Converter={StaticResource boolToVis}}">
+                <StackPanel.Resources>
+                    <Style TargetType="{x:Type DatePicker}"
+                           BasedOn="{StaticResource DatePickerStyle}">
+                        <Setter Property="Margin"
+                                Value="0 0 0 20" />
+                        <Setter Property="CalendarStyle"
+                                Value="{StaticResource DatePickerCalendarStyle}" />
+                    </Style>
+                    <Style TargetType="{x:Type local:FilePicker}">
+                        <Setter Property="Margin"
+                                Value="0 0 0 20" />
+                    </Style>
+                </StackPanel.Resources>
+
+                <TextBlock Text="{StaticResource createReport}"
+                           FontSize="25"
+                           Foreground="{StaticResource skinFontBrush}"
+                           HorizontalAlignment="Center"
+                           Margin="20" />
 
 
-            <local:FilePicker Description="Intervals Report Location (.csv)"
-                              Text="{Binding ViewModel.IntervalsCsvLocation, Mode=TwoWay}" />
 
-            <local:FilePicker Description="Statistics Report Location (.csv)"
-                              Text="{Binding ViewModel.StatisticsCsvLocation, Mode=TwoWay}" />
+                <TextBlock Text="{StaticResource invalidReport}"
+                           HorizontalAlignment="Center"
+                           Foreground="{StaticResource skinFontWarningBrush}"
+                           Visibility="{Binding ViewModel.InvalidReportInfo, Converter={StaticResource boolToVis}}" />
 
-            <Grid >
+                <!--TODO: default date picker/calendar styles not being applied-->
+                <DatePicker SelectedDate="{Binding ViewModel.FromDate}"
+                            Text="{StaticResource fromDate}" />
+                <DatePicker SelectedDate="{Binding ViewModel.ToDate}"
+                            Text="{StaticResource toDate}" />
+
+
+                <local:FilePicker Description="Intervals Report Location (.csv)"
+                                  Text="{Binding ViewModel.IntervalsCsvLocation, Mode=TwoWay}" />
+
+                <local:FilePicker Description="Statistics Report Location (.csv)"
+                                  Text="{Binding ViewModel.StatisticsCsvLocation, Mode=TwoWay}" />
+            </StackPanel>
+
+            <Grid Grid.Row="1">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition />
                     <ColumnDefinition />
                 </Grid.ColumnDefinitions>
                 <Button Command="{Binding ViewModel.CancelCommand}"
-                        Content="{StaticResource cancel}" Margin="0 0 10 0"/>
+                        Content="{StaticResource cancel}"
+                        Margin="0 0 10 0" />
                 <Button Grid.Column="1"
                         Margin="10 0 0 0"
-                    Command="{Binding ViewModel.CreateReportCommand}"
+                        Command="{Binding ViewModel.CreateReportCommand}"
                         Content="{StaticResource create}" />
             </Grid>
-        </StackPanel>
+        </Grid>
     </Border>
 </Window>

@@ -10,7 +10,7 @@
     <Border DataContext="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type local:IntervalList}}}"
             Style="{StaticResource ListViewBorderStyle}">
         <Grid>
-            <ListView ItemsSource="{Binding ViewModel.Items, Mode=OneWay}"
+            <ListView ItemsSource="{Binding ViewModel.Items, Mode=OneWay}" 
                       Grid.Row="0"
                       ScrollViewer.HorizontalScrollBarVisibility="Disabled"
                       VerticalAlignment="Top"
