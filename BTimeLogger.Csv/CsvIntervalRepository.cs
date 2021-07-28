@@ -1,4 +1,5 @@
-﻿using System;
+﻿using BTimeLogger.Domain;
+using System;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -13,30 +14,20 @@ namespace BTimeLogger.Csv
 			_csvReportReader = csvReportReader;
 		}
 
-		public Task<IQueryable<Interval>> GetIntervals()
+		public async Task<IQueryable<Interval>> GetIntervals()
 		{
-			throw new NotImplementedException();
+			await _csvReportReader.ReadDataAsync();
+			return _csvReportReader.Intervals.AsQueryable();
 		}
 
 		public async Task<IQueryable<Interval>> GetIntervals(Activity[] activities, DateTime from, DateTime to)
 		{
-			await Task.Delay(10000);
-			// TODO
-			Interval interval = new Interval()
-			{
-				From = DateTime.Now,
-				To = DateTime.Now,
-				Activity = new Activity()
-				{
-					Children = Array.Empty<Activity>(),
-					IsGroup = false,
-					Name = "BOOB",
-					Parent = null
-				},
-				Comment = "this is a comment :)",
-				Duration = new TimeSpan(1, 2, 3)
-			};
-			return new Interval[] { interval }.AsQueryable();
+			var allIntervals = await GetIntervals();
+
+			if (activities.Length == 0) return allIntervals;
+			var matchingActivities = allIntervals.Where(interval => activities.Contains(interval.Activity, new ActivityNameEqualityOperator()))
+				.Where(interval => interval.To > from || interval.From < to);
+			return matchingActivities;
 		}
 	}
 }

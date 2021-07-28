@@ -1,5 +1,4 @@
-﻿using Moq;
-using NUnit.Framework;
+﻿using NUnit.Framework;
 
 namespace BTimeLogger.Csv.Tests
 {
@@ -24,12 +23,14 @@ namespace BTimeLogger.Csv.Tests
 		[Test]
 		public void ReadActivities_ValidLoc_ReturnsAllActivities()
 		{
-			Mock<ICsvPrincipal> csvMock = new Mock<ICsvPrincipal>();
-			csvMock.Setup(csvp => csvp.IntervalsCsvLocation).Returns(FILE_LOC);
+			//Mock<ICsvPrincipal> csvMock = new Mock<ICsvPrincipal>();
+			//csvMock.Setup(csvp => csvp.IntervalsCsvLocation).Returns(FILE_LOC);
 
-			IIntervalsCsvReader reader = new IntervalsCsvReader(csvMock.Object);
+			//IIntervalsCsvReader reader = new IntervalsCsvReader(csvMock.Object);
 
-			var activities = reader.ReadActivities();
+			//reader.ReadData();
+			//var acts = reader.Activities;
+			Assert.Fail();
 		}
 
 

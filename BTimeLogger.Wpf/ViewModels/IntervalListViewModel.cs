@@ -62,22 +62,31 @@ namespace BTimeLogger.Wpf.ViewModels
 
 			Items.Clear();
 
-			Interval[] intervals = (await _intervalRepository
+			IQueryable<Interval> intervals = await _intervalRepository
 				.GetIntervals(
 					_intervalSearchFilter.IncludedActivities,
 					_intervalSearchFilter.From,
-					_intervalSearchFilter.To))
-				.ToArray();
-
+					_intervalSearchFilter.To);
 
 			Loading = false;
-			for (int i = 0; i < intervals.Length; i++)
+			await Task.Factory.StartNew(() =>
 			{
-				Interval interval = intervals[i];
-				bool isLast = interval.IsLastOnDate(intervals);
-				IntervalListItemViewModel intervalItem = _intervalItemVMFactory.Create(interval, isLast);
-				Items.Add(intervalItem);
-			}
+				foreach (var interval in intervals)
+				{
+					bool isLast = interval.IsLastOnDate(intervals);
+					IntervalListItemViewModel intervalItem = _intervalItemVMFactory.Create(interval, isLast);
+
+					App.Current.Dispatcher.Invoke(() => Items.Add(intervalItem));
+				}
+			});
+
+			//for (int i = 0; i < intervals.Length; i++)
+			//{
+			//	Interval interval = intervals[i];
+			//	bool isLast = interval.IsLastOnDate(intervals);
+			//	IntervalListItemViewModel intervalItem = _intervalItemVMFactory.Create(interval, isLast);
+			//	Items.Add(intervalItem);
+			//}
 		}
 
 		private void HandleIncludedActivitiesChanged(IncludedActivitiesChanged msg)

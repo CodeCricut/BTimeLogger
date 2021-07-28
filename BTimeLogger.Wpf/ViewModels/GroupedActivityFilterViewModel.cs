@@ -1,4 +1,5 @@
-﻿using BTimeLogger.Wpf.Mediator;
+﻿using BTimeLogger.Domain;
+using BTimeLogger.Wpf.Mediator;
 using BTimeLogger.Wpf.Util;
 using BTimeLogger.Wpf.ViewModels.Domain;
 using BTimeLogger.Wpf.ViewModels.Messages;
@@ -6,7 +7,6 @@ using MediatR;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
-using System.ComponentModel;
 using System.Linq;
 using System.Threading.Tasks;
 using WpfCore.Commands;
@@ -22,6 +22,7 @@ namespace BTimeLogger.Wpf.ViewModels
 
 		private IEnumerable<ActivityViewModel> _allActivityVMs;
 
+		// TODO: have "None" option
 		public ObservableCollection<ActivityViewModel> GroupsSource { get; } = new();
 		public ObservableCollection<ActivityViewModel> ActivitiesSource { get; } = new();
 
@@ -54,7 +55,7 @@ namespace BTimeLogger.Wpf.ViewModels
 				};
 
 			SelectedActivities.CollectionChanged += (object _, NotifyCollectionChangedEventArgs e) =>
-					_ea.SendMessage(new IncludedActivitiesChanged(SelectedActivities.SelectActivities().ToArray()));
+					_ea.SendMessage(new IncludedActivitiesChanged(SelectedActivities.SelectActivities().ToArray())); // TODO: include selected group activity
 
 			ReloadCommand.Execute();
 		}
@@ -104,7 +105,7 @@ namespace BTimeLogger.Wpf.ViewModels
 			foreach (
 				ActivityViewModel activityVM in _allActivityVMs)
 			{
-				if (SelectedGroupActivity.Activity.Children.Contains(activityVM.Activity) &&
+				if (SelectedGroupActivity.Activity.Children.Contains(activityVM.Activity, new ActivityNameEqualityOperator()) &&
 					!activityVM.IsGroup)
 				{
 					ActivitiesSource.Add(activityVM);
