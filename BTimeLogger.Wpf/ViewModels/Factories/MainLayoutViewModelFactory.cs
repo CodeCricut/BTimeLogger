@@ -17,6 +17,8 @@ namespace BTimeLogger.Wpf.ViewModels.Factories
 		private readonly IIntervalListViewModelFactory _intervalListViewModelFactory;
 		private readonly IGroupedActivityFilterViewModelFactory _groupedActivityFilterViewModel;
 		private readonly ITimeSpanPanelViewModelFactory _timeSpanPanelViewModelFactory;
+		private readonly IPaginatedIntervalListViewModelFactory _paginatedIntervalListViewModel;
+		private readonly IPartialIntervalListViewModelFactory _partialIntervalListViewModel;
 
 		public MainLayoutViewModelFactory(
 			IViewManager viewManager,
@@ -26,7 +28,9 @@ namespace BTimeLogger.Wpf.ViewModels.Factories
 			ICreateReportWindowViewModelFactory createReportWindowViewModelFactory,
 			IIntervalListViewModelFactory intervalListViewModelFactory,
 			IGroupedActivityFilterViewModelFactory groupedActivityFilterViewModel,
-			ITimeSpanPanelViewModelFactory timeSpanPanelViewModelFactory)
+			ITimeSpanPanelViewModelFactory timeSpanPanelViewModelFactory,
+			IPaginatedIntervalListViewModelFactory paginatedIntervalListViewModel,
+			IPartialIntervalListViewModelFactory partialIntervalListViewModel)
 		{
 			_viewManager = viewManager;
 			_homeViewModelFactory = homeViewModelFactory;
@@ -36,15 +40,21 @@ namespace BTimeLogger.Wpf.ViewModels.Factories
 			_intervalListViewModelFactory = intervalListViewModelFactory;
 			_groupedActivityFilterViewModel = groupedActivityFilterViewModel;
 			_timeSpanPanelViewModelFactory = timeSpanPanelViewModelFactory;
+			_paginatedIntervalListViewModel = paginatedIntervalListViewModel;
+			_partialIntervalListViewModel = partialIntervalListViewModel;
 		}
 
 		public MainLayoutViewModel Create()
 		{
 			var homeVM = _homeViewModelFactory.Create();
-			var intervalListVM = _intervalListViewModelFactory.Create();
+			//var intervalListVM = _intervalListViewModelFactory.Create();
 			var groupedActivityFilterVM = _groupedActivityFilterViewModel.Create();
 			var timeSpanPanelVM = _timeSpanPanelViewModelFactory.Create();
-			var intervalsVM = _intervalsViewModelFactory.Create(intervalListVM, groupedActivityFilterVM, timeSpanPanelVM);
+
+			var paginatedIntervalListVM = _paginatedIntervalListViewModel.Create();
+			var partialIntervalListVM = _partialIntervalListViewModel.Create(paginatedIntervalListVM);
+
+			var intervalsVM = _intervalsViewModelFactory.Create(partialIntervalListVM, groupedActivityFilterVM, timeSpanPanelVM);
 			var statsVM = _statisticsViewModelFactory.Create();
 
 			return new MainLayoutViewModel(homeVM, intervalsVM, statsVM, _viewManager, _createReportWindowViewModelFactory);

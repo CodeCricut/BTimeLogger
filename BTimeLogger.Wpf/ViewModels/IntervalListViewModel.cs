@@ -2,8 +2,8 @@
 using BTimeLogger.Wpf.Util;
 using BTimeLogger.Wpf.ViewModels.Factories;
 using BTimeLogger.Wpf.ViewModels.Messages;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq;
 using System.Threading.Tasks;
 using WpfCore.Commands;
 using WpfCore.MessageBus;
@@ -62,7 +62,7 @@ namespace BTimeLogger.Wpf.ViewModels
 
 			Items.Clear();
 
-			IQueryable<Interval> intervals = await _intervalRepository
+			IEnumerable<Interval> intervals = await _intervalRepository
 				.GetIntervals(
 					_intervalSearchFilter.IncludedActivities,
 					_intervalSearchFilter.From,

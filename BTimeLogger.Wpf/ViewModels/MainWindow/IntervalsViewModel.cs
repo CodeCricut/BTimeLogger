@@ -4,15 +4,16 @@ namespace BTimeLogger.Wpf.ViewModels.MainWindow
 {
 	public class IntervalsViewModel : BaseViewModel
 	{
+		public PartialIntervalListViewModel PartialIntervalListViewModel { get; }
 		public GroupedActivityFilterViewModel GroupedActivityFilterViewModel { get; }
 		public TimeSpanPanelViewModel TimeSpanPanelViewModel { get; }
-		public IntervalListViewModel IntervalListViewModel { get; }
 
-		public IntervalsViewModel(IntervalListViewModel intervalListViewModel,
+		public IntervalsViewModel(
+			PartialIntervalListViewModel partialIntervalListViewModel,
 			GroupedActivityFilterViewModel groupedActivityFilterVM,
 			TimeSpanPanelViewModel timeSpanPanelViewModel)
 		{
-			IntervalListViewModel = intervalListViewModel;
+			PartialIntervalListViewModel = partialIntervalListViewModel;
 			GroupedActivityFilterViewModel = groupedActivityFilterVM;
 			TimeSpanPanelViewModel = timeSpanPanelViewModel;
 		}

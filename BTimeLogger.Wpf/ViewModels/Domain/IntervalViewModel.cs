@@ -5,23 +5,23 @@ namespace BTimeLogger.Wpf.ViewModels.Domain
 {
 	public class IntervalViewModel : BaseViewModel
 	{
-		private readonly Interval _interval;
+		public Interval Interval { get; }
 
-		public string Duration { get => _interval.Duration.DurationString(); }
+		public string Duration { get => Interval.Duration.DurationString(); }
 
-		public string From { get => _interval.From.DateTimeString(); }
-		public string To { get => _interval.To.DateTimeString(); }
+		public string From { get => Interval.From.DateTimeString(); }
+		public string To { get => Interval.To.DateTimeString(); }
 
-		public string Comment { get => _interval.Comment; }
-		public bool HasComment { get => !string.IsNullOrWhiteSpace(_interval.Comment); }
+		public string Comment { get => Interval.Comment; }
+		public bool HasComment { get => !string.IsNullOrWhiteSpace(Interval.Comment); }
 
-		public string FromDate { get => _interval.From.ToShortDateString(); }
+		public string FromDate { get => Interval.From.ToShortDateString(); }
 
 		public ActivityViewModel Activity { get; private set; }
 
 		public IntervalViewModel(Interval interval, ActivityViewModel intervalActivityVM)
 		{
-			_interval = interval;
+			Interval = interval;
 			Activity = intervalActivityVM;
 		}
 	}

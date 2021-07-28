@@ -1,6 +1,7 @@
 ﻿using BTimeLogger.Csv;
 using BTimeLogger.Wpf.ViewModels.Messages;
 using System;
+using System.Threading.Tasks;
 using WpfCore.Commands;
 using WpfCore.MessageBus;
 using WpfCore.Services;
@@ -11,7 +12,8 @@ namespace BTimeLogger.Wpf.ViewModels
 	public class CreateReportWindowViewModel : BaseViewModel
 	{
 		private readonly IViewManager _viewManager;
-		private readonly ICsvPrincipal _csvPrincipal;
+		private readonly IIntervalsCsvReader _intervalsCsvReader;
+		private readonly IStatisticsCsvReader _statisticsCsvReader;
 		private readonly IEventAggregator _ea;
 
 		private DateTime _fromDate = DateTime.Today;
@@ -43,16 +45,18 @@ namespace BTimeLogger.Wpf.ViewModels
 
 
 		public DelegateCommand CancelCommand { get; set; }
-		public DelegateCommand CreateReportCommand { get; set; }
+		public AsyncDelegateCommand CreateReportCommand { get; set; }
 
 		public CreateReportWindowViewModel(IViewManager viewManager,
-			ICsvPrincipal csvPrincipal,
+			IIntervalsCsvReader intervalsCsvReader,
+			IStatisticsCsvReader statisticsCsvReader,
 			IEventAggregator ea)
 		{
 			CancelCommand = new DelegateCommand(Cancel);
-			CreateReportCommand = new DelegateCommand(CreateReport, CanCreateReport);
+			CreateReportCommand = new AsyncDelegateCommand(CreateReport, CanCreateReport);
 			_viewManager = viewManager;
-			_csvPrincipal = csvPrincipal;
+			_intervalsCsvReader = intervalsCsvReader;
+			_statisticsCsvReader = statisticsCsvReader;
 			_ea = ea;
 		}
 
@@ -61,22 +65,22 @@ namespace BTimeLogger.Wpf.ViewModels
 			return !(string.IsNullOrWhiteSpace(StatisticsCsvLocation) || string.IsNullOrWhiteSpace(IntervalsCsvLocation));
 		}
 
-		private void CreateReport(object obj)
+		private async Task CreateReport(object obj)
 		{
 			try
 			{
 				Loading = true;
 				InvalidReportInfo = false;
 
-				_csvPrincipal.IntervalsCsvLocation = IntervalsCsvLocation;
-				_csvPrincipal.StatisticsCsvLocation = StatisticsCsvLocation;
+				await _intervalsCsvReader.ReadIntervalCsv(IntervalsCsvLocation);
+				await _statisticsCsvReader.ReadStatisticsCsv(StatisticsCsvLocation);
 
 				_ea.SendMessage(new ReportSourceChanged());
 
 				Loading = false;
 				CloseDialog();
 			}
-			catch (Exception)
+			catch (Exception e)
 			{
 				Loading = false;
 				InvalidReportInfo = true;

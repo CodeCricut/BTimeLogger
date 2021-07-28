@@ -1,24 +1,25 @@
-﻿using System;
+﻿using System.Threading.Tasks;
 
 namespace BTimeLogger.Csv
 {
 	public interface IStatisticsCsvReader
 	{
-		Statistic[] ReadStatistics();
+		Task ReadStatisticsCsv(string statisticsCsvLocation);
 	}
 
 	class StatisticsCsvReader : IStatisticsCsvReader
 	{
-		private readonly ICsvPrincipal _csvPrincipal;
+		private readonly IStatisticsRepository _statisticsRepository;
 
-		public StatisticsCsvReader(ICsvPrincipal csvPrincipal)
+		public StatisticsCsvReader(IStatisticsRepository statisticsRepository)
 		{
-			_csvPrincipal = csvPrincipal;
+			_statisticsRepository = statisticsRepository;
 		}
 
-		public Statistic[] ReadStatistics()
+		public Task ReadStatisticsCsv(string statisticsCsvLocation)
 		{
-			throw new NotImplementedException();
+			// TODO;
+			return Task.CompletedTask;
 		}
 	}
 }

@@ -11,6 +11,9 @@ namespace BTimeLogger.Domain
 			//services.AddSingleton<IIntervalsReporter, IntervalsReporter>();
 			//services.AddSingleton<IStatisticsReporter, StatisticsReporter>();
 
+			services.AddSingleton<IActivityRepository, ActivityRepository>();
+			services.AddSingleton<IIntervalRepository, IntervalRepository>();
+
 			return services;
 		}
 	}

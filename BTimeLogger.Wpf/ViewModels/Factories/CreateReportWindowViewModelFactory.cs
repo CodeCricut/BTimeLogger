@@ -12,21 +12,24 @@ namespace BTimeLogger.Wpf.ViewModels.Factories
 	class CreateReportWindowViewModelFactory : ICreateReportWindowViewModelFactory
 	{
 		private readonly IViewManager _viewManager;
-		private readonly ICsvPrincipal _csvPrincipal;
+		private readonly IIntervalsCsvReader _intervalsCsvReader;
+		private readonly IStatisticsCsvReader _statisticsCsvReader;
 		private readonly IEventAggregator _ea;
 
 		public CreateReportWindowViewModelFactory(IViewManager viewManager,
-			ICsvPrincipal csvPrincipal,
+			IIntervalsCsvReader intervalsCsvReader,
+			IStatisticsCsvReader statisticsCsvReader,
 			IEventAggregator ea)
 		{
 			_viewManager = viewManager;
-			_csvPrincipal = csvPrincipal;
+			_intervalsCsvReader = intervalsCsvReader;
+			_statisticsCsvReader = statisticsCsvReader;
 			_ea = ea;
 		}
 
 		public CreateReportWindowViewModel Create()
 		{
-			return new CreateReportWindowViewModel(_viewManager, _csvPrincipal, _ea);
+			return new CreateReportWindowViewModel(_viewManager, _intervalsCsvReader, _statisticsCsvReader, _ea);
 		}
 	}
 }

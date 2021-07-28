@@ -1,5 +1,6 @@
 ﻿using BTimeLogger.Domain;
 using CsvHelper;
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
@@ -8,77 +9,155 @@ using System.Threading.Tasks;
 
 namespace BTimeLogger.Csv
 {
-	interface IIntervalsCsvReader
+	public interface IIntervalsCsvReader
 	{
-		Interval[] Intervals { get; }
-		Activity[] Activities { get; }
-
-		Task ReadDataAsync();
-		void ReadData();
+		Task ReadIntervalCsv(string fileLocation);
 	}
 
 	class IntervalsCsvReader : IIntervalsCsvReader
 	{
-		private readonly ICsvPrincipal _csvPrincipal;
+		private const int BASE_INTERVAL_COLUMN_COUNT = 5;
 
-		public IntervalsCsvReader(ICsvPrincipal csvPrincipal)
+		private int _groupColCount;
+
+		private readonly IIntervalRepository _intervalRepository;
+		private readonly IActivityRepository _activityRepository;
+
+		public TimedRequeryBehavior RequeryBehavior { get; } = new(TimeSpan.FromSeconds(10));
+
+		public IntervalsCsvReader(
+			IIntervalRepository intervalRepository,
+			IActivityRepository activityRepository)
 		{
-			_csvPrincipal = csvPrincipal;
+			_intervalRepository = intervalRepository;
+			_activityRepository = activityRepository;
 		}
 
-		private readonly Dictionary<string, Activity> _activities = new();
-		private readonly List<Interval> _intervals = new();
-
-		public Interval[] Intervals => _intervals.ToArray();
-
-		public Activity[] Activities => _activities.Values.ToArray();
-
-		public Task ReadDataAsync()
+		public async Task ReadIntervalCsv(string fileLocation)
 		{
-			return Task.Factory.StartNew(() => ReadActivityAndIntervalData());
-		}
-
-		public void ReadData()
-		{
-			ReadActivityAndIntervalData();
-		}
-
-		private void ReadActivityAndIntervalData()
-		{
-			if (!File.Exists(_csvPrincipal.IntervalsCsvLocation))
-				return;
-
-			using StreamReader reader = new(_csvPrincipal.IntervalsCsvLocation);
+			using StreamReader reader = new(fileLocation);
 			using CsvReader csv = new(reader, CultureInfo.InvariantCulture);
-			IntervalRowReader rowReader = new(csv);
 
 			csv.Read();
 			csv.ReadHeader();
 			while (csv.Read())
 			{
-				rowReader.ReadRowData();
-				AddRowData(rowReader);
+				await ReadRowData(csv);
 			}
 		}
 
-		private void AddRowData(IntervalRowReader rowReader)
+		public async Task ReadRowData(CsvReader csv)
 		{
-			_activities[rowReader.ActivityType.Name] = rowReader.ActivityType;
-			foreach (var group in rowReader.GroupActivities)
-				HandleGroupActivity(group);
+			InitializeNumColums(csv);
 
-			_intervals.Add(rowReader.Interval);
+			var record = GetRowRecord(csv);
+
+			await AddNewGroupActivities(record);
+			await AddActivityIfNew(record);
+			await AddInterval(record);
 		}
 
-		private void HandleGroupActivity(Activity group)
+		private CsvIntervalRecord GetRowRecord(CsvReader csv)
 		{
-			if (_activities.ContainsKey(group.Name))
+			CsvIntervalRecord record = csv.GetRecord<CsvIntervalRecord>();
+			record.Groups = ReadRecordGroupNames(csv);
+			return record;
+		}
+
+		private async Task AddNewGroupActivities(CsvIntervalRecord record)
+		{
+			for (int i = 0; i < record.NumGroups; i++)
 			{
-				Activity existingGroup = _activities.GetValueOrDefault(group.Name);
-				existingGroup.Children = existingGroup.Children.Union(group.Children, new ActivityNameEqualityOperator());
+				string groupName = record.Groups[i];
+				if (await _activityRepository.ActivityExists(groupName)) continue;
+				string groupParentName = string.Empty;
+				if (i > 0)
+				{
+					string x = record.Groups[i - 1];
+					if (x != null) groupParentName = x;
+				}
+
+				Activity parent = await _activityRepository.GetActivity(groupParentName);
+				Activity group = CreateActivityWithParentRelationship(groupName, parent, isGroup: true);
+				await _activityRepository.AddActivity(group);
 			}
-			else
-				_activities.Add(group.Name, group);
+		}
+
+		private async Task AddActivityIfNew(CsvIntervalRecord record)
+		{
+			string activityName = record.ActivityType;
+			if (await _activityRepository.ActivityExists(activityName)) return;
+
+			string parentName = record.NumGroups > 0
+				? record.Groups[record.NumGroups - 1]
+				: string.Empty;
+
+			Activity immediateParent = await _activityRepository.GetActivity(parentName);
+			var activity = CreateActivityWithParentRelationship(record.ActivityType, immediateParent, isGroup: false);
+			await _activityRepository.AddActivity(activity);
+		}
+
+		private async Task AddInterval(CsvIntervalRecord record)
+		{
+			Activity activity = await _activityRepository.GetActivity(record.ActivityType);
+			if (activity == null) throw new KeyNotFoundException("Cannot create interval when activity type is not read.");
+
+			DateTime fromDate = CsvDateParser.Parse(record.From);
+			DateTime to = CsvDateParser.Parse(record.To);
+			TimeSpan duration = to - fromDate;
+
+			Interval interval = new()
+			{
+				Activity = activity,
+				Comment = record.Comment,
+				Duration = duration,
+				From = fromDate,
+				To = to
+			};
+
+			await _intervalRepository.AddInterval(interval);
+		}
+
+		private string[] ReadRecordGroupNames(CsvReader csv)
+		{
+			List<string> groupNames = new();
+			for (int i = 0; i < _groupColCount; i++)
+			{
+				string groupName;
+				csv.TryGetField(i, out groupName);
+
+				if (string.IsNullOrWhiteSpace(groupName)) continue;
+
+				groupNames.Add(groupName);
+			}
+			return groupNames.ToArray();
+		}
+
+		private Activity CreateActivityWithParentRelationship(string activityName, Activity parent, bool isGroup)
+		{
+			if (activityName == null) throw new ArgumentNullException(nameof(activityName));
+
+			Activity activity = new()
+			{
+				Children = Array.Empty<Activity>(),
+				IsGroup = isGroup,
+				Name = activityName,
+				Parent = parent
+			};
+
+			if (parent != null)
+			{
+				List<Activity> parentChildren = parent.Children.ToList();
+				parentChildren.Add(activity);
+				parent.Children = parentChildren.ToArray();
+			}
+
+			return activity;
+		}
+
+		private void InitializeNumColums(CsvReader csv)
+		{
+			_groupColCount = csv.GetFieldIndex("Comment") + 1 - BASE_INTERVAL_COLUMN_COUNT;
 		}
 	}
 }

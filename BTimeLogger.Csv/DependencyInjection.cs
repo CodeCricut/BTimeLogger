@@ -1,5 +1,4 @@
-﻿using BTimeLogger.Domain;
-using Microsoft.Extensions.Configuration;
+﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace BTimeLogger.Csv
@@ -8,12 +7,9 @@ namespace BTimeLogger.Csv
 	{
 		public static IServiceCollection AddCsv(this IServiceCollection services, IConfiguration config)
 		{
-			services.AddSingleton<ICsvPrincipal, CsvPrincipal>();
 			services.AddSingleton<IIntervalsCsvReader, IntervalsCsvReader>();
 			services.AddSingleton<IStatisticsCsvReader, StatisticsCsvReader>();
 
-			services.AddSingleton<IActivityRepository, CsvActivityRepository>();
-			services.AddSingleton<IIntervalRepository, CsvIntervalRepository>();
 			services.AddSingleton<IStatisticsRepository, CsvStatisticRepository>();
 
 			return services;
