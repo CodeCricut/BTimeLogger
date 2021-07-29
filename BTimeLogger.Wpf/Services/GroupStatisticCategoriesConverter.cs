@@ -1,5 +1,6 @@
 ﻿using BTimeLogger.Domain;
 using BTimeLogger.Wpf.Model;
+using BTimeLogger.Wpf.Util;
 using System.Collections.Generic;
 using System.Windows.Media;
 
@@ -12,10 +13,7 @@ namespace BTimeLogger.Wpf.Services
 
 	class GroupStatisticCategoriesConverter : IGroupStatisticCategoriesConverter
 	{
-		public GroupStatisticCategoriesConverter()
-		{
-
-		}
+		private static Color _baseColor = Color.FromRgb(72, 89, 218);
 
 		public IEnumerable<Category> Convert(GroupStatistic groupStat)
 		{
@@ -29,10 +27,11 @@ namespace BTimeLogger.Wpf.Services
 		{
 			return new Category()
 			{
-				Color = Color.FromRgb(100, 200, 255), // TODO: IDK how to generate color honestly. maybe just a hash
+				Color = ColorUtil.GetCloseColor(_baseColor, 150), // TODO: IDK how to generate color honestly. maybe just a hash
 				Percentage = (float)child.PercentParent,
 				Title = child.ActivityType.Name
 			};
 		}
+
 	}
 }

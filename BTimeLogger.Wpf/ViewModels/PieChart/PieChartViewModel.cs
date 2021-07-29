@@ -172,7 +172,7 @@ namespace BTimeLogger.Wpf.ViewModels.PieChart
 				SliceFill = category.Color,
 				SliceGeometryData = pathGeometry,
 				OutlineColor = (SolidColorBrush)new BrushConverter().ConvertFrom("White"),
-				OutlineThickness = 5,
+				OutlineThickness = 2,
 			};
 
 			SliceGeometries.Add(sliceGeometry);
