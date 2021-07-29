@@ -13,6 +13,8 @@
 
                 <ResourceDictionary Source="Resources/StringResources.xaml" />
 
+                <ResourceDictionary Source="Resources/ImageResources.xaml" />
+
                 <ResourceDictionary Source="Resources/DataTemplates.xaml" />
 
                 <ResourceDictionary Source="Styles/CardBorderStyle.xaml" />

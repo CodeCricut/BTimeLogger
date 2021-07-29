@@ -22,16 +22,26 @@
         <TextBlock Text="{Binding ViewModel.ChartTitle, Mode=OneWay}"
                    FontSize="{Binding ViewModel.TitleFontSize}" 
                    HorizontalAlignment="Center"
-                   />
-        
+                   VerticalAlignment="Top"
+                   Visibility="{Binding ViewModel.IsChartPopulated, Converter={StaticResource boolToVis}}"/>
+
+        <TextBlock Text="{StaticResource noData}"
+                   FontSize="{Binding ViewModel.TitleFontSize}"
+                   HorizontalAlignment="Center"
+                   VerticalAlignment="Center"
+                   Grid.RowSpan="2"
+                   Grid.ColumnSpan="2"
+                   Visibility="{Binding ViewModel.IsChartNotPopulated, Converter={StaticResource boolToVis}}" />
+
         <ItemsControl ItemsSource="{Binding ViewModel.SliceGeometries}"
                       Width="{Binding ViewModel.ChartWidth}"
                       Height="{Binding ViewModel.ChartHeight}"
-                      Margin="20,0"
-                      Grid.Row="1">
+                      Margin="20"
+                      Grid.Row="1"
+                      VerticalAlignment="Top">
             <ItemsControl.ItemTemplate>
                 <DataTemplate>
-                    <Canvas>
+                    <Canvas >
                         <Path Fill="{Binding SliceFill}"
                               Data="{Binding SliceGeometryData}" />
                         <Line X1="{Binding CenterX}"
@@ -51,7 +61,7 @@
             </ItemsControl.ItemTemplate>
         </ItemsControl>
 
-        <ScrollViewer Margin="20,0"
+        <ScrollViewer Margin="0"
                       Padding="10"
                       VerticalAlignment="Center"
                       VerticalScrollBarVisibility="Auto"

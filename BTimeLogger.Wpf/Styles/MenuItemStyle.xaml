@@ -78,10 +78,11 @@
                      TargetType="{x:Type MenuItem}">
         <Border x:Name="Border">
             <Grid>
-                <ContentPresenter Margin="6,3,6,3"
+                <ContentPresenter Margin="10 0"
                                   ContentSource="Header"
                                   RecognizesAccessKey="True" />
                 <Popup x:Name="Popup"
+                       
                        Placement="Bottom"
                        IsOpen="{TemplateBinding IsSubmenuOpen}"
                        AllowsTransparency="True"

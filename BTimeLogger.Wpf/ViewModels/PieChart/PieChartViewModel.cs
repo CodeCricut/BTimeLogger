@@ -19,6 +19,9 @@ namespace BTimeLogger.Wpf.ViewModels.PieChart
 			set { Set(ref _chartTitle, value); }
 		}
 
+		public bool IsChartPopulated { get => Categories.Count > 0; }
+		public bool IsChartNotPopulated { get => !IsChartPopulated; }
+
 		public ObservableCollection<CategoryViewModel> Categories { get; set; } = new ObservableCollection<CategoryViewModel>();
 
 		public ObservableCollection<PieSliceGeometryViewModel> SliceGeometries { get; set; } = new ObservableCollection<PieSliceGeometryViewModel>();
@@ -77,6 +80,12 @@ namespace BTimeLogger.Wpf.ViewModels.PieChart
 		public PieChartViewModel()
 		{
 			UpdateChartCommand = new AsyncDelegateCommand(_ => UpdateChart());
+
+			Categories.CollectionChanged += (_, args) =>
+			{
+				RaisePropertyChanged(nameof(IsChartPopulated));
+				RaisePropertyChanged(nameof(IsChartNotPopulated));
+			};
 		}
 
 		public async Task UpdateChart()

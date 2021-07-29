@@ -12,7 +12,9 @@
         MinWidth="800"
         Height="800"
         Width="1200"
-        WindowStyle="None">
+        WindowStyle="None"
+        Icon="Resources/Pictures/clockIcon.ico"
+        >
     <WindowChrome.WindowChrome>
         <WindowChrome CaptionHeight="32"
                       ResizeBorderThickness="{x:Static SystemParameters.WindowResizeBorderThickness}" />
@@ -27,23 +29,28 @@
         <Grid>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
             <!--TODO: behavior-->
+
+            <Image Source="{StaticResource logo}" Height="20" Width="35" />
             <mainwindow:TitleBarMenu ViewModel="{Binding ViewModel.TitleBarMenuViewModel}"
-                Grid.Column="0"
+                Grid.Column="1"
+                                     Margin="0 0 0 0"
                                      VerticalAlignment="Center"
                                      Visibility="Visible" />
 
 
-            <TextBlock Grid.Column="1"
+            <TextBlock Grid.Column="2"
                        Margin="4 0 0 0"
                        VerticalAlignment="Center"
                        FontSize="14"
+                       HorizontalAlignment="Right"
                        Text="{StaticResource appTitle}">
             </TextBlock>
-            <view:WindowButtons Grid.Column="2"
+            <view:WindowButtons Grid.Column="3"
                                 ViewModel="{Binding ViewModel.WindowButtonsViewModel}" />
 
         </Grid>
