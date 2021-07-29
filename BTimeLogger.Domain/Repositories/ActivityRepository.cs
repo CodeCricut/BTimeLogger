@@ -1,29 +1,32 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using static BTimeLogger.Activity;
 
 namespace BTimeLogger.Domain
 {
 	public interface IActivityRepository
 	{
 		Task<IEnumerable<Activity>> GetActivities();
-		Task<Activity> GetActivity(string name);
-		Task<bool> ActivityExists(string name);
+		Task<Activity> GetActivity(ActivityCode code);
+		Task<bool> ActivityExists(ActivityCode code);
 		Task AddActivity(Activity group);
 	}
 
 	class ActivityRepository : IActivityRepository
 	{
-		private readonly Dictionary<string, Activity> _activities = new();
+		private readonly Dictionary<ActivityCode, Activity> _activities = new();
 
-		public Task<bool> ActivityExists(string name)
+		public Task<bool> ActivityExists(ActivityCode code)
 		{
-			return Task.FromResult(_activities.ContainsKey(name));
+			if (code == null)
+				return Task.FromResult(false);
+			return Task.FromResult(_activities.ContainsKey(code));
 		}
 
-		public Task AddActivity(Activity group)
+		public Task AddActivity(Activity activity)
 		{
-			return Task.Factory.StartNew(() => _activities.Add(group.Name, group));
+			return Task.Factory.StartNew(() => _activities.Add(activity.Code, activity));
 		}
 
 		public Task<IEnumerable<Activity>> GetActivities()
@@ -31,9 +34,10 @@ namespace BTimeLogger.Domain
 			return Task.FromResult(_activities.Select(kvp => kvp.Value));
 		}
 
-		public Task<Activity> GetActivity(string name)
+		public Task<Activity> GetActivity(ActivityCode code)
 		{
-			return Task.FromResult(_activities.GetValueOrDefault(name));
+			if (code == null) return Task.FromResult<Activity>(null);
+			return Task.FromResult(_activities.GetValueOrDefault(code));
 		}
 	}
 }
