@@ -5,6 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:BTimeLogger.Wpf"
         xmlns:view="clr-namespace:BTimeLogger.Wpf.View"
+        xmlns:mainwindow="clr-namespace:BTimeLogger.Wpf.View.MainWindow"
         mc:Ignorable="d"
         Title="MainWindow"
         MinHeight="450"
@@ -30,18 +31,10 @@
                 <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
             <!--TODO: behavior-->
-            <Menu Grid.Column="0"
-                  VerticalAlignment="Center"
-                  Visibility="Visible"
-                  Style="{StaticResource TitleBarMenuStyle}">
-                <MenuItem Header="_File">
-                    <MenuItem Header="_Open" />
-                    <MenuItem Header="_Save"
-                              IsEnabled="False" />
-                    <MenuItem Header="Save As" />
-                    <MenuItem Header="Exit" />
-                </MenuItem>
-            </Menu>
+            <mainwindow:TitleBarMenu ViewModel="{Binding ViewModel.TitleBarMenuViewModel}"
+                Grid.Column="0"
+                                     VerticalAlignment="Center"
+                                     Visibility="Visible" />
 
 
             <TextBlock Grid.Column="1"

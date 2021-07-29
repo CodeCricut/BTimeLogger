@@ -63,7 +63,7 @@ namespace BTimeLogger.Wpf.ViewModels.Factories
 			GroupStatisticsPieChartViewModel groupStatisticsPieChartViewModel = _groupStatisticsPieChartViewModelFactory.Create();
 			var statsVM = _statisticsViewModelFactory.Create(groupStatisticsPieChartViewModel);
 
-			return new MainLayoutViewModel(homeVM, intervalsVM, statsVM, _viewManager, _createReportWindowViewModelFactory);
+			return new MainLayoutViewModel(homeVM, intervalsVM, statsVM);
 		}
 	}
 }
