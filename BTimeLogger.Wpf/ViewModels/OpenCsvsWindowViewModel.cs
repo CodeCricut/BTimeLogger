@@ -1,5 +1,4 @@
-﻿using BTimeLogger.Csv;
-using BTimeLogger.Wpf.Mediator;
+﻿using BTimeLogger.Wpf.Mediator;
 using BTimeLogger.Wpf.ViewModels.Messages;
 using MediatR;
 using System;
@@ -14,10 +13,10 @@ namespace BTimeLogger.Wpf.ViewModels
 	public class OpenCsvsWindowViewModel : BaseViewModel
 	{
 		private readonly IViewManager _viewManager;
-		private readonly IIntervalsCsvReader _intervalsCsvReader;
-		private readonly IStatisticsCsvReader _statisticsCsvReader;
 		private readonly IEventAggregator _ea;
 		private readonly IMediator _mediator;
+
+
 		private string _intervalsCsvLocation;
 		public string IntervalsCsvLocation
 		{
@@ -53,16 +52,12 @@ namespace BTimeLogger.Wpf.ViewModels
 		public AsyncDelegateCommand CreateReportCommand { get; set; }
 
 		public OpenCsvsWindowViewModel(IViewManager viewManager,
-			IIntervalsCsvReader intervalsCsvReader,
-			IStatisticsCsvReader statisticsCsvReader,
 			IEventAggregator ea,
 			IMediator mediator)
 		{
 			CancelCommand = new DelegateCommand(Cancel);
 			CreateReportCommand = new AsyncDelegateCommand(CreateReport, CanCreateReport);
 			_viewManager = viewManager;
-			_intervalsCsvReader = intervalsCsvReader;
-			_statisticsCsvReader = statisticsCsvReader;
 			_ea = ea;
 			_mediator = mediator;
 		}
@@ -79,10 +74,7 @@ namespace BTimeLogger.Wpf.ViewModels
 				Loading = true;
 				InvalidReportInfo = false;
 
-				await _mediator.Send(new ClearAllData());
-				await _intervalsCsvReader.ReadIntervalCsv(IntervalsCsvLocation);
-				await _statisticsCsvReader.ReadStatisticsCsv(StatisticsCsvLocation);
-
+				await _mediator.Send(new ReadCsvs(IntervalsCsvLocation, StatisticsCsvLocation));
 				_ea.SendMessage(new ReportSourceChanged());
 
 				Loading = false;

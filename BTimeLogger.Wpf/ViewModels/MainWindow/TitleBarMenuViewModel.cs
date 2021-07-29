@@ -44,7 +44,7 @@ namespace BTimeLogger.Wpf.ViewModels.MainWindow
 
 		private Task Save(object _)
 		{
-			return Task.CompletedTask;
+			return _mediator.Send(new Save());
 		}
 	}
 }

@@ -34,7 +34,7 @@ namespace BTimeLogger.Wpf.ViewModels.Factories
 
 		public OpenCsvsWindowViewModel Create()
 		{
-			return new OpenCsvsWindowViewModel(_viewManager, _intervalsCsvReader, _statisticsCsvReader, _ea, _mediator);
+			return new OpenCsvsWindowViewModel(_viewManager, _ea, _mediator);
 		}
 	}
 }
