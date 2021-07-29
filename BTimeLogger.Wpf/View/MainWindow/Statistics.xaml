@@ -4,9 +4,10 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:BTimeLogger.Wpf.View.MainWindow"
+             xmlns:view="clr-namespace:BTimeLogger.Wpf.View"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
-    <Grid>
-        <TextBlock>Statistics</TextBlock>  
+    <Grid DataContext="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type local:Statistics}}}">
+        <view:PieChart ViewModel="{Binding ViewModel.GroupStatisticsPieChartViewModel}" />
     </Grid>
 </UserControl>

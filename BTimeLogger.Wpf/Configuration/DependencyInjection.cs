@@ -1,4 +1,5 @@
-﻿using BTimeLogger.Wpf.Services.ViewManagement;
+﻿using BTimeLogger.Wpf.Services;
+using BTimeLogger.Wpf.Services.ViewManagement;
 using MediatR;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -15,7 +16,10 @@ namespace BTimeLogger.Wpf.Configuration
 			if (services == null) throw new ArgumentNullException(nameof(services));
 			if (configuration == null) throw new ArgumentNullException(nameof(configuration));
 
+
 			return services
+				.AddSingleton<IGroupStatisticCategoriesConverter, GroupStatisticCategoriesConverter>()
+
 				.AddSingleton<IViewFinderFactory, ViewFinderFactory>()
 
 				.AddSingleton<IViewManagerFactory, ViewManagerFactory>()

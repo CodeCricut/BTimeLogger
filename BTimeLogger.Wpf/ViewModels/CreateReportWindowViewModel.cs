@@ -82,6 +82,7 @@ namespace BTimeLogger.Wpf.ViewModels
 				Loading = true;
 				InvalidReportInfo = false;
 
+				// TODO: clear repositories before reading
 				await _intervalsCsvReader.ReadIntervalCsv(IntervalsCsvLocation);
 				await _statisticsCsvReader.ReadStatisticsCsv(StatisticsCsvLocation);
 

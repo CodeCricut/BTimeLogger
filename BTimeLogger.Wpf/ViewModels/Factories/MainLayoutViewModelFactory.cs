@@ -1,4 +1,5 @@
-﻿using WpfCore.Services;
+﻿using BTimeLogger.Wpf.ViewModels.PieChart;
+using WpfCore.Services;
 
 namespace BTimeLogger.Wpf.ViewModels.Factories
 {
@@ -19,6 +20,7 @@ namespace BTimeLogger.Wpf.ViewModels.Factories
 		private readonly ITimeSpanPanelViewModelFactory _timeSpanPanelViewModelFactory;
 		private readonly IPaginatedIntervalListViewModelFactory _paginatedIntervalListViewModel;
 		private readonly IPartialIntervalListViewModelFactory _partialIntervalListViewModel;
+		private readonly IGroupStatisticsPieChartViewModelFactory _groupStatisticsPieChartViewModelFactory;
 
 		public MainLayoutViewModelFactory(
 			IViewManager viewManager,
@@ -30,7 +32,8 @@ namespace BTimeLogger.Wpf.ViewModels.Factories
 			IGroupedActivityFilterViewModelFactory groupedActivityFilterViewModel,
 			ITimeSpanPanelViewModelFactory timeSpanPanelViewModelFactory,
 			IPaginatedIntervalListViewModelFactory paginatedIntervalListViewModel,
-			IPartialIntervalListViewModelFactory partialIntervalListViewModel)
+			IPartialIntervalListViewModelFactory partialIntervalListViewModel,
+			IGroupStatisticsPieChartViewModelFactory groupStatisticsPieChartViewModelFactory)
 		{
 			_viewManager = viewManager;
 			_homeViewModelFactory = homeViewModelFactory;
@@ -42,6 +45,7 @@ namespace BTimeLogger.Wpf.ViewModels.Factories
 			_timeSpanPanelViewModelFactory = timeSpanPanelViewModelFactory;
 			_paginatedIntervalListViewModel = paginatedIntervalListViewModel;
 			_partialIntervalListViewModel = partialIntervalListViewModel;
+			_groupStatisticsPieChartViewModelFactory = groupStatisticsPieChartViewModelFactory;
 		}
 
 		public MainLayoutViewModel Create()
@@ -55,7 +59,9 @@ namespace BTimeLogger.Wpf.ViewModels.Factories
 			var partialIntervalListVM = _partialIntervalListViewModel.Create(paginatedIntervalListVM);
 
 			var intervalsVM = _intervalsViewModelFactory.Create(partialIntervalListVM, groupedActivityFilterVM, timeSpanPanelVM);
-			var statsVM = _statisticsViewModelFactory.Create();
+
+			GroupStatisticsPieChartViewModel groupStatisticsPieChartViewModel = _groupStatisticsPieChartViewModelFactory.Create();
+			var statsVM = _statisticsViewModelFactory.Create(groupStatisticsPieChartViewModel);
 
 			return new MainLayoutViewModel(homeVM, intervalsVM, statsVM, _viewManager, _createReportWindowViewModelFactory);
 		}

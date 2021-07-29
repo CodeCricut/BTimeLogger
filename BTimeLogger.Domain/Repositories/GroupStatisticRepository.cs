@@ -28,6 +28,8 @@ namespace BTimeLogger.Domain.Repositories
 
 		public async Task<GroupStatistic> CreateForGroup(ActivityCode groupType)
 		{
+			if (groupType == null)
+				return await CreateForAll();
 			Statistic groupStat = await _statisticsRepository.GetStatistic(groupType);
 			return await CreateForStat(groupStat);
 		}
@@ -36,7 +38,7 @@ namespace BTimeLogger.Domain.Repositories
 		{
 			Statistic groupParentStat = await _statisticsRepository.GetStatistic(statistic.Activity.Code.ParentCode);
 
-			decimal percentParent = groupParentStat is null ? 1 : statistic.Percent / groupParentStat.Percent;
+			decimal percentParent = groupParentStat is null ? statistic.Percent : statistic.Percent / groupParentStat.Percent;
 
 			IEnumerable<GroupStatistic> children = await CreateForChildren(statistic.Activity);
 

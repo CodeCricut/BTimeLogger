@@ -19,19 +19,19 @@ namespace BTimeLogger
 
 	class StatisticsRepository : IStatisticsRepository
 	{
-		private const int TOTAL_PERCENT = 1;
+		private const int TOTAL_PERCENT = 100;
 		private readonly Dictionary<ActivityCode, Statistic> _statistics = new();
 
 		public Task AddStatistic(Statistic statistic)
 		{
-			return Task.Factory.StartNew(() =>
-				_statistics.Add(statistic.Activity.Code, statistic)
-			);
+			_statistics[statistic.Activity.Code] = statistic;
+			return Task.CompletedTask;
 		}
 
 
 		public Task<Statistic> GetStatistic(ActivityCode activityCode)
 		{
+			if (activityCode is null) return Task.FromResult<Statistic>(null);
 			return Task.FromResult(_statistics.GetValueOrDefault(activityCode));
 		}
 
@@ -71,6 +71,7 @@ namespace BTimeLogger
 
 		public Task<bool> StatisticExists(ActivityCode activityCode)
 		{
+			if (activityCode is null) return Task.FromResult(false);
 			return Task.FromResult(_statistics.ContainsKey(activityCode));
 		}
 	}
