@@ -1,5 +1,7 @@
 ﻿using BTimeLogger.Csv;
+using BTimeLogger.Wpf.Mediator;
 using BTimeLogger.Wpf.ViewModels.Messages;
+using MediatR;
 using System;
 using System.Threading.Tasks;
 using WpfCore.Commands;
@@ -9,20 +11,13 @@ using WpfCore.ViewModel;
 
 namespace BTimeLogger.Wpf.ViewModels
 {
-	public class CreateReportWindowViewModel : BaseViewModel
+	public class OpenCsvsWindowViewModel : BaseViewModel
 	{
 		private readonly IViewManager _viewManager;
 		private readonly IIntervalsCsvReader _intervalsCsvReader;
 		private readonly IStatisticsCsvReader _statisticsCsvReader;
 		private readonly IEventAggregator _ea;
-
-		private DateTime _fromDate = DateTime.Today;
-		public DateTime FromDate { get => _fromDate; set => Set(ref _fromDate, value); }
-
-		private DateTime _toDate = DateTime.Today;
-		public DateTime ToDate { get => _toDate; set => Set(ref _toDate, value); }
-
-
+		private readonly IMediator _mediator;
 		private string _intervalsCsvLocation;
 		public string IntervalsCsvLocation
 		{
@@ -57,10 +52,11 @@ namespace BTimeLogger.Wpf.ViewModels
 		public DelegateCommand CancelCommand { get; set; }
 		public AsyncDelegateCommand CreateReportCommand { get; set; }
 
-		public CreateReportWindowViewModel(IViewManager viewManager,
+		public OpenCsvsWindowViewModel(IViewManager viewManager,
 			IIntervalsCsvReader intervalsCsvReader,
 			IStatisticsCsvReader statisticsCsvReader,
-			IEventAggregator ea)
+			IEventAggregator ea,
+			IMediator mediator)
 		{
 			CancelCommand = new DelegateCommand(Cancel);
 			CreateReportCommand = new AsyncDelegateCommand(CreateReport, CanCreateReport);
@@ -68,6 +64,7 @@ namespace BTimeLogger.Wpf.ViewModels
 			_intervalsCsvReader = intervalsCsvReader;
 			_statisticsCsvReader = statisticsCsvReader;
 			_ea = ea;
+			_mediator = mediator;
 		}
 
 		private bool CanCreateReport(object arg)
@@ -82,7 +79,7 @@ namespace BTimeLogger.Wpf.ViewModels
 				Loading = true;
 				InvalidReportInfo = false;
 
-				// TODO: clear repositories before reading
+				await _mediator.Send(new ClearAllData());
 				await _intervalsCsvReader.ReadIntervalCsv(IntervalsCsvLocation);
 				await _statisticsCsvReader.ReadStatisticsCsv(StatisticsCsvLocation);
 

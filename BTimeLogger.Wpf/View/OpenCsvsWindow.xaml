@@ -1,4 +1,4 @@
-﻿<Window x:Class="BTimeLogger.Wpf.View.CreateReportWindow"
+﻿<Window x:Class="BTimeLogger.Wpf.View.OpenCsvsWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -6,9 +6,9 @@
         xmlns:local="clr-namespace:BTimeLogger.Wpf.View"
         mc:Ignorable="d"
         Title="CreateReportWindow"
-        MinHeight="430"
-        MinWidth="350"
-        Height="450"
+        MinHeight="330"
+        MinWidth="400"
+        Height="350"
         Width="500"
         WindowStyle="None">
     <WindowChrome.WindowChrome>
@@ -16,7 +16,7 @@
                       ResizeBorderThickness="{x:Static SystemParameters.WindowResizeBorderThickness}" />
     </WindowChrome.WindowChrome>
     <Border Padding="50"
-            DataContext="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type local:CreateReportWindow}}}"
+            DataContext="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type local:OpenCsvsWindow}}}"
             Background="{StaticResource skinBackgroundLightBrush}">
         <Grid>
             <Grid.RowDefinitions>
@@ -47,7 +47,7 @@
                     </Style>
                 </StackPanel.Resources>
 
-                <TextBlock Text="{StaticResource createReport}"
+                <TextBlock Text="{StaticResource pickReportLocations}"
                            FontSize="25"
                            Foreground="{StaticResource skinFontBrush}"
                            HorizontalAlignment="Center"
@@ -60,12 +60,10 @@
                            Foreground="{StaticResource skinFontWarningBrush}"
                            Visibility="{Binding ViewModel.InvalidReportInfo, Converter={StaticResource boolToVis}}" />
 
-                <!--TODO: default date picker/calendar styles not being applied-->
-                <DatePicker SelectedDate="{Binding ViewModel.FromDate}"
+                <!--<DatePicker SelectedDate="{Binding ViewModel.FromDate}"
                             Text="{StaticResource fromDate}" />
                 <DatePicker SelectedDate="{Binding ViewModel.ToDate}"
-                            Text="{StaticResource toDate}" />
-
+                            Text="{StaticResource toDate}" />-->
 
                 <local:FilePicker Description="Intervals Report Location (.csv)"
                                   Text="{Binding ViewModel.IntervalsCsvLocation, Mode=TwoWay}" />

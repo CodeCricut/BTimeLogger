@@ -11,6 +11,8 @@ namespace BTimeLogger
 		Task<IEnumerable<Interval>> GetIntervals();
 		Task<IEnumerable<Interval>> GetIntervals(Activity[] activities, DateTime? from, DateTime? to);
 		Task AddInterval(Interval interval);
+
+		Task ClearIntervals();
 	}
 
 	class IntervalRepository : IIntervalRepository
@@ -34,6 +36,12 @@ namespace BTimeLogger
 			return activities
 				.BetweenDates(from, to, useOnlyDate: true)
 				.OfActivityTypesOrAll(activityTypes);
+		}
+
+		public Task ClearIntervals()
+		{
+			_intervals.Clear();
+			return Task.CompletedTask;
 		}
 	}
 }

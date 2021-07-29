@@ -15,6 +15,8 @@ namespace BTimeLogger
 		Task<bool> StatisticExists(ActivityCode activityCode);
 		Task AddStatistic(Statistic statistic);
 		Task<Statistic> GetStatsForTotal(string totalActivityName = "Total");
+
+		Task ClearStatistics();
 	}
 
 	class StatisticsRepository : IStatisticsRepository
@@ -28,6 +30,11 @@ namespace BTimeLogger
 			return Task.CompletedTask;
 		}
 
+		public Task ClearStatistics()
+		{
+			_statistics.Clear();
+			return Task.CompletedTask;
+		}
 
 		public Task<Statistic> GetStatistic(ActivityCode activityCode)
 		{

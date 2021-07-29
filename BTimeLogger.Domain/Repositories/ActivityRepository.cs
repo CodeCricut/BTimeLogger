@@ -11,6 +11,8 @@ namespace BTimeLogger.Domain
 		Task<Activity> GetActivity(ActivityCode code);
 		Task<bool> ActivityExists(ActivityCode code);
 		Task AddActivity(Activity group);
+
+		Task ClearActivities();
 	}
 
 	class ActivityRepository : IActivityRepository
@@ -38,6 +40,12 @@ namespace BTimeLogger.Domain
 		{
 			if (code == null) return Task.FromResult<Activity>(null);
 			return Task.FromResult(_activities.GetValueOrDefault(code));
+		}
+
+		public Task ClearActivities()
+		{
+			_activities.Clear();
+			return Task.CompletedTask;
 		}
 	}
 }

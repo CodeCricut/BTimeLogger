@@ -7,16 +7,16 @@ namespace BTimeLogger.Wpf.View
 	/// <summary>
 	/// Interaction logic for CreateReportWindow.xaml
 	/// </summary>
-	public partial class CreateReportWindow : Window, IHaveViewModel<CreateReportWindowViewModel>
+	public partial class OpenCsvsWindow : Window, IHaveViewModel<OpenCsvsWindowViewModel>
 	{
-		public CreateReportWindowViewModel ViewModel { get; set; }
+		public OpenCsvsWindowViewModel ViewModel { get; set; }
 
-		public CreateReportWindow()
+		public OpenCsvsWindow()
 		{
 			InitializeComponent();
 		}
 
-		public void SetViewModel(CreateReportWindowViewModel viewModel)
+		public void SetViewModel(OpenCsvsWindowViewModel viewModel)
 		{
 			ViewModel = viewModel;
 		}

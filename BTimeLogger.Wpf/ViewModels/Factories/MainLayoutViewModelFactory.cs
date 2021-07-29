@@ -14,7 +14,7 @@ namespace BTimeLogger.Wpf.ViewModels.Factories
 		private readonly IHomeViewModelFactory _homeViewModelFactory;
 		private readonly IIntervalsViewModelFactory _intervalsViewModelFactory;
 		private readonly IStatisticsViewModelFactory _statisticsViewModelFactory;
-		private readonly ICreateReportWindowViewModelFactory _createReportWindowViewModelFactory;
+		private readonly IOpenCsvsWindowViewModelFactory _createReportWindowViewModelFactory;
 		private readonly IIntervalListViewModelFactory _intervalListViewModelFactory;
 		private readonly IGroupedActivityFilterViewModelFactory _groupedActivityFilterViewModel;
 		private readonly ITimeSpanPanelViewModelFactory _timeSpanPanelViewModelFactory;
@@ -27,7 +27,7 @@ namespace BTimeLogger.Wpf.ViewModels.Factories
 			IHomeViewModelFactory homeViewModelFactory,
 			IIntervalsViewModelFactory intervalsViewModelFactory,
 			IStatisticsViewModelFactory statisticsViewModelFactory,
-			ICreateReportWindowViewModelFactory createReportWindowViewModelFactory,
+			IOpenCsvsWindowViewModelFactory createReportWindowViewModelFactory,
 			IIntervalListViewModelFactory intervalListViewModelFactory,
 			IGroupedActivityFilterViewModelFactory groupedActivityFilterViewModel,
 			ITimeSpanPanelViewModelFactory timeSpanPanelViewModelFactory,

@@ -9,7 +9,7 @@ namespace BTimeLogger.Wpf.ViewModels
 	public class MainLayoutViewModel : BaseViewModel
 	{
 		private readonly IViewManager _viewManager;
-		private readonly ICreateReportWindowViewModelFactory _createReportWindowViewModelFactory;
+		private readonly IOpenCsvsWindowViewModelFactory _createReportWindowViewModelFactory;
 
 		private readonly HomeViewModel _homeViewModel;
 		private readonly IntervalsViewModel _intervalsViewModel;
@@ -36,7 +36,7 @@ namespace BTimeLogger.Wpf.ViewModels
 			IntervalsViewModel intervalsViewModel,
 			StatisticsViewModel statisticsViewModel,
 			IViewManager viewManager,
-			ICreateReportWindowViewModelFactory createReportWindowViewModelFactory)
+			IOpenCsvsWindowViewModelFactory createReportWindowViewModelFactory)
 		{
 			_homeViewModel = homeViewModel;
 			_intervalsViewModel = intervalsViewModel;
@@ -52,7 +52,7 @@ namespace BTimeLogger.Wpf.ViewModels
 
 		private void CreateReport(object obj)
 		{
-			CreateReportWindowViewModel reportWindow = _createReportWindowViewModelFactory.Create();
+			OpenCsvsWindowViewModel reportWindow = _createReportWindowViewModelFactory.Create();
 			_viewManager.ShowDialog(reportWindow);
 		}
 

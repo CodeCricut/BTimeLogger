@@ -25,4 +25,5 @@
     <system:String x:Key="invalidReport">Invalid report info.</system:String>
     <system:String x:Key="group">Group</system:String>
     <system:String x:Key="activities">Activities</system:String>
+    <system:String x:Key="pickReportLocations">Pick report locations</system:String>
 </ResourceDictionary>
