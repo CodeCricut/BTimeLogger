@@ -9,11 +9,15 @@
     <Menu Style="{StaticResource TitleBarMenuStyle}"
           DataContext="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type local:TitleBarMenu}}}">
         <MenuItem Header="_File">
-            <MenuItem Header="_Open" Command="{Binding ViewModel.OpenCsvsCommand}" />
-            <MenuItem Header="_Save"
-                      IsEnabled="False" />
-            <MenuItem Header="Save As" />
-            <MenuItem Header="Exit" />
+            <MenuItem Header="_Open"
+                      InputGestureText="Ctrl+O"
+                      Command="{Binding ViewModel.OpenCsvsCommand}" />
+            <MenuItem Header="_Save" 
+                      InputGestureText="Ctrl+S"
+                      Command="{Binding ViewModel.SaveCommand}"/>
+            <MenuItem Header="_Exit"
+                      InputGestureText="Ctrl+X"
+                      Command="{Binding ViewModel.ExitCommand}"/>
         </MenuItem>
     </Menu>
-</UserControl>
+</UserControl> 

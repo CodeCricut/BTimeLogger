@@ -19,6 +19,21 @@
         <WindowChrome CaptionHeight="32"
                       ResizeBorderThickness="{x:Static SystemParameters.WindowResizeBorderThickness}" />
     </WindowChrome.WindowChrome>
+    <Window.InputBindings>
+        <KeyBinding Key="O"
+                    Modifiers="Ctrl"
+                    Command="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type local:MainWindow}}, 
+            Path=ViewModel.TitleBarMenuViewModel.OpenCsvsCommand}" />
+        <KeyBinding Key="S"
+                    Modifiers="Ctrl"
+                    Command="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type local:MainWindow}}, 
+            Path=ViewModel.TitleBarMenuViewModel.SaveCommand}" />
+        <KeyBinding Key="X"
+                    Modifiers="Ctrl"
+                    Command="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type local:MainWindow}}, 
+            Path=ViewModel.TitleBarMenuViewModel.ExitCommand}" />
+    </Window.InputBindings>
+    
     <Grid DataContext="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type local:MainWindow}}}"
           Background="{StaticResource skinBackgroundBrush}">
         <Grid.RowDefinitions>

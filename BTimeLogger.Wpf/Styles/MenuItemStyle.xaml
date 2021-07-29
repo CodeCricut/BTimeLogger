@@ -167,7 +167,7 @@
 
     <!-- SubmenuItem -->
     <ControlTemplate x:Key="{x:Static MenuItem.SubmenuItemTemplateKey}"
-                     TargetType="{x:Type MenuItem}">
+                     TargetType="{x:Type MenuItem}" >
         <Border x:Name="Border"
                 BorderThickness="1">
             <Grid>
@@ -208,9 +208,10 @@
                                   ContentSource="Header"
                                   RecognizesAccessKey="True" />
                 <TextBlock x:Name="InputGestureText"
+                           Foreground="{StaticResource skinFontSecondaryBrush}"
                            Grid.Column="2"
                            Text="{TemplateBinding InputGestureText}"
-                           Margin="5,2,0,2"
+                           Margin="20,2,0,2"
                            DockPanel.Dock="Right" />
             </Grid>
         </Border>
@@ -363,7 +364,8 @@
 
     <!-- MenuItem Style -->
     <Style x:Key="MenuItemStyle"
-           TargetType="{x:Type MenuItem}">
+           TargetType="{x:Type MenuItem}"
+           >
         <Setter Property="OverridesDefaultStyle"
                 Value="True" />
         <Style.Triggers>
