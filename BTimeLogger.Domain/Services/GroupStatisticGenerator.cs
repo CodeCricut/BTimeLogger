@@ -16,19 +16,27 @@ namespace BTimeLogger.Domain.Services
 	class GroupStatisticGenerator : IGroupStatisticGenerator
 	{
 		private readonly IStatisticsGenerator _statisticsGenerator;
+		private readonly IActivityRepository _activityRepository;
+		private readonly IIntervalRepository _intervalRepository;
 
-		public GroupStatisticGenerator(IStatisticsGenerator statisticsGenerator)
+		public GroupStatisticGenerator(IStatisticsGenerator statisticsGenerator, IActivityRepository activityRepository,
+			IIntervalRepository intervalRepository)
 		{
 			_statisticsGenerator = statisticsGenerator;
+			_activityRepository = activityRepository;
+			_intervalRepository = intervalRepository;
 		}
 
 		public async Task<GroupStatistic> GenerateGroupOfParentlessStatistics(DateTime from, DateTime to)
 		{
-			IEnumerable<Statistic> allStats = await _statisticsGenerator.GenerateAllStatistics(from, to);
+			IEnumerable<Activity> parentlessActivites = (await _activityRepository.GetActivities()).Where(act => !act.HasParent);
 
-			IEnumerable<Statistic> parentlessStats = allStats.Where(stat => !stat.Activity.HasParent);
+			//IEnumerable<Statistic> allStats = await _statisticsGenerator.GenerateAllStatistics(from, to);
+			IEnumerable<Statistic> parentlessStats = await _statisticsGenerator.GenerateStatistics(parentlessActivites, from, to);
 
-			TimeSpan totalTrackedTime = allStats.Duration();
+			TimeSpan totalTrackedTime = (await _intervalRepository.GetIntervals()).Duration();
+			//allStats.Duration();			
+
 
 			return new GroupStatistic()
 			{

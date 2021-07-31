@@ -14,7 +14,7 @@ namespace BTimeLogger.Domain.Services
 		Task<Statistic> GenerateStatistic(Activity activity, TimeSpan totalTime, DateTime from, DateTime to);
 		Task<IEnumerable<Statistic>> GenerateStatistics(IEnumerable<Activity> statActivity, TimeSpan totalTime, DateTime from, DateTime to);
 
-		Task<IEnumerable<Statistic>> GenerateAllStatistics(DateTime from, DateTime to);
+		//Task<IEnumerable<Statistic>> GenerateAllStatistics(DateTime from, DateTime to);
 	}
 
 	class StatisticsGenerator : IStatisticsGenerator
@@ -105,14 +105,19 @@ namespace BTimeLogger.Domain.Services
 
 		public async Task<IEnumerable<Statistic>> GenerateStatistics(IEnumerable<Activity> statActivities, DateTime from, DateTime to)
 		{
-			IEnumerable<Interval> intervalsBetweenDates = (await _intervalRepository.GetIntervals()).BetweenDates(from, to);
+			IEnumerable<Interval> intervalsBetweenDates = (await _intervalRepository.GetIntervals())
+				.BetweenDates(from, to);
 			TimeSpan totalTrackedDuration = intervalsBetweenDates.Duration();
+
+			IEnumerable<Interval> ofAllIncludedTypes = intervalsBetweenDates
+				.OfActivityTypesOrAll(statActivities.SelectCodes());
 
 			List<Statistic> stats = new();
 			foreach (var activity in statActivities)
 			{
-				IEnumerable<Interval> intervalsOfTypes = intervalsBetweenDates.WithAncestorOfType(activity.Code);
-				TimeSpan trackedDurationOfType = intervalsOfTypes.Duration();
+				IEnumerable<Interval> ofThisActivityType = ofAllIncludedTypes.WithAncestorOfType(activity.Code);
+
+				TimeSpan trackedDurationOfType = ofThisActivityType.Duration();
 
 				decimal percentOfTrackedTimeInTimespan = totalTrackedDuration.TotalSeconds <= 1
 					? 0M
@@ -133,10 +138,10 @@ namespace BTimeLogger.Domain.Services
 
 		}
 
-		public async Task<IEnumerable<Statistic>> GenerateAllStatistics(DateTime from, DateTime to)
-		{
-			IEnumerable<Activity> allActivityTypes = await _activityRepository.GetActivities();
-			return await GenerateStatistics(allActivityTypes, from, to);
-		}
+		//public async Task<IEnumerable<Statistic>> GenerateAllStatistics(DateTime from, DateTime to)
+		//{
+		//	IEnumerable<Activity> allActivityTypes = await _activityRepository.GetActivities();
+		//	return await GenerateStatistics(allActivityTypes, from, to);
+		//}
 	}
 }
