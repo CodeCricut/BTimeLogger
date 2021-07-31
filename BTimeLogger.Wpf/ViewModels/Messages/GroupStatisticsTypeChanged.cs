@@ -7,6 +7,11 @@
 			NewGroupType = newGroupType;
 		}
 
+		public static GroupStatisticsTypeChanged NoGroup()
+		{
+			return new GroupStatisticsTypeChanged(null);
+		}
+
 		public Activity NewGroupType { get; }
 	}
 }

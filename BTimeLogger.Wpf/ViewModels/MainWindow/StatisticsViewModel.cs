@@ -7,9 +7,18 @@ namespace BTimeLogger.Wpf.ViewModels.MainWindow
 	{
 		public GroupStatisticsPieChartViewModel GroupStatisticsPieChartViewModel { get; }
 
-		public StatisticsViewModel(GroupStatisticsPieChartViewModel groupStatisticsPieChartViewModel)
+		public GroupFilterViewModel GroupFilterViewModel { get; }
+
+		public TimeSpanPanelViewModel TimeSpanPanelViewModel { get; }
+
+
+		public StatisticsViewModel(GroupStatisticsPieChartViewModel groupStatisticsPieChartViewModel,
+			GroupFilterViewModel groupFilterViewModel,
+			TimeSpanPanelViewModel timeSpanPanelViewModel)
 		{
 			GroupStatisticsPieChartViewModel = groupStatisticsPieChartViewModel;
+			GroupFilterViewModel = groupFilterViewModel;
+			TimeSpanPanelViewModel = timeSpanPanelViewModel;
 		}
 	}
 }

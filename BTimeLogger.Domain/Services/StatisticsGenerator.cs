@@ -9,6 +9,10 @@ namespace BTimeLogger.Domain.Services
 	{
 		Task<Statistic> GenerateStatistic(Activity activity, DateTime from, DateTime to);
 		Task<IEnumerable<Statistic>> GenerateStatistics(IEnumerable<Activity> statActivity, DateTime from, DateTime to);
+
+		Task<Statistic> GenerateStatistic(Activity activity, TimeSpan totalTime, DateTime from, DateTime to);
+		Task<IEnumerable<Statistic>> GenerateStatistics(IEnumerable<Activity> statActivity, TimeSpan totalTime, DateTime from, DateTime to);
+
 		Task<IEnumerable<Statistic>> GenerateAllStatistics(DateTime from, DateTime to);
 	}
 
@@ -23,6 +27,38 @@ namespace BTimeLogger.Domain.Services
 		{
 			_intervalRepository = intervalRepository;
 			_activityRepository = activityRepository;
+		}
+
+		public async Task<IEnumerable<Statistic>> GenerateStatistics(IEnumerable<Activity> activities, TimeSpan totalTime, DateTime from, DateTime to)
+		{
+			List<Task<Statistic>> generateStatTasks = new();
+			foreach (var activity in activities)
+				generateStatTasks.Add(GenerateStatistic(activity, totalTime, from, to));
+
+			return await Task.WhenAll(generateStatTasks);
+		}
+
+
+
+		public async Task<Statistic> GenerateStatistic(Activity activity, TimeSpan totalTime, DateTime from, DateTime to)
+		{
+			if (activity == null) throw new ArgumentNullException(nameof(activity));
+
+			IEnumerable<Interval> intervalsOfTypes = await _intervalRepository.GetIntervals(activity.Code, from, to);
+			TimeSpan trackedDurationOfType = intervalsOfTypes.Duration();
+
+			decimal percentOfTrackedTimeInTimespan = totalTime.TotalSeconds <= 1
+				? 0M
+				: (decimal)trackedDurationOfType.PercentOf(totalTime) * TOTAL_PERCENT;
+
+			return new Statistic()
+			{
+				Activity = activity,
+				Duration = trackedDurationOfType,
+				PercentOfTrackedTimeInTimespan = percentOfTrackedTimeInTimespan,
+				From = from,
+				To = to
+			};
 		}
 
 		public async Task<Statistic> GenerateStatistic(Activity activity, DateTime from, DateTime to)

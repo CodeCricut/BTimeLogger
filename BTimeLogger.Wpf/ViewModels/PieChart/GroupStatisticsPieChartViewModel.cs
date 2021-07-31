@@ -19,6 +19,7 @@ namespace BTimeLogger.Wpf.ViewModels.PieChart
 
 		private GroupStatisticSearchFilter _groupStatisticSearchFilter = new();
 
+
 		public GroupStatisticsPieChartViewModel(
 			IGroupStatisticGenerator groupStatsRepo,
 			IGroupStatisticCategoriesConverter statCategoryConverter,
@@ -30,9 +31,18 @@ namespace BTimeLogger.Wpf.ViewModels.PieChart
 			_catVMFactory = catVMFactory;
 
 			ea.RegisterHandler<GroupStatisticsTypeChanged>(msg => HandleGroupStatTypeChanged(msg.NewGroupType));
+			ea.RegisterHandler<TimeSpanChanged>(HandleTimeSpanChanged);
 			ea.RegisterHandler<ReportSourceChanged>(HandleReportSourceChanged);
 
+
 			UpdateChartCommand.Execute();
+		}
+
+		private void HandleTimeSpanChanged(TimeSpanChanged msg)
+		{
+			_groupStatisticSearchFilter.From = msg.From;
+			_groupStatisticSearchFilter.To = msg.To;
+			UpdateChartCommand.Execute(null);
 		}
 
 		private void HandleGroupStatTypeChanged(Activity newGroupType)
@@ -48,7 +58,7 @@ namespace BTimeLogger.Wpf.ViewModels.PieChart
 
 		protected override Task<string> GetTitle()
 		{
-			return Task.FromResult(_groupStatisticSearchFilter.GroupType?.Name ?? "Total");
+			return Task.FromResult(_groupStatisticSearchFilter.GroupType?.Code.Value ?? "Total");
 		}
 
 		protected override async Task<IEnumerable<CategoryViewModel>> GetCategories()

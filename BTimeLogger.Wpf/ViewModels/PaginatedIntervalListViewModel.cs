@@ -34,7 +34,7 @@ namespace BTimeLogger.Wpf.ViewModels
 			_intervalListItemViewModelFactory = intervalListItemViewModelFactory;
 
 			ea.RegisterHandler<ReportSourceChanged>(HandleReportSourceChanged);
-			ea.RegisterHandler<IncludedActivitiesChanged>(HandleIncludedActivitiesChanged);
+			ea.RegisterHandler<IncludedIntervalActivitiesChanged>(HandleIncludedActivitiesChanged);
 			ea.RegisterHandler<TimeSpanChanged>(HandleSearchBetweenDatesChanged);
 		}
 
@@ -73,7 +73,7 @@ namespace BTimeLogger.Wpf.ViewModels
 			ResetToStartingPageCommand.Execute();
 		}
 
-		private void HandleIncludedActivitiesChanged(IncludedActivitiesChanged msg)
+		private void HandleIncludedActivitiesChanged(IncludedIntervalActivitiesChanged msg)
 		{
 			_intervalSearchFilter.IncludedActivities = msg.NewIncludedActivities;
 

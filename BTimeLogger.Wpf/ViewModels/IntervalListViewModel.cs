@@ -53,7 +53,7 @@ namespace BTimeLogger.Wpf.ViewModels
 			Items.CollectionChanged += Items_CollectionChanged;
 
 			ea.RegisterHandler<ReportSourceChanged>(msg => UpdateItemsCommand.Execute());
-			ea.RegisterHandler<IncludedActivitiesChanged>(HandleIncludedActivitiesChanged);
+			ea.RegisterHandler<IncludedIntervalActivitiesChanged>(HandleIncludedActivitiesChanged);
 			ea.RegisterHandler<TimeSpanChanged>(HandleSearchBetweenDatesChanged);
 		}
 
@@ -81,7 +81,7 @@ namespace BTimeLogger.Wpf.ViewModels
 			}
 		}
 
-		private void HandleIncludedActivitiesChanged(IncludedActivitiesChanged msg)
+		private void HandleIncludedActivitiesChanged(IncludedIntervalActivitiesChanged msg)
 		{
 			_intervalSearchFilter.IncludedActivities = msg.NewIncludedActivities;
 			UpdateItemsCommand.Execute();

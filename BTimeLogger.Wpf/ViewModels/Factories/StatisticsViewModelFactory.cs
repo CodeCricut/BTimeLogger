@@ -5,14 +5,18 @@ namespace BTimeLogger.Wpf.ViewModels.Factories
 {
 	public interface IStatisticsViewModelFactory
 	{
-		StatisticsViewModel Create(GroupStatisticsPieChartViewModel groupStatisticsPieChartViewModel);
+		StatisticsViewModel Create(GroupStatisticsPieChartViewModel groupStatisticsPieChartViewModel,
+			GroupFilterViewModel groupFilterViewModel,
+			TimeSpanPanelViewModel timeSpanPanelViewModel);
 	}
 
 	class StatisticsViewModelFactory : IStatisticsViewModelFactory
 	{
-		public StatisticsViewModel Create(GroupStatisticsPieChartViewModel groupStatisticsPieChartViewModel)
+		public StatisticsViewModel Create(GroupStatisticsPieChartViewModel groupStatisticsPieChartViewModel,
+			GroupFilterViewModel groupFilterViewModel,
+			TimeSpanPanelViewModel timeSpanPanelViewModel)
 		{
-			return new StatisticsViewModel(groupStatisticsPieChartViewModel);
+			return new StatisticsViewModel(groupStatisticsPieChartViewModel, groupFilterViewModel, timeSpanPanelViewModel);
 		}
 	}
 }

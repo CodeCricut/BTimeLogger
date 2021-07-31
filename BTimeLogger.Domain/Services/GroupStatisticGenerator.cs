@@ -46,10 +46,9 @@ namespace BTimeLogger.Domain.Services
 				return await GenerateGroupOfParentlessStatistics(from, to);
 
 			Statistic groupStat = await _statisticsGenerator.GenerateStatistic(group, from, to);
+			TimeSpan totalTime = groupStat.Duration;
 
-			IEnumerable<Activity> childrenTypes = group.Children;
-			// TODO: Does stat generator need to know duration of parent in order to calculate stat.Perecent?
-			IEnumerable<Statistic> childrenStats = await _statisticsGenerator.GenerateStatistics(childrenTypes, from, to);
+			IEnumerable<Statistic> childrenStats = await _statisticsGenerator.GenerateStatistics(group.Children, totalTime, from, to);
 
 			return new GroupStatistic()
 			{

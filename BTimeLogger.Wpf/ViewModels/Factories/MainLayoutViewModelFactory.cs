@@ -21,6 +21,7 @@ namespace BTimeLogger.Wpf.ViewModels.Factories
 		private readonly IPaginatedIntervalListViewModelFactory _paginatedIntervalListViewModel;
 		private readonly IPartialIntervalListViewModelFactory _partialIntervalListViewModel;
 		private readonly IGroupStatisticsPieChartViewModelFactory _groupStatisticsPieChartViewModelFactory;
+		private readonly IGroupFilterViewModelFactory _groupFilterViewModelFactory;
 
 		public MainLayoutViewModelFactory(
 			IViewManager viewManager,
@@ -33,7 +34,8 @@ namespace BTimeLogger.Wpf.ViewModels.Factories
 			ITimeSpanPanelViewModelFactory timeSpanPanelViewModelFactory,
 			IPaginatedIntervalListViewModelFactory paginatedIntervalListViewModel,
 			IPartialIntervalListViewModelFactory partialIntervalListViewModel,
-			IGroupStatisticsPieChartViewModelFactory groupStatisticsPieChartViewModelFactory)
+			IGroupStatisticsPieChartViewModelFactory groupStatisticsPieChartViewModelFactory,
+			IGroupFilterViewModelFactory groupFilterViewModelFactory)
 		{
 			_viewManager = viewManager;
 			_homeViewModelFactory = homeViewModelFactory;
@@ -46,6 +48,7 @@ namespace BTimeLogger.Wpf.ViewModels.Factories
 			_paginatedIntervalListViewModel = paginatedIntervalListViewModel;
 			_partialIntervalListViewModel = partialIntervalListViewModel;
 			_groupStatisticsPieChartViewModelFactory = groupStatisticsPieChartViewModelFactory;
+			_groupFilterViewModelFactory = groupFilterViewModelFactory;
 		}
 
 		public MainLayoutViewModel Create()
@@ -61,7 +64,10 @@ namespace BTimeLogger.Wpf.ViewModels.Factories
 			var intervalsVM = _intervalsViewModelFactory.Create(partialIntervalListVM, groupedActivityFilterVM, timeSpanPanelVM);
 
 			GroupStatisticsPieChartViewModel groupStatisticsPieChartViewModel = _groupStatisticsPieChartViewModelFactory.Create();
-			var statsVM = _statisticsViewModelFactory.Create(groupStatisticsPieChartViewModel);
+
+			var groupFilterVM = _groupFilterViewModelFactory.Create();
+			// IDK whether we need another timespan vm or not
+			var statsVM = _statisticsViewModelFactory.Create(groupStatisticsPieChartViewModel, groupFilterVM, timeSpanPanelVM);
 
 			return new MainLayoutViewModel(homeVM, intervalsVM, statsVM);
 		}

@@ -15,10 +15,6 @@
             <RowDefinition Height="Auto" />
             <RowDefinition />
         </Grid.RowDefinitions>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="2*"/>
-            <ColumnDefinition />
-        </Grid.ColumnDefinitions>
         <TextBlock Text="{Binding ViewModel.ChartTitle, Mode=OneWay}"
                    FontSize="{Binding ViewModel.TitleFontSize}" 
                    HorizontalAlignment="Center"
@@ -30,7 +26,6 @@
                    HorizontalAlignment="Center"
                    VerticalAlignment="Center"
                    Grid.RowSpan="2"
-                   Grid.ColumnSpan="2"
                    Visibility="{Binding ViewModel.IsChartNotPopulated, Converter={StaticResource boolToVis}}" />
 
         <ItemsControl ItemsSource="{Binding ViewModel.SliceGeometries}"
@@ -60,48 +55,5 @@
                 </DataTemplate>
             </ItemsControl.ItemTemplate>
         </ItemsControl>
-
-        <ScrollViewer Margin="0"
-                      Padding="10"
-                      VerticalAlignment="Center"
-                      VerticalScrollBarVisibility="Auto"
-                      HorizontalScrollBarVisibility="Hidden"
-                      Grid.Row="1"
-                      Grid.Column="1">
-            <ItemsControl ItemsSource="{Binding ViewModel.Categories }">
-                <ItemsControl.ItemTemplate>
-                    <DataTemplate DataType="{x:Type piechartVm:CategoryViewModel}">
-                        <StackPanel Orientation="Horizontal"
-                                    Margin="10">
-                            <StackPanel.Resources>
-                                <Style TargetType="{x:Type TextBlock}">
-                                    <Setter Property="FontSize"
-                                            Value="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type local:PieChart}}, 
-                                                Path=ViewModel.LegendFontSize}"/>
-                                </Style>
-                            </StackPanel.Resources>
-                            <Rectangle Width="20"
-                                       Height="20"
-                                       Fill="{Binding Color}"
-                                       Margin="0,0,5,0"
-                                       VerticalAlignment="Center" />
-
-                            <TextBlock Text="{Binding Title}"
-                                       Foreground="{Binding Color}"
-                                       VerticalAlignment="Center" />
-
-                            <TextBlock Text="{Binding Percentage}"
-                                       Foreground="{Binding Color}"
-                                       Margin="20,0,0,0"
-                                       VerticalAlignment="Center" />
-
-                            <TextBlock Text="%"
-                                       Foreground="{Binding Color}"
-                                       VerticalAlignment="Center" />
-                        </StackPanel>
-                    </DataTemplate>
-                </ItemsControl.ItemTemplate>
-            </ItemsControl>
-        </ScrollViewer>
     </Grid>
 </UserControl>

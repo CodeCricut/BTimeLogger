@@ -47,18 +47,18 @@ namespace BTimeLogger.Wpf.ViewModels
 			{
 				if (GroupsSource.NoActivityGroupSelected)
 				{
-					_ea.SendMessage(IncludedActivitiesChanged.NoIncludedActivities());
+					_ea.SendMessage(IncludedIntervalActivitiesChanged.NoIncludedActivities());
 					RePopulateActivities();
 				}
 				else
 				{
-					_ea.SendMessage(IncludedActivitiesChanged.SingleActivity(GroupsSource.SelectedGroupActivity.Activity.Code));
+					_ea.SendMessage(IncludedIntervalActivitiesChanged.SingleActivity(GroupsSource.SelectedGroupActivity.Activity.Code));
 					RePopulateActivities();
 				}
 			};
 
 			SelectedActivities.CollectionChanged += (object _, NotifyCollectionChangedEventArgs e) =>
-				_ea.SendMessage(new IncludedActivitiesChanged(SelectedActivities.SelectActivityCodes()));
+				_ea.SendMessage(new IncludedIntervalActivitiesChanged(SelectedActivities.SelectActivityCodes()));
 
 			ReloadCommand.Execute();
 		}

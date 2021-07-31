@@ -25,7 +25,7 @@ namespace BTimeLogger.Wpf.ViewModels
 				?? throw new ArgumentNullException(nameof(paginatedIntervalListViewModel));
 
 			ea.RegisterHandler<ReportSourceChanged>(msg => CriteriaChanged());
-			ea.RegisterHandler<IncludedActivitiesChanged>(msg => CriteriaChanged());
+			ea.RegisterHandler<IncludedIntervalActivitiesChanged>(msg => CriteriaChanged());
 			ea.RegisterHandler<TimeSpanChanged>(msg => CriteriaChanged());
 		}
 
