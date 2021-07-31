@@ -1,4 +1,5 @@
-﻿using WpfCore.MessageBus;
+﻿using BTimeLogger.Domain.Services;
+using WpfCore.MessageBus;
 
 namespace BTimeLogger.Wpf.ViewModels.Factories
 {

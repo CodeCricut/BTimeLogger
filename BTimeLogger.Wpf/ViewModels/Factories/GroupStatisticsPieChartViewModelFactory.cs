@@ -1,4 +1,4 @@
-﻿using BTimeLogger.Domain.Repositories;
+﻿using BTimeLogger.Domain.Services;
 using BTimeLogger.Wpf.Services;
 using BTimeLogger.Wpf.ViewModels.PieChart;
 using WpfCore.MessageBus;
@@ -12,12 +12,12 @@ namespace BTimeLogger.Wpf.ViewModels.Factories
 
 	class GroupStatisticsPieChartViewModelFactory : IGroupStatisticsPieChartViewModelFactory
 	{
-		private readonly IGroupStatisticRepository _groupStatisticRepository;
+		private readonly IGroupStatisticGenerator _groupStatisticRepository;
 		private readonly IGroupStatisticCategoriesConverter _statCategoryConvertr;
 		private readonly ICategoryViewModelFactory _categoryViewModelFactory;
 		private readonly IEventAggregator _ea;
 
-		public GroupStatisticsPieChartViewModelFactory(IGroupStatisticRepository groupStatisticRepository,
+		public GroupStatisticsPieChartViewModelFactory(IGroupStatisticGenerator groupStatisticRepository,
 			IGroupStatisticCategoriesConverter statCategoryConvertr,
 			ICategoryViewModelFactory categoryViewModelFactory,
 			IEventAggregator ea)

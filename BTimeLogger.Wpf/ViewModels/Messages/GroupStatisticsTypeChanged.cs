@@ -1,14 +1,12 @@
-﻿using static BTimeLogger.Activity;
-
-namespace BTimeLogger.Wpf.ViewModels.Messages
+﻿namespace BTimeLogger.Wpf.ViewModels.Messages
 {
 	public class GroupStatisticsTypeChanged
 	{
-		public GroupStatisticsTypeChanged(ActivityCode newGroupType)
+		public GroupStatisticsTypeChanged(Activity newGroupType)
 		{
 			NewGroupType = newGroupType;
 		}
 
-		public ActivityCode NewGroupType { get; }
+		public Activity NewGroupType { get; }
 	}
 }

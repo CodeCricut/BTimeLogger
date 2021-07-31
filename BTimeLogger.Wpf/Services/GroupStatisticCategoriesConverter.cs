@@ -18,18 +18,18 @@ namespace BTimeLogger.Wpf.Services
 		public IEnumerable<Category> Convert(GroupStatistic groupStat)
 		{
 			List<Category> cats = new();
-			foreach (GroupStatistic child in groupStat.Children)
-				cats.Add(ConvertChild(child));
+			foreach (Statistic child in groupStat.Children)
+				cats.Add(ConvertStatisticChild(child));
 			return cats;
 		}
 
-		private Category ConvertChild(GroupStatistic child)
+		private Category ConvertStatisticChild(Statistic child)
 		{
 			return new Category()
 			{
 				Color = ColorUtil.GetCloseColor(_baseColor, 150), // TODO: IDK how to generate color honestly. maybe just a hash
-				Percentage = (float)child.PercentParent,
-				Title = child.ActivityType.Name
+				Percentage = (float)child.PercentOfTrackedTimeInTimespan,
+				Title = child.Activity.Name
 			};
 		}
 

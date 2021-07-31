@@ -3,7 +3,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using static BTimeLogger.Activity;
 
-namespace BTimeLogger.Domain
+namespace BTimeLogger.Domain.Services
 {
 	public interface IActivityRepository
 	{

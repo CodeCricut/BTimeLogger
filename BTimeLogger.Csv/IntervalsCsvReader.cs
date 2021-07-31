@@ -1,4 +1,4 @@
-﻿using BTimeLogger.Domain;
+﻿using BTimeLogger.Domain.Services;
 using CsvHelper;
 using System;
 using System.Collections.Generic;
@@ -21,8 +21,7 @@ namespace BTimeLogger.Csv
 
 		public IntervalsCsvReader(
 			IIntervalRepository intervalRepository,
-			IActivityRepository activityRepository,
-			IStatisticsRepository statisticsRepository) : base(intervalRepository, activityRepository, statisticsRepository)
+			IActivityRepository activityRepository) : base(intervalRepository, activityRepository)
 		{
 			_intervalRepository = intervalRepository;
 			_activityRepository = activityRepository;

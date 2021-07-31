@@ -1,4 +1,4 @@
-﻿using BTimeLogger.Domain;
+﻿using BTimeLogger.Domain.Services;
 using CsvHelper;
 using System;
 using System.Collections.Generic;
@@ -10,22 +10,20 @@ using static BTimeLogger.Activity;
 
 namespace BTimeLogger.Csv
 {
+	// TODO: merge with IntervalsCsvReader
 	public abstract class ReportCsvReader
 	{
 
 		private readonly IIntervalRepository _intervalRepository;
 		private readonly IActivityRepository _activityRepository;
-		private readonly IStatisticsRepository _statisticsRepository;
 
 		private int _groupColCount;
 
 		public ReportCsvReader(IIntervalRepository intervalRepository,
-			IActivityRepository activityRepository,
-			IStatisticsRepository statisticsRepository)
+			IActivityRepository activityRepository)
 		{
 			_intervalRepository = intervalRepository;
 			_activityRepository = activityRepository;
-			_statisticsRepository = statisticsRepository;
 		}
 
 		public async Task ReadCsv(string csvLocation)

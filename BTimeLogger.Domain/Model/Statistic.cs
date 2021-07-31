@@ -6,6 +6,9 @@ namespace BTimeLogger
 	{
 		public Activity Activity { get; set; }
 		public TimeSpan Duration { get; set; }
-		public decimal Percent { get; set; }
+		public decimal PercentOfTrackedTimeInTimespan { get; set; }
+
+		public DateTime From { get; set; }
+		public DateTime To { get; set; }
 	}
 }

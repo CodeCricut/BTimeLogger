@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using static BTimeLogger.Activity;
 
 namespace BTimeLogger.Wpf.Model
 {
@@ -6,6 +8,6 @@ namespace BTimeLogger.Wpf.Model
 	{
 		public DateTime From { get; set; }
 		public DateTime To { get; set; }
-		public Activity[] IncludedActivities { get; set; } = Array.Empty<Activity>();
+		public IEnumerable<ActivityCode> IncludedActivities { get; set; } = Array.Empty<ActivityCode>();
 	}
 }

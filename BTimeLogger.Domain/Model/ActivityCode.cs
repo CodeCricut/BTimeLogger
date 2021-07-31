@@ -44,7 +44,27 @@ namespace BTimeLogger
 
 					string parentName = groupNames[groupNames.Length - 1];
 					string[] parentParentNames = groupNames.Take(groupNames.Length - 1).ToArray();
-					return ActivityCode.CreateCode(parentName, parentParentNames);
+					return CreateCode(parentName, parentParentNames);
+				}
+			}
+
+			public IEnumerable<ActivityCode> AncestorCodes
+			{
+				get
+				{
+					if (Parts.Length <= 0)
+						return Array.Empty<ActivityCode>();
+
+					List<ActivityCode> ancestors = new();
+
+					ActivityCode currentAncestor = this;
+					while (currentAncestor != null)
+					{
+						ancestors.Add(currentAncestor);
+						currentAncestor = currentAncestor.ParentCode;
+					}
+
+					return ancestors;
 				}
 			}
 
@@ -81,11 +101,6 @@ namespace BTimeLogger
 					builder.Append(groupNames[i]);
 					builder.Append(DELIM);
 				}
-				//for (int i = groupNames.Length - 1; i >= 0; i--)
-				//{
-				//	builder.Append(groupNames[i]);
-				//	builder.Append(DELIM);
-				//}
 				builder.Append(activityName);
 				return new ActivityCode(builder.ToString());
 			}

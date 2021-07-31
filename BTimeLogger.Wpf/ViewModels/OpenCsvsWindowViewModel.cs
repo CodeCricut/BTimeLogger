@@ -16,19 +16,11 @@ namespace BTimeLogger.Wpf.ViewModels
 		private readonly IEventAggregator _ea;
 		private readonly IMediator _mediator;
 
-
 		private string _intervalsCsvLocation;
 		public string IntervalsCsvLocation
 		{
 			get => _intervalsCsvLocation;
 			set { Set(ref _intervalsCsvLocation, value); CreateReportCommand.RaiseCanExecuteChanged(); }
-		}
-
-		private string _statisticsCsvLocation;
-		public string StatisticsCsvLocation
-		{
-			get => _statisticsCsvLocation;
-			set { Set(ref _statisticsCsvLocation, value); CreateReportCommand.RaiseCanExecuteChanged(); }
 		}
 
 		private bool _loading;
@@ -64,7 +56,7 @@ namespace BTimeLogger.Wpf.ViewModels
 
 		private bool CanCreateReport(object arg)
 		{
-			return !(string.IsNullOrWhiteSpace(StatisticsCsvLocation) || string.IsNullOrWhiteSpace(IntervalsCsvLocation));
+			return !string.IsNullOrWhiteSpace(IntervalsCsvLocation);
 		}
 
 		private async Task CreateReport(object obj)
@@ -74,7 +66,7 @@ namespace BTimeLogger.Wpf.ViewModels
 				Loading = true;
 				InvalidReportInfo = false;
 
-				await _mediator.Send(new ReadCsvs(IntervalsCsvLocation, StatisticsCsvLocation));
+				await _mediator.Send(new ReadCsvs(IntervalsCsvLocation));
 				_ea.SendMessage(new ReportSourceChanged());
 
 				Loading = false;

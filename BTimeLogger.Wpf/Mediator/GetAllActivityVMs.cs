@@ -1,4 +1,4 @@
-﻿using BTimeLogger.Domain;
+﻿using BTimeLogger.Domain.Services;
 using BTimeLogger.Wpf.ViewModels.Domain;
 using BTimeLogger.Wpf.ViewModels.Factories;
 using MediatR;

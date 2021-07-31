@@ -9,7 +9,7 @@ namespace BTimeLogger.Wpf.ViewModels.Domain
 
 		public ActivityViewModel Activity { get; set; }
 		public string Duration { get => _statistic.Duration.DurationString(); }
-		public decimal Percent { get => _statistic.Percent; }
+		public decimal Percent { get => _statistic.PercentOfTrackedTimeInTimespan; }
 
 		public StatisticViewModel(Statistic statistic)
 		{

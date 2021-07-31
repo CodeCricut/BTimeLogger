@@ -13,21 +13,16 @@ namespace BTimeLogger.Wpf.ViewModels.Factories
 	class OpenCsvsWindowViewModelFactory : IOpenCsvsWindowViewModelFactory
 	{
 		private readonly IViewManager _viewManager;
-		private readonly IIntervalsCsvReader _intervalsCsvReader;
-		private readonly IStatisticsCsvReader _statisticsCsvReader;
 		private readonly IEventAggregator _ea;
 		private readonly IMediator _mediator;
 
 		public OpenCsvsWindowViewModelFactory(
 			IViewManager viewManager,
 			IIntervalsCsvReader intervalsCsvReader,
-			IStatisticsCsvReader statisticsCsvReader,
 			IEventAggregator ea,
 			IMediator mediator)
 		{
 			_viewManager = viewManager;
-			_intervalsCsvReader = intervalsCsvReader;
-			_statisticsCsvReader = statisticsCsvReader;
 			_ea = ea;
 			_mediator = mediator;
 		}

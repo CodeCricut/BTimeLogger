@@ -1,4 +1,4 @@
-﻿using BTimeLogger.Domain.Repositories;
+﻿using BTimeLogger.Domain.Services;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -10,8 +10,9 @@ namespace BTimeLogger.Domain
 		{
 			services.AddSingleton<IActivityRepository, ActivityRepository>();
 			services.AddSingleton<IIntervalRepository, IntervalRepository>();
-			services.AddSingleton<IStatisticsRepository, StatisticsRepository>();
-			services.AddSingleton<IGroupStatisticRepository, GroupStatisticRepository>();
+			services.AddSingleton<IGroupStatisticGenerator, GroupStatisticGenerator>();
+
+			services.AddSingleton<IStatisticsGenerator, StatisticsGenerator>();
 
 			return services;
 		}

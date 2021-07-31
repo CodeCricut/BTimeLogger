@@ -1,5 +1,6 @@
 ﻿using BTimeLogger.Domain;
 using BTimeLogger.Domain.Helpers;
+using BTimeLogger.Domain.Services;
 using BTimeLogger.Wpf.Model;
 using BTimeLogger.Wpf.Util;
 using BTimeLogger.Wpf.ViewModels.Factories;

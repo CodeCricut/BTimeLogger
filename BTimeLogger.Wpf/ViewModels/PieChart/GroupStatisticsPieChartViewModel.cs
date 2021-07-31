@@ -1,27 +1,26 @@
 ﻿using BTimeLogger.Domain;
-using BTimeLogger.Domain.Repositories;
+using BTimeLogger.Domain.Services;
 using BTimeLogger.Wpf.Model;
 using BTimeLogger.Wpf.Services;
+using BTimeLogger.Wpf.Util;
 using BTimeLogger.Wpf.ViewModels.Factories;
 using BTimeLogger.Wpf.ViewModels.Messages;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using WpfCore.MessageBus;
-using static BTimeLogger.Activity;
 
 namespace BTimeLogger.Wpf.ViewModels.PieChart
 {
 	public class GroupStatisticsPieChartViewModel : PieChartViewModel
 	{
-		private readonly IGroupStatisticRepository _groupStatsRepo;
+		private readonly IGroupStatisticGenerator _groupStatsRepo;
 		private readonly IGroupStatisticCategoriesConverter _statCategoryConverter;
 		private readonly ICategoryViewModelFactory _catVMFactory;
 
-
-		private ActivityCode _groupStatisticType = null;
+		private GroupStatisticSearchFilter _groupStatisticSearchFilter = new();
 
 		public GroupStatisticsPieChartViewModel(
-			IGroupStatisticRepository groupStatsRepo,
+			IGroupStatisticGenerator groupStatsRepo,
 			IGroupStatisticCategoriesConverter statCategoryConverter,
 			ICategoryViewModelFactory catVMFactory,
 			IEventAggregator ea)
@@ -36,9 +35,9 @@ namespace BTimeLogger.Wpf.ViewModels.PieChart
 			UpdateChartCommand.Execute();
 		}
 
-		private void HandleGroupStatTypeChanged(ActivityCode newGroupType)
+		private void HandleGroupStatTypeChanged(Activity newGroupType)
 		{
-			_groupStatisticType = newGroupType;
+			_groupStatisticSearchFilter.GroupType = newGroupType;
 			UpdateChartCommand.Execute(null);
 		}
 
@@ -49,12 +48,12 @@ namespace BTimeLogger.Wpf.ViewModels.PieChart
 
 		protected override Task<string> GetTitle()
 		{
-			return Task.FromResult(_groupStatisticType?.Value ?? "Total");
+			return Task.FromResult(_groupStatisticSearchFilter.GroupType?.Name ?? "Total");
 		}
 
 		protected override async Task<IEnumerable<CategoryViewModel>> GetCategories()
 		{
-			GroupStatistic groupStat = await _groupStatsRepo.CreateForGroup(_groupStatisticType);
+			GroupStatistic groupStat = await _groupStatsRepo.CreateForGroup(_groupStatisticSearchFilter);
 			IEnumerable<Category> childrenCategories = _statCategoryConverter.Convert(groupStat);
 
 			List<CategoryViewModel> childCatVms = new();

@@ -7,11 +7,9 @@ namespace BTimeLogger.Wpf.Mediator
 {
 	public class ReadCsvs : IRequest
 	{
-		public ReadCsvs(string intervalCsvLocation,
-			string statisticsCsvLocation)
+		public ReadCsvs(string intervalCsvLocation)
 		{
 			IntervalCsvLocation = intervalCsvLocation;
-			StatisticsCsvLocation = statisticsCsvLocation;
 		}
 
 		public string IntervalCsvLocation { get; }
@@ -22,18 +20,15 @@ namespace BTimeLogger.Wpf.Mediator
 	{
 		private readonly ICsvLocationPrincipal _csvLocationPrincipal;
 		private readonly IIntervalsCsvReader _intervalsCsvReader;
-		private readonly IStatisticsCsvReader _statisticsCsvReader;
 		private readonly IMediator _mediator;
 
 		public ReadCsvsHandler(
 			ICsvLocationPrincipal csvLocationPrincipal,
 			IIntervalsCsvReader intervalsCsvReader,
-			IStatisticsCsvReader statisticsCsvReader,
 			IMediator mediator)
 		{
 			_csvLocationPrincipal = csvLocationPrincipal;
 			_intervalsCsvReader = intervalsCsvReader;
-			_statisticsCsvReader = statisticsCsvReader;
 			_mediator = mediator;
 		}
 
@@ -44,10 +39,8 @@ namespace BTimeLogger.Wpf.Mediator
 			await _mediator.Send(new ClearAllData());
 
 			_csvLocationPrincipal.IntervalCsvLocation = request.IntervalCsvLocation;
-			_csvLocationPrincipal.StatisticCsvLocation = request.StatisticsCsvLocation;
 
 			await _intervalsCsvReader.ReadIntervalCsv(request.IntervalCsvLocation);
-			await _statisticsCsvReader.ReadStatisticsCsv(request.StatisticsCsvLocation);
 
 			return Unit.Value;
 		}

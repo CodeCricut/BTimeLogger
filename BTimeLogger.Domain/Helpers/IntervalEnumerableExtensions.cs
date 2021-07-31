@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using static BTimeLogger.Activity;
 
 namespace BTimeLogger.Domain.Helpers
 {
@@ -37,35 +38,59 @@ namespace BTimeLogger.Domain.Helpers
 			return filteredIntervals;
 		}
 
-		public static IEnumerable<Interval> OfActivityType(this IEnumerable<Interval> intervals, Activity activityType, IEqualityComparer<Activity> activityComparer = null)
+		public static IEnumerable<Interval> WithAncestorOfType(this IEnumerable<Interval> intervals, ActivityCode activityType)
 		{
-			if (activityComparer == null) activityComparer = new ActivityNameEqualityOperator();
-			return intervals.Where(interval => activityComparer.Equals(interval.Activity, activityType));
-		}
+			if (intervals == null) throw new ArgumentNullException(nameof(intervals));
+			if (activityType == null) throw new ArgumentNullException(nameof(activityType));
 
-		public static IEnumerable<Interval> OfActivityTypes(this IEnumerable<Interval> intervals, Activity[] activityTypes, IEqualityComparer<Activity> activityComparer = null)
-		{
-			if (activityComparer == null) activityComparer = new ActivityNameEqualityOperator();
 			return intervals.Where(interval =>
 			{
-				Activity activity = interval.Activity;
-				if (activityTypes.Contains(interval.Activity, activityComparer)) return true;
+				ActivityCode intervalActivityType = interval.Activity.Code;
+				bool hasAncestorOfType = intervalActivityType.AncestorCodes.Contains(activityType);
+				return hasAncestorOfType;
+			});
+		}
 
-				Activity currentGroupAncestor = activity.Parent;
+		public static IEnumerable<Interval> OfActivityTypes(this IEnumerable<Interval> intervals, IEnumerable<ActivityCode> activityTypes)
+		{
+			return intervals.Where(interval =>
+			{
+				IEnumerable<ActivityCode> ancestorCodes = interval.Activity.Code.AncestorCodes;
+				bool hasAncestorOfProvidedType = ancestorCodes.Any(code => activityTypes.Contains(code));
+				return hasAncestorOfProvidedType;
+
+				ActivityCode code = interval.Activity.Code;
+				if (activityTypes.Any(type => type.Equals(code)))
+					return true;
+
+				ActivityCode currentGroupAncestor = code.ParentCode;
+
 				while (currentGroupAncestor != null)
 				{
-					if (activityTypes.Contains(currentGroupAncestor, activityComparer)) return true;
-					currentGroupAncestor = currentGroupAncestor.Parent;
+					if (activityTypes.Any(type => type.Equals(code)))
+						return true;
+					currentGroupAncestor = currentGroupAncestor.ParentCode;
 				}
 				return false;
 			});
 		}
 
-
-		public static IEnumerable<Interval> OfActivityTypesOrAll(this IEnumerable<Interval> intervals, Activity[] activityTypes, IEqualityComparer<Activity> activityComparer = null)
+		public static IEnumerable<Interval> OfActivityTypesOrAll(this IEnumerable<Interval> intervals, IEnumerable<ActivityCode> activityTypes)
 		{
-			if (activityTypes?.Length <= 0) return intervals;
-			return intervals.OfActivityTypes(activityTypes, activityComparer);
+			if (activityTypes?.Count() <= 0) return intervals;
+			return intervals.OfActivityTypes(activityTypes);
+		}
+
+		public static TimeSpan Duration(this IEnumerable<Interval> intervals)
+		{
+			if (intervals.Count() <= 0) return TimeSpan.Zero;
+			return intervals.Select(interval => interval.Duration).Aggregate((dur1, dur2) => dur1.Add(dur2));
+		}
+
+		public static TimeSpan Duration(this IEnumerable<Statistic> stats)
+		{
+			if (stats.Count() <= 0) return TimeSpan.Zero;
+			return stats.Select(stat => stat.Duration).Aggregate((dur1, dur2) => dur1.Add(dur2));
 		}
 	}
 }
