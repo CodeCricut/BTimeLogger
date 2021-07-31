@@ -28,14 +28,14 @@ namespace BTimeLogger.Domain.Services
 
 		public Task<IEnumerable<Interval>> GetIntervals()
 		{
-			return Task.FromResult(_intervals.ToArray().AsEnumerable());
+			return Task.FromResult(_intervals.AsEnumerable());
 		}
 
 		public async Task<IEnumerable<Interval>> GetIntervals(IEnumerable<ActivityCode> activityTypes, DateTime? from, DateTime? to)
 		{
-			IEnumerable<Interval> activities = await GetIntervals();
+			IEnumerable<Interval> intervals = await GetIntervals();
 
-			return activities
+			return intervals
 				.BetweenDates(from, to, useOnlyDate: true)
 				.OfActivityTypesOrAll(activityTypes);
 		}

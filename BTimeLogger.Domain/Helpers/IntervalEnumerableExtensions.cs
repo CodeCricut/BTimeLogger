@@ -30,7 +30,7 @@ namespace BTimeLogger.Domain.Helpers
 
 		public static IEnumerable<Interval> BetweenDates(this IEnumerable<Interval> intervals, DateTime? fromDate, DateTime? toDate, bool useOnlyDate = true)
 		{
-			IEnumerable<Interval> filteredIntervals = intervals.ToArray();
+			IEnumerable<Interval> filteredIntervals = intervals;
 			if (fromDate.HasValue)
 				filteredIntervals = filteredIntervals.From(fromDate.Value, useOnlyDate);
 			if (toDate.HasValue)

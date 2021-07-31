@@ -34,7 +34,6 @@ namespace BTimeLogger.Wpf.ViewModels.PieChart
 			ea.RegisterHandler<TimeSpanChanged>(HandleTimeSpanChanged);
 			ea.RegisterHandler<ReportSourceChanged>(HandleReportSourceChanged);
 
-
 			UpdateChartCommand.Execute();
 		}
 

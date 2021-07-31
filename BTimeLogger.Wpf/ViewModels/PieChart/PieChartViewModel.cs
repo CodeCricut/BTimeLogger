@@ -96,22 +96,26 @@ namespace BTimeLogger.Wpf.ViewModels.PieChart
 
 		private async Task UpdateTitle()
 		{
-			ChartTitle = await GetTitle();
+			string chartTitle = await GetTitle();
+			App.Current.Dispatcher.Invoke(() => ChartTitle = chartTitle);
 		}
 
 		protected abstract Task<string> GetTitle();
 
-
 		private async Task UpdateSlices()
 		{
 			IEnumerable<CategoryViewModel> newCategories = await GetCategories();
-			Categories.Clear();
-			foreach (var category in newCategories)
-				Categories.Add(category);
 
-			ResetSliceGeometries();
+			App.Current.Dispatcher.Invoke(() =>
+			{
+				Categories.Clear();
+				foreach (var category in newCategories)
+					Categories.Add(category);
 
-			AddSliceGeometries();
+				ResetSliceGeometries();
+
+				AddSliceGeometries();
+			});
 		}
 
 		protected abstract Task<IEnumerable<CategoryViewModel>> GetCategories();
