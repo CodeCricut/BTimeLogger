@@ -24,7 +24,12 @@
     <system:String x:Key="elipses">...</system:String>
     <system:String x:Key="invalidReport">Invalid report info.</system:String>
     <system:String x:Key="group">Group</system:String>
+    <system:String x:Key="activity">Activity</system:String>
     <system:String x:Key="activities">Activities</system:String>
     <system:String x:Key="pickReportLocations">Pick report locations</system:String>
     <system:String x:Key="noData">No data</system:String>
+    <system:String x:Key="duration">Duration</system:String>
+    <system:String x:Key="delete">Delete</system:String>
+    <system:String x:Key="save">Save</system:String>
+    <system:String x:Key="comment">Comment</system:String>
 </ResourceDictionary>

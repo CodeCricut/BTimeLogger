@@ -33,6 +33,14 @@ namespace BTimeLogger.Wpf.ViewModels
 			}
 		}
 
+		public void SelectActivity(ActivityViewModel activity)
+		{
+			if (!Items.Contains(activity))
+				Items.Add(activity);
+
+			SelectedGroupActivity = activity;
+		}
+
 		public bool NoneItemSelected { get => SelectedGroupActivity is NoneItem; }
 		public bool NoActivityGroupSelected { get => NoneItemSelected || SelectedGroupActivity == null; }
 	}

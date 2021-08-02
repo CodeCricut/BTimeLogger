@@ -6,9 +6,14 @@
              xmlns:local="clr-namespace:BTimeLogger.Wpf.View"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
-    <StackPanel DataContext="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type local:IntervalListItem}}}"
-                Orientation="Vertical"
+    <Grid DataContext="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type local:IntervalListItem}}}"
                 Margin="0 0 0 0">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        
+
         <StackPanel Orientation="Vertical"
                     Visibility="{Binding ViewModel.IsLastOnDate, Converter={StaticResource boolToVis}}">
             <TextBlock Text="{Binding ViewModel.Interval.FromDate, Mode=OneWay}"
@@ -18,8 +23,10 @@
             <Border Style="{StaticResource MenuSeparatorStyle}" />
 
         </StackPanel>
+        
         <Border BorderThickness="0"
-                CornerRadius="5">
+                CornerRadius="5"
+                Grid.Row="1">
 
             <Grid>
                 <Grid.ColumnDefinitions>
@@ -50,5 +57,9 @@
                 </Grid>
             </Grid>
         </Border>
-    </StackPanel>
+
+        <Button Command="{Binding ViewModel.ModifyIntervalCommand}"
+                Grid.RowSpan="2"
+                Opacity="0" />
+    </Grid>
 </UserControl>

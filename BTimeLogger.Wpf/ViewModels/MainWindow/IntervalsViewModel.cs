@@ -1,4 +1,7 @@
-﻿using WpfCore.ViewModel;
+﻿using BTimeLogger.Wpf.Util;
+using BTimeLogger.Wpf.ViewModels.Messages;
+using WpfCore.MessageBus;
+using WpfCore.ViewModel;
 
 namespace BTimeLogger.Wpf.ViewModels.MainWindow
 {
@@ -11,11 +14,21 @@ namespace BTimeLogger.Wpf.ViewModels.MainWindow
 		public IntervalsViewModel(
 			PartialIntervalListViewModel partialIntervalListViewModel,
 			GroupedActivityFilterViewModel groupedActivityFilterVM,
-			TimeSpanPanelViewModel timeSpanPanelViewModel)
+			TimeSpanPanelViewModel timeSpanPanelViewModel,
+			IEventAggregator ea)
 		{
 			PartialIntervalListViewModel = partialIntervalListViewModel;
 			GroupedActivityFilterViewModel = groupedActivityFilterVM;
 			TimeSpanPanelViewModel = timeSpanPanelViewModel;
+
+			GroupedActivityFilterViewModel.NoGroupActivitySelected += (_, args) =>
+				ea.SendMessage(IncludedIntervalActivitiesChanged.NoIncludedActivities());
+
+			GroupedActivityFilterViewModel.GroupActivitySelected += (_, args) =>
+				ea.SendMessage(IncludedIntervalActivitiesChanged.SingleActivity(GroupedActivityFilterViewModel.GroupsSource.SelectedGroupActivity.Activity.Code));
+
+			GroupedActivityFilterViewModel.ActivitiesSelected += (_, args) =>
+				ea.SendMessage(new IncludedIntervalActivitiesChanged(GroupedActivityFilterViewModel.SelectedActivities.SelectActivityCodes()));
 		}
 	}
 }

@@ -1,4 +1,5 @@
 ﻿using BTimeLogger.Wpf.ViewModels.Domain;
+using WpfCore.Services;
 
 namespace BTimeLogger.Wpf.ViewModels.Factories
 {
@@ -10,16 +11,22 @@ namespace BTimeLogger.Wpf.ViewModels.Factories
 	class IntervalListItemViewModelFactory : IIntervalListItemViewModelFactory
 	{
 		private readonly IIntervalViewModelFactory _intervalViewModelFactory;
+		private readonly IModifyIntervalWindowViewModelFactory _modifyIntervalWindowViewModelFactory;
+		private readonly IViewManager _viewManager;
 
-		public IntervalListItemViewModelFactory(IIntervalViewModelFactory intervalViewModelFactory)
+		public IntervalListItemViewModelFactory(IIntervalViewModelFactory intervalViewModelFactory,
+			IModifyIntervalWindowViewModelFactory modifyIntervalWindowViewModelFactory,
+			IViewManager viewManager)
 		{
 			_intervalViewModelFactory = intervalViewModelFactory;
+			_modifyIntervalWindowViewModelFactory = modifyIntervalWindowViewModelFactory;
+			_viewManager = viewManager;
 		}
 
 		public IntervalListItemViewModel Create(Interval interval, bool isLastOnDate)
 		{
 			IntervalViewModel intervalVM = _intervalViewModelFactory.Create(interval);
-			return new IntervalListItemViewModel(intervalVM, isLastOnDate);
+			return new IntervalListItemViewModel(intervalVM, isLastOnDate, _modifyIntervalWindowViewModelFactory, _viewManager);
 		}
 	}
 }

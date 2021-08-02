@@ -14,6 +14,8 @@ namespace BTimeLogger.Csv.Helpers
 	{
 		public static string ToCsvFormat(this TimeSpan duration)
 		{
+			if (duration.TotalDays >= 1)
+				return $"{duration.TotalDays.ToString("N0")} days, {duration.ToString("hh':'mm")}";
 			return duration.ToString("hh':'mm");
 		}
 	}

@@ -12,23 +12,31 @@ namespace BTimeLogger.Domain.Services
 		Task<IEnumerable<Interval>> GetIntervals();
 		Task<IEnumerable<Interval>> GetIntervals(IEnumerable<ActivityCode> activityCodes, DateTime? from, DateTime? to);
 		Task<IEnumerable<Interval>> GetIntervals(ActivityCode activityCode, DateTime? from, DateTime? to);
-		Task AddInterval(Interval interval);
+
+		Task<Interval> GetInterval(Guid intervalGuid);
+		Task<Guid> AddInterval(Interval interval);
+		Task UpdateInterval(Guid intervalGuid, Interval interval);
+		Task DeleteInterval(Guid intervalGuid);
 
 		Task ClearIntervals();
 	}
 
 	class IntervalRepository : IIntervalRepository
 	{
-		private readonly List<Interval> _intervals = new();
+		private readonly Dictionary<Guid, Interval> _intervals = new();
 
-		public Task AddInterval(Interval interval)
+		public Task<Guid> AddInterval(Interval interval)
 		{
-			return Task.Factory.StartNew(() => _intervals.Add(interval));
+			Guid intervalGuid = Guid.NewGuid();
+			interval.Guid = intervalGuid;
+			_intervals.Add(intervalGuid, interval);
+
+			return Task.FromResult(intervalGuid);
 		}
 
 		public Task<IEnumerable<Interval>> GetIntervals()
 		{
-			return Task.FromResult(_intervals.AsEnumerable());
+			return Task.FromResult(_intervals.Values.AsEnumerable());
 		}
 
 		public async Task<IEnumerable<Interval>> GetIntervals(IEnumerable<ActivityCode> activityTypes, DateTime? from, DateTime? to)
@@ -49,6 +57,27 @@ namespace BTimeLogger.Domain.Services
 		public Task<IEnumerable<Interval>> GetIntervals(ActivityCode activityCode, DateTime? from, DateTime? to)
 		{
 			return GetIntervals(new ActivityCode[] { activityCode }, from, to);
+		}
+
+		public Task<Interval> GetInterval(Guid intervalGuid)
+		{
+			return Task.FromResult(_intervals.GetValueOrDefault(intervalGuid));
+		}
+
+		public Task UpdateInterval(Guid intervalGuid, Interval interval)
+		{
+			if (!_intervals.ContainsKey(intervalGuid)) throw new KeyNotFoundException();
+
+			_intervals[intervalGuid] = interval;
+
+			return Task.CompletedTask;
+		}
+
+		public Task DeleteInterval(Guid intervalGuid)
+		{
+			if (!_intervals.ContainsKey(intervalGuid)) throw new KeyNotFoundException();
+			_intervals.Remove(intervalGuid);
+			return Task.CompletedTask;
 		}
 	}
 }

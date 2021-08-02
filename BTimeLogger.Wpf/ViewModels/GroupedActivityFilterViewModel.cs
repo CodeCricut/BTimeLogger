@@ -1,12 +1,10 @@
 ﻿using BTimeLogger.Wpf.Mediator;
-using BTimeLogger.Wpf.Util;
 using BTimeLogger.Wpf.ViewModels.Domain;
 using BTimeLogger.Wpf.ViewModels.Messages;
 using MediatR;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Collections.Specialized;
 using System.Linq;
 using System.Threading.Tasks;
 using WpfCore.Commands;
@@ -32,6 +30,11 @@ namespace BTimeLogger.Wpf.ViewModels
 
 		public AsyncDelegateCommand ReloadCommand { get; }
 
+
+		public event EventHandler NoGroupActivitySelected;
+		public event EventHandler GroupActivitySelected;
+		public event EventHandler ActivitiesSelected;
+
 		public GroupedActivityFilterViewModel(
 			IEventAggregator ea,
 			IMediator mediator)
@@ -43,22 +46,26 @@ namespace BTimeLogger.Wpf.ViewModels
 
 			ea.RegisterHandler<ReportSourceChanged>(msg => ReloadCommand.Execute());
 
+
 			GroupsSource.PropertyChanged += (_, args) =>
 			{
 				if (GroupsSource.NoActivityGroupSelected)
 				{
-					_ea.SendMessage(IncludedIntervalActivitiesChanged.NoIncludedActivities());
+					NoGroupActivitySelected?.Invoke(this, args);
+					//_ea.SendMessage(IncludedIntervalActivitiesChanged.NoIncludedActivities());
 					RePopulateActivities();
 				}
 				else
 				{
-					_ea.SendMessage(IncludedIntervalActivitiesChanged.SingleActivity(GroupsSource.SelectedGroupActivity.Activity.Code));
+					GroupActivitySelected?.Invoke(this, args);
+					//_ea.SendMessage(IncludedIntervalActivitiesChanged.SingleActivity(GroupsSource.SelectedGroupActivity.Activity.Code));
 					RePopulateActivities();
 				}
 			};
 
-			SelectedActivities.CollectionChanged += (object _, NotifyCollectionChangedEventArgs e) =>
-				_ea.SendMessage(new IncludedIntervalActivitiesChanged(SelectedActivities.SelectActivityCodes()));
+			SelectedActivities.CollectionChanged += (_, args) => ActivitiesSelected?.Invoke(this, args);
+			//SelectedActivities.CollectionChanged += (object _, NotifyCollectionChangedEventArgs e) =>
+			//	_ea.SendMessage(new IncludedIntervalActivitiesChanged(SelectedActivities.SelectActivityCodes()));
 
 			ReloadCommand.Execute();
 		}

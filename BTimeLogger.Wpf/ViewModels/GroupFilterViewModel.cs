@@ -2,6 +2,7 @@
 using BTimeLogger.Wpf.ViewModels.Domain;
 using BTimeLogger.Wpf.ViewModels.Messages;
 using MediatR;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using WpfCore.Commands;
@@ -20,7 +21,12 @@ namespace BTimeLogger.Wpf.ViewModels
 
 		public ActivityGroupSourceViewModel GroupsSource { get; } = new();
 
+		public Activity SelectedActivity { get => GroupsSource.SelectedGroupActivity.Activity; }
+
 		public AsyncDelegateCommand ReloadCommand { get; }
+
+		public event EventHandler NoActivityGroupSelected;
+		public event EventHandler GroupSelected;
 
 		public GroupFilterViewModel(
 			IEventAggregator ea,
@@ -36,9 +42,9 @@ namespace BTimeLogger.Wpf.ViewModels
 			GroupsSource.PropertyChanged += (_, args) =>
 			{
 				if (GroupsSource.NoActivityGroupSelected)
-					_ea.SendMessage(GroupStatisticsTypeChanged.NoGroup());
+					NoActivityGroupSelected?.Invoke(this, args);
 				else
-					_ea.SendMessage(new GroupStatisticsTypeChanged(GroupsSource.SelectedGroupActivity.Activity));
+					GroupSelected?.Invoke(this, args);
 			};
 
 			ReloadCommand.Execute();
@@ -48,7 +54,6 @@ namespace BTimeLogger.Wpf.ViewModels
 		{
 			_allActivityVMs = await _mediator.Send(new GetAllActivityVMsQuery());
 			PopulateGroups();
-
 		}
 
 		private void PopulateGroups()

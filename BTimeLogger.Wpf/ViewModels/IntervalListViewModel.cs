@@ -19,7 +19,6 @@ namespace BTimeLogger.Wpf.ViewModels
 
 		private readonly IntervalSearchFilter _intervalSearchFilter = new();
 
-
 		public ObservableCollection<IntervalListItemViewModel> Items { get; } = new();
 
 		#region Loading

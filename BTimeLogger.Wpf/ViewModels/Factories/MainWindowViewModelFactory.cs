@@ -9,7 +9,7 @@ namespace BTimeLogger.Wpf.ViewModels.Factories
 
 	class MainWindowViewModelFactory : IMainWindowViewModelFactory
 	{
-		private readonly IWindowButtonsViewModelFactory _windowButtonsViewModel;
+		private readonly IWindowButtonsViewModelFactory _windowButtonsViewModelFactory;
 		private readonly IMainLayoutViewModelFactory _mainLayoutViewModelFactory;
 		private readonly ITitleBarMenuViewModelFactory _titleBarMenuViewModel;
 
@@ -18,14 +18,14 @@ namespace BTimeLogger.Wpf.ViewModels.Factories
 			IMainLayoutViewModelFactory mainLayoutViewModelFactory,
 			ITitleBarMenuViewModelFactory titleBarMenuViewModel)
 		{
-			_windowButtonsViewModel = windowButtonsViewModel;
+			_windowButtonsViewModelFactory = windowButtonsViewModel;
 			_mainLayoutViewModelFactory = mainLayoutViewModelFactory;
 			_titleBarMenuViewModel = titleBarMenuViewModel;
 		}
 
 		public MainWindowViewModel Create()
 		{
-			WindowButtonsViewModel windowButtonsVM = _windowButtonsViewModel.Create();
+			WindowButtonsViewModel windowButtonsVM = _windowButtonsViewModelFactory.Create();
 			MainLayoutViewModel mainLayoutVM = _mainLayoutViewModelFactory.Create();
 			TitleBarMenuViewModel titleBarMenuVM = _titleBarMenuViewModel.Create();
 			return new MainWindowViewModel(windowButtonsVM, mainLayoutVM, titleBarMenuVM);
