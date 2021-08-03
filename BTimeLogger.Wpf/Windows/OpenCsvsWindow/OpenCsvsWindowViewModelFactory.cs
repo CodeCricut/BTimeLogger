@@ -3,7 +3,7 @@ using MediatR;
 using WpfCore.MessageBus;
 using WpfCore.Services;
 
-namespace BTimeLogger.Wpf.ViewModels.Factories
+namespace BTimeLogger.Wpf.Windows
 {
 	public interface IOpenCsvsWindowViewModelFactory
 	{

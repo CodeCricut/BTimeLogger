@@ -1,6 +1,6 @@
-﻿using BTimeLogger.Wpf.ViewModels.Domain;
+﻿using BTimeLogger.Wpf.Controls;
 
-namespace BTimeLogger.Wpf.ViewModels.Factories
+namespace BTimeLogger.Wpf.Windows
 {
 	public interface IModifyIntervalWindowViewModelFactory
 	{

@@ -1,6 +1,6 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                    xmlns:view="clr-namespace:BTimeLogger.Wpf.View">
+                    xmlns:controls="clr-namespace:BTimeLogger.Wpf.Controls">
     <ResourceDictionary.MergedDictionaries>
         <ResourceDictionary Source="./ButtonStyle.xaml" />
         <ResourceDictionary Source="./CardBorderStyle.xaml" />
@@ -64,6 +64,6 @@
            BasedOn="{StaticResource ListBoxStyle}" />
     <Style TargetType="{x:Type ListBoxItem}"
            BasedOn="{StaticResource ListBoxItemContainerStyle}" />
-    <Style TargetType="{x:Type view:MultiSelectListBox}"
+    <Style TargetType="{x:Type controls:MultiSelectListBox}"
            BasedOn="{StaticResource ListBoxStyle}" />
 </ResourceDictionary>

@@ -1,5 +1,5 @@
 ﻿using BTimeLogger.Domain.Helpers;
-using BTimeLogger.Wpf.ViewModels.Domain;
+using BTimeLogger.Wpf.Controls;
 using System.Collections.Generic;
 using System.Linq;
 using static BTimeLogger.Activity;

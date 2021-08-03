@@ -1,6 +1,5 @@
 ﻿using BTimeLogger.Domain.Services;
-using BTimeLogger.Wpf.ViewModels.Domain;
-using BTimeLogger.Wpf.ViewModels.Factories;
+using BTimeLogger.Wpf.Controls;
 using MediatR;
 using System.Collections.Generic;
 using System.Threading;

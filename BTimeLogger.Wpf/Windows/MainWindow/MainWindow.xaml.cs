@@ -1,8 +1,7 @@
-﻿using BTimeLogger.Wpf.ViewModels;
-using HackerNews.WPF.Core.View;
+﻿using HackerNews.WPF.Core.View;
 using System.Windows;
 
-namespace BTimeLogger.Wpf
+namespace BTimeLogger.Wpf.Windows
 {
 	/// <summary>
 	/// Interaction logic for MainWindow.xaml

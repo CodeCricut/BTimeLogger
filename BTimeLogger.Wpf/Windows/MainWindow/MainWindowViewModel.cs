@@ -1,7 +1,7 @@
-﻿using BTimeLogger.Wpf.ViewModels.MainWindow;
+﻿using BTimeLogger.Wpf.Controls;
 using WpfCore.ViewModel;
 
-namespace BTimeLogger.Wpf.ViewModels
+namespace BTimeLogger.Wpf.Windows
 {
 	public class MainWindowViewModel : BaseViewModel
 	{

@@ -1,4 +1,6 @@
-﻿namespace BTimeLogger.Wpf.ViewModels.Factories
+﻿using BTimeLogger.Wpf.Controls;
+
+namespace BTimeLogger.Wpf.Windows
 {
 	public interface ICreateNewIntervalWindowViewModelFactory
 	{

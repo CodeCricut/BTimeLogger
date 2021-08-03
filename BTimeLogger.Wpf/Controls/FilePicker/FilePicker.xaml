@@ -1,0 +1,41 @@
+﻿<UserControl x:Class="BTimeLogger.Wpf.Controls.FilePicker"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:local="clr-namespace:BTimeLogger.Wpf.Controls"
+             mc:Ignorable="d">
+    <Border Background="{StaticResource skinBackgroundBrush}"
+            CornerRadius="5"
+            Padding="5"
+            DataContext="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type local:FilePicker}}}">
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition />
+                <RowDefinition />
+            </Grid.RowDefinitions>
+            <TextBlock HorizontalAlignment="Stretch"
+                       TextWrapping="Wrap"
+                       Text="{Binding Text, Mode=OneWay}"
+                       Foreground="{StaticResource skinFontSecondaryBrush}"
+                       VerticalAlignment="Center"
+                       FontSize="10"
+                       Grid.Row="1"
+                       Grid.RowSpan="2" />
+            <TextBlock HorizontalAlignment="Stretch"
+                       TextWrapping="Wrap"
+                       Text="{Binding Description, Mode=OneWay}"
+                       FontSize="15" />
+
+            <Button Grid.Column="1"
+                    Grid.Row="1"
+                    Click="BrowseFolder"
+                    Content="{StaticResource elipses}"
+                    Padding="20 0 20 10" />
+        </Grid>
+    </Border>
+</UserControl>

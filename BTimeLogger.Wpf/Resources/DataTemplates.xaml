@@ -1,14 +1,15 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                    xmlns:mainVM="clr-namespace:BTimeLogger.Wpf.ViewModels.MainWindow"
-                    xmlns:mainView="clr-namespace:BTimeLogger.Wpf.View.MainWindow">
-    <DataTemplate DataType="{x:Type mainVM:HomeViewModel}">
-        <mainView:Home ViewModel="{Binding }" />
+                    xmlns:controls="clr-namespace:BTimeLogger.Wpf.Controls"
+                    xmlns:windows="clr-namespace:BTimeLogger.Wpf.Windows"
+                   >
+    <DataTemplate DataType="{x:Type controls:HomeViewModel}">
+        <controls:Home ViewModel="{Binding }" />
     </DataTemplate>
-    <DataTemplate DataType="{x:Type mainVM:IntervalsViewModel}">
-        <mainView:Intervals ViewModel="{Binding }" />
+    <DataTemplate DataType="{x:Type controls:IntervalsViewModel}">
+        <controls:Intervals ViewModel="{Binding }" />
     </DataTemplate>
-    <DataTemplate DataType="{x:Type mainVM:StatisticsViewModel}">
-        <mainView:Statistics ViewModel="{Binding }" />
+    <DataTemplate DataType="{x:Type controls:StatisticsViewModel}">
+        <controls:Statistics ViewModel="{Binding }" />
     </DataTemplate>
 </ResourceDictionary>

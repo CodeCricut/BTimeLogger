@@ -1,9 +1,10 @@
-﻿<Window x:Class="BTimeLogger.Wpf.View.OpenCsvsWindow"
+﻿<Window x:Class="BTimeLogger.Wpf.Windows.OpenCsvsWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:BTimeLogger.Wpf.View"
+        xmlns:local="clr-namespace:BTimeLogger.Wpf.Windows"
+        xmlns:controls="clr-namespace:BTimeLogger.Wpf.Controls"
         mc:Ignorable="d"
         Title="CreateReportWindow"
         MinHeight="300"
@@ -42,7 +43,7 @@
                            Visibility="{Binding ViewModel.InvalidReportInfo, Converter={StaticResource boolToVis}}" />
 
                
-                    <local:FilePicker
+                    <controls:FilePicker
                         Description="Intervals Report Location (.csv)" 
                         Text="{Binding ViewModel.IntervalsCsvLocation, Mode=TwoWay}"
                         Margin="0 50"/>

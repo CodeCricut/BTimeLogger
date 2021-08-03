@@ -1,6 +1,7 @@
-﻿using WpfCore.ViewModel;
+﻿using BTimeLogger.Wpf.Controls;
+using WpfCore.ViewModel;
 
-namespace BTimeLogger.Wpf.ViewModels
+namespace BTimeLogger.Wpf.Windows
 {
 	public class ModifyIntervalWindowViewModel : BaseViewModel
 	{

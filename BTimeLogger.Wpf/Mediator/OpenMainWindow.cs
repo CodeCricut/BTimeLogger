@@ -1,5 +1,4 @@
-﻿using BTimeLogger.Wpf.ViewModels;
-using BTimeLogger.Wpf.ViewModels.Factories;
+﻿using BTimeLogger.Wpf.Windows;
 using MediatR;
 using System.Threading;
 using System.Threading.Tasks;

@@ -1,6 +1,6 @@
-﻿using BTimeLogger.Wpf.Model;
+﻿using BTimeLogger.Wpf.Controls;
+using BTimeLogger.Wpf.Model;
 using BTimeLogger.Wpf.Services;
-using BTimeLogger.Wpf.ViewModels.PieChart;
 using System.Collections.Generic;
 using System.Linq;
 

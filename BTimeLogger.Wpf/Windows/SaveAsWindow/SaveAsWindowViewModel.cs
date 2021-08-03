@@ -6,7 +6,7 @@ using WpfCore.Commands;
 using WpfCore.Services;
 using WpfCore.ViewModel;
 
-namespace BTimeLogger.Wpf.ViewModels
+namespace BTimeLogger.Wpf.Windows
 {
 	public class SaveAsWindowViewModel : BaseViewModel
 	{

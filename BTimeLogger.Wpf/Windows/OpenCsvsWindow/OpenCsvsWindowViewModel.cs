@@ -1,5 +1,5 @@
-﻿using BTimeLogger.Wpf.Mediator;
-using BTimeLogger.Wpf.ViewModels.Messages;
+﻿using BTimeLogger.Wpf.Controls;
+using BTimeLogger.Wpf.Mediator;
 using MediatR;
 using System;
 using System.Threading.Tasks;
@@ -8,7 +8,7 @@ using WpfCore.MessageBus;
 using WpfCore.Services;
 using WpfCore.ViewModel;
 
-namespace BTimeLogger.Wpf.ViewModels
+namespace BTimeLogger.Wpf.Windows
 {
 	public class OpenCsvsWindowViewModel : BaseViewModel
 	{

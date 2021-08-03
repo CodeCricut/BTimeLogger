@@ -1,8 +1,7 @@
-﻿using BTimeLogger.Wpf.ViewModels;
-using HackerNews.WPF.Core.View;
+﻿using HackerNews.WPF.Core.View;
 using System.Windows;
 
-namespace BTimeLogger.Wpf.View
+namespace BTimeLogger.Wpf.Windows
 {
 	/// <summary>
 	/// Interaction logic for ModifyIntervalWindow.xaml

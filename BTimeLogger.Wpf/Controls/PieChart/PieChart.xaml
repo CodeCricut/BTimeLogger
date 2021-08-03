@@ -1,0 +1,58 @@
+﻿<UserControl x:Class="BTimeLogger.Wpf.Controls.PieChart"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:local="clr-namespace:BTimeLogger.Wpf.Controls"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+    <Grid DataContext="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type local:PieChart}}}"
+                VerticalAlignment="Center"
+                HorizontalAlignment="Center"
+                x:Name="pieChart">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition />
+        </Grid.RowDefinitions>
+        <TextBlock Text="{Binding ViewModel.ChartTitle, Mode=OneWay}"
+                   FontSize="{Binding ViewModel.TitleFontSize}" 
+                   HorizontalAlignment="Center"
+                   VerticalAlignment="Top"
+                   Visibility="{Binding ViewModel.IsChartPopulated, Converter={StaticResource boolToVis}}"/>
+
+        <TextBlock Text="{StaticResource noData}"
+                   FontSize="{Binding ViewModel.TitleFontSize}"
+                   HorizontalAlignment="Center"
+                   VerticalAlignment="Center"
+                   Grid.RowSpan="2"
+                   Visibility="{Binding ViewModel.IsChartNotPopulated, Converter={StaticResource boolToVis}}" />
+
+        <ItemsControl ItemsSource="{Binding ViewModel.SliceGeometries}"
+                      Width="{Binding ViewModel.ChartWidth}"
+                      Height="{Binding ViewModel.ChartHeight}"
+                      Margin="20"
+                      Grid.Row="1"
+                      VerticalAlignment="Top">
+            <ItemsControl.ItemTemplate>
+                <DataTemplate>
+                    <Canvas >
+                        <Path Fill="{Binding SliceFill}"
+                              Data="{Binding SliceGeometryData}" />
+                        <Line X1="{Binding CenterX}"
+                              Y1="{Binding CenterY}"
+                              X2="{Binding EndX1}"
+                              Y2="{Binding EndY1}"
+                              Stroke="{Binding OutlineColor}"
+                              StrokeThickness="{Binding OutlineThickness}" />
+                        <Line X1="{Binding CenterX}"
+                              Y1="{Binding CenterY}"
+                              X2="{Binding EndX2}"
+                              Y2="{Binding EndY2}"
+                              Stroke="{Binding OutlineColor}"
+                              StrokeThickness="{Binding OutlineThickness}" />
+                    </Canvas>
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+        </ItemsControl>
+    </Grid>
+</UserControl>

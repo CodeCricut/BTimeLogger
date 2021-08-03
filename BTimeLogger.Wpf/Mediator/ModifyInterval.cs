@@ -1,5 +1,5 @@
 ﻿using BTimeLogger.Domain.Services;
-using BTimeLogger.Wpf.ViewModels.Messages;
+using BTimeLogger.Wpf.Controls;
 using MediatR;
 using System.Threading;
 using System.Threading.Tasks;

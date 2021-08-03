@@ -1,9 +1,10 @@
-﻿<Window x:Class="BTimeLogger.Wpf.View.SaveAsWindow"
+﻿<Window x:Class="BTimeLogger.Wpf.Windows.SaveAsWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:BTimeLogger.Wpf.View"
+        xmlns:local="clr-namespace:BTimeLogger.Wpf.Windows"
+        xmlns:controls="clr-namespace:BTimeLogger.Wpf.Controls"
         mc:Ignorable="d"
         Title="SaveAsWindow"
         MinHeight="300"
@@ -19,15 +20,6 @@
             DataContext="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type local:SaveAsWindow}}}"
             Background="{StaticResource skinBackgroundLightBrush}">
         <Grid>
-
-            <!--<TextBlock Text="{StaticResource loading}"
-                       HorizontalAlignment="Center"
-                       VerticalAlignment="Center"
-                       Foreground="{StaticResource skinFontSecondaryBrush}"
-                       FontSize="18"
-                       Visibility="{Binding ViewModel.Loading, Converter={StaticResource boolToVis}}" />-->
-
-            <!--Visibility="{Binding ViewModel.NotLoading, Converter={StaticResource boolToVis}}"-->
             <StackPanel Orientation="Vertical">
 
                 <TextBlock Text="Save as"
@@ -41,7 +33,7 @@
                            Foreground="{StaticResource skinFontWarningBrush}"
                            Visibility="{Binding ViewModel.InvalidFileLocation, Converter={StaticResource boolToVis}}" />
 
-                <local:FilePicker Description="Intervals Report Location (.csv)"
+                <controls:FilePicker Description="Intervals Report Location (.csv)"
                                   Text="{Binding ViewModel.IntervalsCsvLocation, Mode=TwoWay}"
                                   Margin="0 50" />
                 <Grid>

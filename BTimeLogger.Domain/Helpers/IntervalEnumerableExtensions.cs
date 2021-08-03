@@ -58,20 +58,6 @@ namespace BTimeLogger.Domain.Helpers
 				IEnumerable<ActivityCode> ancestorCodes = interval.Activity.Code.AncestorCodes;
 				bool hasAncestorOfProvidedType = ancestorCodes.Any(code => activityTypes.Contains(code));
 				return hasAncestorOfProvidedType;
-
-				ActivityCode code = interval.Activity.Code;
-				if (activityTypes.Any(type => type.Equals(code)))
-					return true;
-
-				ActivityCode currentGroupAncestor = code.ParentCode;
-
-				while (currentGroupAncestor != null)
-				{
-					if (activityTypes.Any(type => type.Equals(code)))
-						return true;
-					currentGroupAncestor = currentGroupAncestor.ParentCode;
-				}
-				return false;
 			});
 		}
 

@@ -1,0 +1,24 @@
+﻿<UserControl x:Class="BTimeLogger.Wpf.Controls.GroupFilter"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:local="clr-namespace:BTimeLogger.Wpf.Controls"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+    <StackPanel Orientation="Vertical"
+                DataContext="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type local:GroupFilter}}}">
+
+        <Label Content="{StaticResource group}"
+               Target="{Binding ElementName=GroupSource}" />
+        <ComboBox ItemsSource="{Binding ViewModel.GroupsSource.Items}"
+                  SelectedItem="{Binding ViewModel.GroupsSource.SelectedGroupActivity}"
+                  x:Name="GroupSource">
+            <ComboBox.ItemTemplate>
+                <DataTemplate DataType="{x:Type local:ActivityViewModel}">
+                    <TextBlock Text="{Binding CodeValue}" />
+                </DataTemplate>
+            </ComboBox.ItemTemplate>
+        </ComboBox>
+    </StackPanel>
+</UserControl>

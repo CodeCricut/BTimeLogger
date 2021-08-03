@@ -1,9 +1,10 @@
-﻿<Window x:Class="BTimeLogger.Wpf.View.CreateNewIntervalWindow"
+﻿<Window x:Class="BTimeLogger.Wpf.Windows.CreateNewIntervalWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:BTimeLogger.Wpf.View"
+        xmlns:local="clr-namespace:BTimeLogger.Wpf.Windows"
+        xmlns:controls="clr-namespace:BTimeLogger.Wpf.Controls"
         mc:Ignorable="d"
         Title="CreateNewIntervalWindow"
         MinHeight="400"
@@ -18,13 +19,13 @@
     <Border DataContext="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type local:CreateNewIntervalWindow}}}"
             Background="{StaticResource skinBackgroundLightBrush}">
         <StackPanel>
-            <local:WindowButtons ViewModel="{Binding ViewModel.WindowButtonsViewModel}"
+            <controls:WindowButtons ViewModel="{Binding ViewModel.WindowButtonsViewModel}"
                                  HorizontalAlignment="Right" />
             
             <!--Main content-->
             <TextBlock Text="Create new interval"
                        FontSize="20" HorizontalAlignment="Center"/>
-            <local:CreateNewInterval ViewModel="{Binding ViewModel.CreateNewIntervalViewModel}" Padding="20"/>
+            <controls:CreateNewInterval ViewModel="{Binding ViewModel.CreateNewIntervalViewModel}" Padding="20"/>
         </StackPanel>
     </Border>
 </Window>
