@@ -3,8 +3,9 @@
     <Style x:Key="MenuStyle"
            TargetType="{x:Type Menu}">
         <Setter Property="Background"
-                Value="{StaticResource skinBackgroundLightBrush}" />
+                Value="Transparent" />
         <Setter Property="Foreground"
-                Value="{StaticResource skinFontBrush}" />
+                Value="{StaticResource skinFontBrush}" 
+                />
     </Style>
 </ResourceDictionary>

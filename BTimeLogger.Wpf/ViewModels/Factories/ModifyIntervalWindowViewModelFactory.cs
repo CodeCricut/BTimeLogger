@@ -11,20 +11,14 @@ namespace BTimeLogger.Wpf.ViewModels.Factories
 	{
 		private readonly IModifyIntervalViewModelFactory _modifyIntervalViewModelFactory;
 		private readonly IWindowButtonsViewModelFactory _windowButtonsViewModelFactory;
-		private readonly IGroupFilterViewModelFactory _groupFilterViewModelFactory;
-		private readonly ITimeSpanPanelViewModelFactory _timeSpanPanelViewModelFactory;
 		private readonly IActivityTypeSelectorViewModelFactory _activityTypeSelectorViewModelFactory;
 
 		public ModifyIntervalWindowViewModelFactory(IModifyIntervalViewModelFactory modifyIntervalViewModelFactory,
 			IWindowButtonsViewModelFactory windowButtonsViewModelFactory,
-			IGroupFilterViewModelFactory groupFilterViewModelFactory,
-			ITimeSpanPanelViewModelFactory timeSpanPanelViewModelFactory,
 			IActivityTypeSelectorViewModelFactory activityTypeSelectorViewModelFactory)
 		{
 			_modifyIntervalViewModelFactory = modifyIntervalViewModelFactory;
 			_windowButtonsViewModelFactory = windowButtonsViewModelFactory;
-			_groupFilterViewModelFactory = groupFilterViewModelFactory;
-			_timeSpanPanelViewModelFactory = timeSpanPanelViewModelFactory;
 			_activityTypeSelectorViewModelFactory = activityTypeSelectorViewModelFactory;
 		}
 

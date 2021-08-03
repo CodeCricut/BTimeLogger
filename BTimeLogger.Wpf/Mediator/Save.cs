@@ -28,6 +28,7 @@ namespace BTimeLogger.Wpf.Mediator
 			{
 				await _intervalsCsvWriter.WriteIntervals(_csvLocationPrincipal.IntervalCsvLocation);
 			}
+			// TODO: if save invoked without file location selected, prompt user for file location / invoke save as
 			return Unit.Value;
 		}
 	}

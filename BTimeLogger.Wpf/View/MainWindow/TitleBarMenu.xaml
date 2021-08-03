@@ -16,8 +16,12 @@
                       InputGestureText="Ctrl+S"
                       Command="{Binding ViewModel.SaveCommand}"/>
             <MenuItem Header="_Exit"
-                      InputGestureText="Ctrl+X"
+                      InputGestureText="Alt+F4"
                       Command="{Binding ViewModel.ExitCommand}"/>
+        </MenuItem>
+        <MenuItem Header="_Create">
+            <MenuItem Header="Interval"
+                      Command="{Binding ViewModel.CreateIntervalCommand}" />
         </MenuItem>
     </Menu>
 </UserControl> 

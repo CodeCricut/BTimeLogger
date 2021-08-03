@@ -28,7 +28,9 @@
 
             </StackPanel>
         </Border>
-        <view:PartialIntervalList ViewModel="{Binding ViewModel.PartialIntervalListViewModel}"
-                                  Grid.Column="1" />
+        <StackPanel Orientation="Vertical" Grid.Column="1">
+            <view:PartialIntervalList ViewModel="{Binding ViewModel.PartialIntervalListViewModel}"
+                                  />
+        </StackPanel>
     </Grid>
 </UserControl>

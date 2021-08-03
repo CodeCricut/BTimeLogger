@@ -1,6 +1,5 @@
 ﻿using BTimeLogger.Csv.Helpers;
 using BTimeLogger.Wpf.Mediator;
-using BTimeLogger.Wpf.ViewModels.Domain;
 using MediatR;
 using System;
 using System.Threading.Tasks;
@@ -9,15 +8,14 @@ using WpfCore.ViewModel;
 
 namespace BTimeLogger.Wpf.ViewModels
 {
-	public class ModifyIntervalViewModel : BaseViewModel
+	public class CreateNewIntervalViewModel : BaseViewModel
 	{
 		private readonly IMediator _mediator;
-		private IntervalViewModel _intervalViewModel;
 
 		public ActivityTypeSelectorViewModel ActivityTypeSelectorViewModel { get; }
 
 		#region Date
-		private DateTime _fromDate;
+		private DateTime _fromDate = DateTime.Now.Date;
 		public DateTime FromDate
 		{
 			get => _fromDate;
@@ -29,7 +27,7 @@ namespace BTimeLogger.Wpf.ViewModels
 			}
 		}
 
-		private DateTime _toDate;
+		private DateTime _toDate = DateTime.Now.Date;
 		public DateTime ToDate
 		{
 			get => _toDate;
@@ -42,7 +40,7 @@ namespace BTimeLogger.Wpf.ViewModels
 		}
 		#endregion
 		#region Time
-		private TimeSpan _fromTime;
+		private TimeSpan _fromTime = DateTime.Now.TimeOfDay;
 		public TimeSpan FromTime
 		{
 			get => _fromTime;
@@ -54,7 +52,7 @@ namespace BTimeLogger.Wpf.ViewModels
 			}
 		}
 
-		private TimeSpan _toTime;
+		private TimeSpan _toTime = DateTime.Now.TimeOfDay;
 		public TimeSpan ToTime
 		{
 			get => _toTime;
@@ -72,35 +70,28 @@ namespace BTimeLogger.Wpf.ViewModels
 
 		public string DurationString { get => (ToDateTime - FromDateTime).ToCsvFormat(); }
 
-		private string _comment;
+		private string _comment = string.Empty;
 		public string Comment
 		{
 			get { return _comment; }
-			set { _comment = value; }
+			set { Set(ref _comment, value); }
 		}
 
-		private bool CanSave(object _) => !ActivityTypeSelectorViewModel.NoneSelected;
-		public AsyncDelegateCommand SaveCommand { get; }
+		private bool CanCreateNewInterval(object _) => !ActivityTypeSelectorViewModel.NoneSelected;
 
-		public AsyncDelegateCommand DeleteCommand { get; }
-
+		public AsyncDelegateCommand CreateIntervalCommand { get; }
 
 		public event EventHandler InteractionFinished;
-		public ModifyIntervalViewModel(IntervalViewModel intervalViewModel,
-			ActivityTypeSelectorViewModel activityTypeSelectorViewModel,
+		public CreateNewIntervalViewModel(ActivityTypeSelectorViewModel activityTypeSelectorViewModel,
 			IMediator mediator)
 		{
 			_mediator = mediator;
-			_intervalViewModel = intervalViewModel;
 
 			ActivityTypeSelectorViewModel = activityTypeSelectorViewModel;
 
-			UpdatePropsWithInterval();
+			CreateIntervalCommand = new AsyncDelegateCommand(CreateNewInterval, CanCreateNewInterval);
 
-			SaveCommand = new AsyncDelegateCommand(Save, CanSave);
-			DeleteCommand = new AsyncDelegateCommand(Delete);
-
-			ActivityTypeSelectorViewModel.PropertyChanged += (_, _) => SaveCommand.RaiseCanExecuteChanged();
+			ActivityTypeSelectorViewModel.PropertyChanged += (_, _) => CreateIntervalCommand.RaiseCanExecuteChanged();
 		}
 
 		private void TimeSpanPanelViewModel_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
@@ -108,17 +99,10 @@ namespace BTimeLogger.Wpf.ViewModels
 			RaisePropertyChanged(nameof(DurationString));
 		}
 
-		private async Task Save(object arg)
+		private async Task CreateNewInterval(object arg)
 		{
 			Interval updatedInterval = CreateIntervalWithProps();
-			await _mediator.Send(new ModifyInterval(updatedInterval));
-			InteractionFinished?.Invoke(this, new());
-		}
-
-
-		private async Task Delete(object arg)
-		{
-			await _mediator.Send(new DeleteInterval(_intervalViewModel.Interval));
+			await _mediator.Send(new CreateNewInterval(updatedInterval));
 			InteractionFinished?.Invoke(this, new());
 		}
 
@@ -130,22 +114,8 @@ namespace BTimeLogger.Wpf.ViewModels
 				Comment = Comment,
 				From = FromDateTime,
 				To = ToDateTime,
-				Duration = FromDateTime - ToDateTime,
-				Guid = _intervalViewModel.Interval.Guid
+				Duration = FromDateTime - ToDateTime
 			};
-		}
-
-		private void UpdatePropsWithInterval()
-		{
-			ActivityTypeSelectorViewModel.SelectActivity(_intervalViewModel.Activity);
-
-			FromDate = _intervalViewModel.Interval.From.Date;
-			ToDate = _intervalViewModel.Interval.To.Date;
-
-			FromTime = _intervalViewModel.Interval.From.TimeOfDay;
-			ToTime = _intervalViewModel.Interval.To.TimeOfDay;
-
-			Comment = _intervalViewModel.Comment;
 		}
 	}
 }

@@ -4,6 +4,7 @@ using CsvHelper;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace BTimeLogger.Csv
@@ -48,7 +49,8 @@ namespace BTimeLogger.Csv
 
 		private async Task WriteRecords(CsvWriter csv)
 		{
-			IEnumerable<Interval> intervals = await _intervalRepository.GetIntervals();
+			IEnumerable<Interval> intervals = (await _intervalRepository.GetIntervals())
+				.OrderByDescending(interval => interval.From);
 			foreach (var interval in intervals)
 				WriteIntervalAsRecord(csv, interval);
 		}

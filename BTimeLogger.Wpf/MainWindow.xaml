@@ -28,8 +28,8 @@
                     Modifiers="Ctrl"
                     Command="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type local:MainWindow}}, 
             Path=ViewModel.TitleBarMenuViewModel.SaveCommand}" />
-        <KeyBinding Key="X"
-                    Modifiers="Ctrl"
+        <KeyBinding Key="F4"
+                    Modifiers="Alt"
                     Command="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type local:MainWindow}}, 
             Path=ViewModel.TitleBarMenuViewModel.ExitCommand}" />
     </Window.InputBindings>
@@ -48,8 +48,7 @@
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
-            <!--TODO: behavior-->
-
+            
             <Image Source="{StaticResource logo}" Height="20" Width="35" />
             <mainwindow:TitleBarMenu ViewModel="{Binding ViewModel.TitleBarMenuViewModel}"
                 Grid.Column="1"
