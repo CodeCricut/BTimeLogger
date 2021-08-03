@@ -7,5 +7,6 @@ namespace BTimeLogger.Wpf.Model
 		public string Title { get; set; }
 		public float Percentage { get; set; }
 		public Color Color { get; set; }
+		public string Note { get; set; }
 	}
 }
