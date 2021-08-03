@@ -15,21 +15,25 @@ namespace BTimeLogger.Wpf.ViewModels.Factories
 		private readonly IOpenCsvsWindowViewModelFactory _openCsvsWindowViewModelFactory;
 		private readonly IMediator _mediator;
 		private readonly ICreateNewIntervalWindowViewModelFactory _createNewIntervalWindowViewModelFactory;
+		private readonly ISaveAsWindowViewModelFactory _saveAsWindowViewModelFactory;
 
 		public TitleBarMenuViewModelFactory(IViewManager viewManager,
 			IOpenCsvsWindowViewModelFactory openCsvsWindowViewModelFactory,
 			IMediator mediator,
-			ICreateNewIntervalWindowViewModelFactory createNewIntervalWindowViewModelFactory)
+			ICreateNewIntervalWindowViewModelFactory createNewIntervalWindowViewModelFactory,
+			ISaveAsWindowViewModelFactory saveAsWindowViewModelFactory)
 		{
 			_viewManager = viewManager;
 			_openCsvsWindowViewModelFactory = openCsvsWindowViewModelFactory;
 			_mediator = mediator;
 			_createNewIntervalWindowViewModelFactory = createNewIntervalWindowViewModelFactory;
+			_saveAsWindowViewModelFactory = saveAsWindowViewModelFactory;
 		}
 
 		public TitleBarMenuViewModel Create()
 		{
-			return new TitleBarMenuViewModel(_viewManager, _openCsvsWindowViewModelFactory, _createNewIntervalWindowViewModelFactory, _mediator);
+			return new TitleBarMenuViewModel(_viewManager, _openCsvsWindowViewModelFactory, _createNewIntervalWindowViewModelFactory,
+				_saveAsWindowViewModelFactory, _mediator);
 		}
 	}
 }

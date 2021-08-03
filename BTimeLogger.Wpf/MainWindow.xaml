@@ -28,6 +28,10 @@
                     Modifiers="Ctrl"
                     Command="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type local:MainWindow}}, 
             Path=ViewModel.TitleBarMenuViewModel.SaveCommand}" />
+        <KeyBinding Key="S"
+                    Modifiers="Ctrl+Shift" 
+                    Command="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type local:MainWindow}}, 
+            Path=ViewModel.TitleBarMenuViewModel.SaveAsCommand}" />
         <KeyBinding Key="F4"
                     Modifiers="Alt"
                     Command="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type local:MainWindow}}, 

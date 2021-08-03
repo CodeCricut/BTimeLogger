@@ -15,6 +15,9 @@
             <MenuItem Header="_Save" 
                       InputGestureText="Ctrl+S"
                       Command="{Binding ViewModel.SaveCommand}"/>
+            <MenuItem Header="_Save As"
+                      InputGestureText="Ctrl+Shift+S"
+                      Command="{Binding ViewModel.SaveAsCommand}" />
             <MenuItem Header="_Exit"
                       InputGestureText="Alt+F4"
                       Command="{Binding ViewModel.ExitCommand}"/>
