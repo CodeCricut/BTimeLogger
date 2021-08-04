@@ -21,13 +21,10 @@ namespace BTimeLogger.Domain.Services
 	{
 		private static readonly byte TOTAL_PERCENT = 100;
 		private readonly IIntervalRepository _intervalRepository;
-		private readonly IActivityRepository _activityRepository;
 
-		public StatisticsGenerator(IIntervalRepository intervalRepository,
-			IActivityRepository activityRepository)
+		public StatisticsGenerator(IIntervalRepository intervalRepository)
 		{
 			_intervalRepository = intervalRepository;
-			_activityRepository = activityRepository;
 		}
 
 		public async Task<IEnumerable<Statistic>> GenerateStatistics(IEnumerable<Activity> activities, TimeSpan totalTime, DateTime from, DateTime to)
@@ -135,13 +132,6 @@ namespace BTimeLogger.Domain.Services
 			}
 
 			return stats;
-
 		}
-
-		//public async Task<IEnumerable<Statistic>> GenerateAllStatistics(DateTime from, DateTime to)
-		//{
-		//	IEnumerable<Activity> allActivityTypes = await _activityRepository.GetActivities();
-		//	return await GenerateStatistics(allActivityTypes, from, to);
-		//}
 	}
 }

@@ -2,6 +2,9 @@
 using CsvHelper;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
+using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 using static BTimeLogger.Activity;
 
@@ -12,27 +15,46 @@ namespace BTimeLogger.Csv
 		Task ReadIntervalCsv(string fileLocation);
 	}
 
-	class IntervalsCsvReader : ReportCsvReader, IIntervalsCsvReader
+	class IntervalsCsvReader : IIntervalsCsvReader
 	{
 		protected const int BASE_INTERVAL_COLUMN_COUNT = 5;
+		private int _groupColCount;
 
 		private readonly IIntervalRepository _intervalRepository;
 		private readonly IActivityRepository _activityRepository;
 
 		public IntervalsCsvReader(
 			IIntervalRepository intervalRepository,
-			IActivityRepository activityRepository) : base(intervalRepository, activityRepository)
+			IActivityRepository activityRepository)
 		{
 			_intervalRepository = intervalRepository;
 			_activityRepository = activityRepository;
 		}
 
-		public Task ReadIntervalCsv(string fileLocation)
+		public async Task ReadIntervalCsv(string fileLocation)
 		{
-			return ReadCsv(fileLocation);
+			using StreamReader reader = new(fileLocation);
+			using CsvReader csv = new(reader, CultureInfo.InvariantCulture);
+
+			csv.Read();
+			csv.ReadHeader();
+			while (csv.Read())
+			{
+				InitializeNumColums(csv);
+
+				await ReadRowData(csv);
+			}
+
+			await _intervalRepository.SaveChanges();
+			await _activityRepository.SaveChanges();
 		}
 
-		public override async Task ReadRowData(CsvReader csv)
+		private void InitializeNumColums(CsvReader csv)
+		{
+			_groupColCount = GetGroupColCount(csv);
+		}
+
+		public async Task ReadRowData(CsvReader csv)
 		{
 			CsvIntervalRecord record = GetRowRecord(csv);
 			ActivityCode activityCode = ActivityCode.CreateCode(record.ActivityType, record.Groups);
@@ -47,6 +69,36 @@ namespace BTimeLogger.Csv
 			CsvIntervalRecord record = csv.GetRecord<CsvIntervalRecord>();
 			record.Groups = ReadRecordGroupNames(csv);
 			return record;
+		}
+
+		private async Task AddNewGroupActivities(ActivityCode groupCode)
+		{
+			List<ActivityCode> ancestorCodes = new();
+
+			ActivityCode currentCode = groupCode;
+			while (currentCode != null)
+			{
+				ancestorCodes.Add(currentCode);
+				currentCode = currentCode.ParentCode;
+			}
+
+			ancestorCodes.Reverse(); // Must add most removed ancestors first
+			ActivityCode[] codesToTryAdd = ancestorCodes.ToArray();
+
+			for (int i = 0; i < codesToTryAdd.Length; i++)
+			{
+				await AddActivityIfNew(codesToTryAdd[i], isGroup: true);
+			}
+		}
+
+		private async Task AddActivityIfNew(ActivityCode activityCode, bool isGroup)
+		{
+			if (await _activityRepository.ActivityExists(activityCode)) return;
+
+			Activity activity = await CreateActivityWithParentRelationship(activityCode, isGroup);
+
+			await _activityRepository.AddActivity(activity);
+			await _activityRepository.SaveChanges();
 		}
 
 		private async Task AddInterval(CsvIntervalRecord record)
@@ -72,7 +124,46 @@ namespace BTimeLogger.Csv
 			await _intervalRepository.AddInterval(interval);
 		}
 
-		protected override int GetGroupColCount(CsvReader csv)
+		private async Task<Activity> CreateActivityWithParentRelationship(ActivityCode activityCode, bool isGroup)
+		{
+			if (activityCode == null) throw new ArgumentNullException(nameof(activityCode));
+
+			Activity immediateParent = await _activityRepository.GetActivity(activityCode.ParentCode);
+
+			Activity activity = new()
+			{
+				Children = Array.Empty<Activity>(),
+				IsGroup = isGroup,
+				Name = activityCode.ActivityName,
+				Parent = immediateParent
+			};
+
+			if (immediateParent != null)
+			{
+				List<Activity> parentChildren = immediateParent.Children.ToList();
+				parentChildren.Add(activity);
+				immediateParent.Children = parentChildren.ToArray();
+			}
+
+			return activity;
+		}
+
+		private string[] ReadRecordGroupNames(CsvReader csv)
+		{
+			List<string> groupNames = new();
+			for (int i = 0; i < _groupColCount; i++)
+			{
+				string groupName;
+				csv.TryGetField(i, out groupName);
+
+				if (string.IsNullOrWhiteSpace(groupName)) continue;
+
+				groupNames.Add(groupName);
+			}
+			return groupNames.ToArray();
+		}
+
+		private int GetGroupColCount(CsvReader csv)
 		{
 			return csv.GetFieldIndex("Comment") + 1 - BASE_INTERVAL_COLUMN_COUNT;
 		}

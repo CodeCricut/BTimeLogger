@@ -7,7 +7,7 @@ using static BTimeLogger.Activity;
 
 namespace BTimeLogger.Domain.Services
 {
-	public interface IIntervalRepository
+	public interface IIntervalRepository : IRepository
 	{
 		Task<IEnumerable<Interval>> GetIntervals();
 		Task<IEnumerable<Interval>> GetIntervals(IEnumerable<ActivityCode> activityCodes, DateTime? from, DateTime? to);
@@ -17,19 +17,19 @@ namespace BTimeLogger.Domain.Services
 		Task<Guid> AddInterval(Interval interval);
 		Task UpdateInterval(Guid intervalGuid, Interval interval);
 		Task DeleteInterval(Guid intervalGuid);
-
-		Task ClearIntervals();
 	}
 
 	class IntervalRepository : IIntervalRepository
 	{
 		private readonly Dictionary<Guid, Interval> _intervals = new();
 
+		private readonly Dictionary<Guid, Interval> _unsavedIntervals = new();
+
 		public Task<Guid> AddInterval(Interval interval)
 		{
 			Guid intervalGuid = Guid.NewGuid();
 			interval.Guid = intervalGuid;
-			_intervals.Add(intervalGuid, interval);
+			_unsavedIntervals.Add(intervalGuid, interval);
 
 			return Task.FromResult(intervalGuid);
 		}
@@ -48,9 +48,9 @@ namespace BTimeLogger.Domain.Services
 				.OfActivityTypesOrAll(activityTypes);
 		}
 
-		public Task ClearIntervals()
+		public Task Clear()
 		{
-			_intervals.Clear();
+			_unsavedIntervals.Clear();
 			return Task.CompletedTask;
 		}
 
@@ -66,18 +66,31 @@ namespace BTimeLogger.Domain.Services
 
 		public Task UpdateInterval(Guid intervalGuid, Interval interval)
 		{
-			if (!_intervals.ContainsKey(intervalGuid)) throw new KeyNotFoundException();
+			if (!_unsavedIntervals.ContainsKey(intervalGuid)) throw new KeyNotFoundException();
 
-			_intervals[intervalGuid] = interval;
+			_unsavedIntervals[intervalGuid] = interval;
 
 			return Task.CompletedTask;
 		}
 
 		public Task DeleteInterval(Guid intervalGuid)
 		{
-			if (!_intervals.ContainsKey(intervalGuid)) throw new KeyNotFoundException();
-			_intervals.Remove(intervalGuid);
+			if (!_unsavedIntervals.ContainsKey(intervalGuid)) throw new KeyNotFoundException();
+			_unsavedIntervals.Remove(intervalGuid);
 			return Task.CompletedTask;
+		}
+
+		public Task SaveChanges()
+		{
+			return Task.Factory.StartNew(() =>
+			{
+
+				_intervals.Clear();
+				foreach (var unsavedInterval in _unsavedIntervals)
+				{
+					_intervals.Add(unsavedInterval.Key, unsavedInterval.Value);
+				}
+			});
 		}
 	}
 }

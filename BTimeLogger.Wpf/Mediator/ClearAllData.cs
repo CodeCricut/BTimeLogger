@@ -1,4 +1,5 @@
-﻿using BTimeLogger.Domain.Services;
+﻿using BTimeLogger.Csv;
+using BTimeLogger.Domain.Services;
 using MediatR;
 using System.Threading;
 using System.Threading.Tasks;
@@ -13,18 +14,27 @@ namespace BTimeLogger.Wpf.Mediator
 	{
 		private readonly IActivityRepository _activityRepository;
 		private readonly IIntervalRepository _intervalRepository;
+		private readonly ICsvChangeTracker _csvChangeTracker;
 
 		public ClearAllDataHandler(IActivityRepository activityRepository,
-			IIntervalRepository intervalRepository)
+			IIntervalRepository intervalRepository,
+			ICsvChangeTracker csvChangeTracker)
 		{
 			_activityRepository = activityRepository;
 			_intervalRepository = intervalRepository;
+			_csvChangeTracker = csvChangeTracker;
 		}
 
 		public async Task<Unit> Handle(ClearAllData request, CancellationToken cancellationToken)
 		{
-			await _activityRepository.ClearActivities();
-			await _intervalRepository.ClearIntervals();
+			// TODO: use cancellation token
+			await _activityRepository.Clear();
+			await _intervalRepository.Clear();
+
+			await _activityRepository.SaveChanges();
+			await _intervalRepository.SaveChanges();
+
+			_csvChangeTracker.MakeChange();
 
 			return Unit.Value;
 		}

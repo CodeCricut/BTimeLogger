@@ -31,5 +31,6 @@
     <system:String x:Key="duration">Duration</system:String>
     <system:String x:Key="delete">Delete</system:String>
     <system:String x:Key="save">Save</system:String>
+    <system:String x:Key="dontSave">Don't Save</system:String>
     <system:String x:Key="comment">Comment</system:String>
 </ResourceDictionary>

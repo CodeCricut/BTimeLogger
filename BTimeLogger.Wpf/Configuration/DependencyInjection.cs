@@ -1,4 +1,5 @@
-﻿using BTimeLogger.Wpf.Services;
+﻿using BTimeLogger.Csv;
+using BTimeLogger.Wpf.Services;
 using BTimeLogger.Wpf.Services.ViewManagement;
 using MediatR;
 using Microsoft.Extensions.Configuration;
@@ -19,6 +20,8 @@ namespace BTimeLogger.Wpf.Configuration
 
 			return services
 				.AddSingleton<IGroupStatisticCategoriesConverter, GroupStatisticCategoriesConverter>()
+
+				.AddSingleton<ICsvChangeTracker, CsvChangeTracker>()
 
 				.AddSingleton<IViewFinderFactory, ViewFinderFactory>()
 

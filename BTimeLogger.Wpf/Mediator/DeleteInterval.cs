@@ -1,4 +1,5 @@
-﻿using BTimeLogger.Domain.Services;
+﻿using BTimeLogger.Csv;
+using BTimeLogger.Domain.Services;
 using BTimeLogger.Wpf.Controls;
 using MediatR;
 using System.Threading;
@@ -21,17 +22,22 @@ namespace BTimeLogger.Wpf.Mediator
 	{
 		private readonly IIntervalRepository _intervalRepository;
 		private readonly IEventAggregator _ea;
+		private readonly ICsvChangeTracker _csvChangeTracker;
 
 		public DeleteIntervalHandler(IIntervalRepository intervalRepository,
-			IEventAggregator ea)
+			IEventAggregator ea,
+			ICsvChangeTracker csvChangeTracker)
 		{
 			_intervalRepository = intervalRepository;
 			_ea = ea;
+			_csvChangeTracker = csvChangeTracker;
 		}
 
 		public async Task<Unit> Handle(DeleteInterval request, CancellationToken cancellationToken)
 		{
 			await _intervalRepository.DeleteInterval(request.Interval.Guid);
+			await _intervalRepository.SaveChanges();
+			_csvChangeTracker.MakeChange();
 
 			_ea.SendMessage(new ReportSourceChanged());
 

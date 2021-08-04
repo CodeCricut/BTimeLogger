@@ -26,8 +26,6 @@ namespace BTimeLogger.Wpf.Controls
 		public static readonly DependencyProperty DisableCloseInteractionProperty =
 			DependencyProperty.Register("DisableCloseInteraction", typeof(bool), typeof(WindowButtons), new PropertyMetadata(false));
 
-
-
 		public WindowButtons()
 		{
 			InitializeComponent();

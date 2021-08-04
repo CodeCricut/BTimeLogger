@@ -68,7 +68,8 @@
                        Text="{StaticResource appTitle}">
             </TextBlock>
             <controls:WindowButtons Grid.Column="3"
-                                ViewModel="{Binding ViewModel.WindowButtonsViewModel}" />
+                                ViewModel="{Binding ViewModel.WindowButtonsViewModel}" 
+                                    DisableCloseInteraction="True"/>
 
         </Grid>
         <controls:MainLayout ViewModel="{Binding ViewModel.MainLayoutViewModel}"

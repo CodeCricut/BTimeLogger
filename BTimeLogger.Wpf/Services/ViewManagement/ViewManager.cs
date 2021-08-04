@@ -39,14 +39,15 @@ namespace BTimeLogger.Wpf.Services.ViewManagement
 
 			Window view = _viewFinder.FindViewForViewModel(viewModel);
 
+			bool? result = null;
 			Application.Current.Dispatcher.Invoke(() =>
 			{
 				((IHaveViewModel<TViewModel>)view).SetViewModel(viewModel);
 				_activeViews.Add(viewModel, view);
 
-				return view.ShowDialog();
+				result = view.ShowDialog();
 			});
-			return null;
+			return result;
 		}
 
 		public void Close(BaseViewModel viewModel)
