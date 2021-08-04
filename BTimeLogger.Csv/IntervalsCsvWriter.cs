@@ -1,7 +1,6 @@
 ﻿using BTimeLogger.Csv.Helpers;
 using BTimeLogger.Domain.Services;
 using CsvHelper;
-using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
@@ -19,6 +18,9 @@ namespace BTimeLogger.Csv
 	{
 		private readonly IIntervalRepository _intervalRepository;
 
+		private IOrderedEnumerable<Interval> _intervals;
+		private int _numGroupCols = 0;
+
 		public IntervalsCsvWriter(IIntervalRepository intervalRepository)
 		{
 			_intervalRepository = intervalRepository;
@@ -29,13 +31,17 @@ namespace BTimeLogger.Csv
 			using StreamWriter writer = new(fileLocation, false);
 			using CsvWriter csv = new(writer, CultureInfo.InvariantCulture);
 
+			_intervals = (await _intervalRepository.GetIntervals())
+				.OrderByDescending(interval => interval.From);
+			_numGroupCols = GetNumGroupColumns();
+
 			WriteHeader(csv);
 			await WriteRecords(csv);
 		}
 
 		private void WriteHeader(CsvWriter csv)
 		{
-			for (int i = 0; i < GetNumGroupColumns(); i++)
+			for (int i = 0; i < _numGroupCols; i++)
 				csv.WriteField("Group");
 
 			csv.WriteField("Activity type");
@@ -47,12 +53,13 @@ namespace BTimeLogger.Csv
 			csv.NextRecord();
 		}
 
-		private async Task WriteRecords(CsvWriter csv)
+		private Task WriteRecords(CsvWriter csv)
 		{
-			IEnumerable<Interval> intervals = (await _intervalRepository.GetIntervals())
-				.OrderByDescending(interval => interval.From);
-			foreach (var interval in intervals)
-				WriteIntervalAsRecord(csv, interval);
+			return Task.Factory.StartNew(() =>
+			{
+				foreach (var interval in _intervals)
+					WriteIntervalAsRecord(csv, interval);
+			});
 		}
 
 		private void WriteIntervalAsRecord(CsvWriter csv, Interval interval)
@@ -72,7 +79,9 @@ namespace BTimeLogger.Csv
 		{
 			string[] groupNames = interval.Activity.Code.GroupNames;
 
-			WriteEmptyGroupCols(csv, groupNames.Length);
+			int numEmptyCols = _numGroupCols - groupNames.Length;
+
+			WriteEmptyGroupCols(csv, numEmptyCols);
 
 			for (int i = 0; i < groupNames.Length; i++)
 			{
@@ -80,10 +89,8 @@ namespace BTimeLogger.Csv
 			}
 		}
 
-		private void WriteEmptyGroupCols(CsvWriter csv, int numGroups)
+		private void WriteEmptyGroupCols(CsvWriter csv, int numEmptyCols)
 		{
-			int totalGroupCols = GetNumGroupColumns();
-			int numEmptyCols = totalGroupCols - numGroups;
 			for (int i = 0; i < numEmptyCols; i++)
 			{
 				csv.WriteField(string.Empty);
@@ -92,8 +99,11 @@ namespace BTimeLogger.Csv
 
 		private int GetNumGroupColumns()
 		{
-			// TODO: should be based on depth of activity groups. Not sure how to do that easily...
-			return 3;
+			Interval intervalWithMostAncestors = _intervals.OrderByDescending(interval =>
+				interval.Activity.Code.Parts.Length).First();
+
+			int numGroupColumns = intervalWithMostAncestors.Activity.Code.AncestorCodes.Count() - 1;
+			return numGroupColumns;
 		}
 	}
 }
