@@ -47,7 +47,7 @@
                     <Button Grid.Column="1"
                             Margin="10 0 0 0"
                             Command="{Binding ViewModel.SaveAsCommand}"
-                            Content="{StaticResource create}" />
+                            Content="{StaticResource save}" />
                 </Grid>
             </StackPanel>
         </Grid>

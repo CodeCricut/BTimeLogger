@@ -1,7 +1,5 @@
-﻿using BTimeLogger.Wpf.Mediator;
-using BTimeLogger.Wpf.Services.AppData;
+﻿using BTimeLogger.Wpf.Services.AppData;
 using MediatR;
-using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Threading.Tasks;
@@ -13,36 +11,41 @@ namespace BTimeLogger.Wpf.Controls
 {
 	public class OpenRecentReportListViewModel : BaseViewModel
 	{
+		private readonly IEventAggregator _ea;
 		private readonly IMediator _mediator;
 		private readonly IReportLocationsPrincipal _reportLocationsPrincipal;
+		private readonly IRecentReportListItemViewModelFactory _recentReportListItemViewModelFactory;
 
-		public ObservableCollection<string> ReportLocations { get; } = new();
+		public ObservableCollection<RecentReportListItemViewModel> ReportLocations { get; } = new();
 
 		public DelegateCommand ReloadCommand { get; }
 
-		public AsyncDelegateCommand OpenReportCommand { get; }
+		public AsyncDelegateCommand ClearReportsCommand { get; }
 
 		public OpenRecentReportListViewModel(IEventAggregator ea,
 			IMediator mediator,
-			IReportLocationsPrincipal reportLocationsPrincipal)
+			IReportLocationsPrincipal reportLocationsPrincipal,
+			IRecentReportListItemViewModelFactory recentReportListItemViewModelFactory)
 		{
+			_ea = ea;
 			_mediator = mediator;
 			_reportLocationsPrincipal = reportLocationsPrincipal;
-
+			_recentReportListItemViewModelFactory = recentReportListItemViewModelFactory;
 			ReloadCommand = new DelegateCommand(Reload);
-			OpenReportCommand = new AsyncDelegateCommand(OpenReport);
+			ClearReportsCommand = new AsyncDelegateCommand(ClearReports);
 
 			ea.RegisterHandler<ReportSourceChanged>(msg => ReloadCommand.Execute());
 
 			ReloadCommand.Execute();
 		}
 
-		private async Task OpenReport(object reportLocation)
+		private Task ClearReports(object reportLocation)
 		{
-			if (reportLocation is not string || string.IsNullOrWhiteSpace((string)reportLocation))
-				throw new ArgumentException("Report location cannot be empty.", nameof(reportLocation));
+			ReportLocations.Clear();
+			_reportLocationsPrincipal.ClearReportLocations();
+			_ea.SendMessage(new ReportSourceChanged());
 
-			await _mediator.Send(new ReadCsvs(reportLocation as string));
+			return Task.CompletedTask;
 		}
 
 		private void Reload(object _)
@@ -51,7 +54,10 @@ namespace BTimeLogger.Wpf.Controls
 
 			IEnumerable<string> reportLocations = _reportLocationsPrincipal.GetReportLocations();
 			foreach (string location in reportLocations)
-				ReportLocations.Add(location);
+			{
+				RecentReportListItemViewModel listItemVM = _recentReportListItemViewModelFactory.Create(location);
+				ReportLocations.Add(listItemVM);
+			}
 		}
 	}
 }

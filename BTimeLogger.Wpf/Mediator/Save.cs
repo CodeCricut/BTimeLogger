@@ -40,6 +40,7 @@ namespace BTimeLogger.Wpf.Mediator
 		public async Task<Unit> Handle(Save request, CancellationToken cancellationToken)
 		{
 			if (!_csvChangeTracker.ChangesMade) return Unit.Value;
+
 			if (_csvLocationPrincipal.LocationsAreSelected)
 			{
 				await _intervalsCsvWriter.WriteIntervals(_csvLocationPrincipal.CsvLocation);

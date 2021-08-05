@@ -58,7 +58,7 @@
                     <Button Grid.Column="1"
                             Margin="10 0 0 0"
                             Command="{Binding ViewModel.CreateReportCommand}"
-                            Content="{StaticResource create}" />
+                            Content="{StaticResource open}" />
                 </Grid>
             </StackPanel>
         </Grid>

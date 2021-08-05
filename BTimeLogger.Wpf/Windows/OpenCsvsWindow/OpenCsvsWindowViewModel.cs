@@ -65,7 +65,7 @@ namespace BTimeLogger.Wpf.Windows
 				Loading = false;
 				CloseDialog();
 			}
-			catch (Exception)
+			catch (Exception e)
 			{
 				Loading = false;
 				InvalidReportInfo = true;

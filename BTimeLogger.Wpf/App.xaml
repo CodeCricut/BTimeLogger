@@ -44,6 +44,10 @@
 
                 <ResourceDictionary Source="Styles/ListBoxStyle.xaml" />
                 <ResourceDictionary Source="Styles/ListBoxItemContainerStyle.xaml" />
+
+
+                <ResourceDictionary Source="Styles/ListItemButtonStyle.xaml" />
+                <ResourceDictionary Source="Styles/LinkButtonStyle.xaml" />
             </ResourceDictionary.MergedDictionaries>
 
             <BooleanToVisibilityConverter x:Key="boolToVis" />

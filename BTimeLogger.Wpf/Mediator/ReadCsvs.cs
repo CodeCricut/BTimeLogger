@@ -46,13 +46,23 @@ namespace BTimeLogger.Wpf.Mediator
 
 		public async Task<Unit> Handle(ReadCsvs request, CancellationToken cancellationToken)
 		{
+			bool continueReading = true;
 			if (_csvChangeTracker.ChangesMade)
 			{
-				await _mediator.Send(new Save());
+				continueReading = await _mediator.Send(new PromptToSaveUnsavedChanges()) ?? false;
 			}
 
-			await _mediator.Send(new ClearAllData());
+			if (continueReading)
+			{
+				await ReadCsv(request);
+			}
 
+			return Unit.Value;
+		}
+
+		private async Task ReadCsv(ReadCsvs request)
+		{
+			await _mediator.Send(new ClearAllData());
 
 			// TODO: use cancellation token, with csvreaders having SaveChanges function
 			_csvLocationPrincipal.CsvLocation = request.IntervalCsvLocation;
@@ -63,8 +73,6 @@ namespace BTimeLogger.Wpf.Mediator
 			_csvChangeTracker.ClearChanges();
 
 			_ea.SendMessage(new ReportSourceChanged());
-
-			return Unit.Value;
 		}
 	}
 }

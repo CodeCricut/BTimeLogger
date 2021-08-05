@@ -32,10 +32,13 @@ namespace BTimeLogger.Wpf.Mediator
 			_mediator = mediator;
 		}
 
-		public Task<Unit> Handle(SaveAs request, CancellationToken cancellationToken)
+		public async Task<Unit> Handle(SaveAs request, CancellationToken cancellationToken)
 		{
 			_csvLocationsPrincipal.CsvLocation = request.FileLocation;
-			return _mediator.Send(new Save(), cancellationToken);
+			await _mediator.Send(new Save(), cancellationToken);
+			await _mediator.Send(new ReadCsvs(request.FileLocation));
+
+			return Unit.Value;
 		}
 	}
 }
