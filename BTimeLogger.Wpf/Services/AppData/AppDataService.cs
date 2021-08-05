@@ -12,6 +12,8 @@ namespace BTimeLogger.Wpf.Services.AppData
 
 	class AppDataService : IAppDataService
 	{
+		private const string AppDataFolderName = "BTimeLogger";
+
 		public bool DataFileExists(string fileName)
 		{
 			string fileLocation = GetFileLocation(fileName);
@@ -20,10 +22,8 @@ namespace BTimeLogger.Wpf.Services.AppData
 
 		public string GetFileLocation(string fileName)
 		{
-			string appDataFolder = Environment.GetFolderPath(
-									 Environment.SpecialFolder.ApplicationData);
-			string filePath = Path.Combine(appDataFolder, fileName);
-			return filePath;
+			string appDataFolder = GetAppDataFolderLocation();
+			return Path.Combine(appDataFolder, fileName);
 		}
 
 		public string GetOrCreate(string fileName)
@@ -31,10 +31,25 @@ namespace BTimeLogger.Wpf.Services.AppData
 			string fileLocation = GetFileLocation(fileName);
 			if (DataFileExists(fileName)) return fileLocation;
 
+			EnsureDataFolderCreated();
+
 			FileStream fs = File.Create(fileLocation);
 			fs.Close();
 
 			return fileLocation;
+		}
+
+		private string GetAppDataFolderLocation()
+		{
+			string dataFolder = Environment.GetFolderPath(
+									 Environment.SpecialFolder.ApplicationData);
+			return Path.Combine(dataFolder, AppDataFolderName);
+		}
+
+		private void EnsureDataFolderCreated()
+		{
+			string dataFolderLocation = GetAppDataFolderLocation();
+			if (!Directory.Exists(dataFolderLocation)) Directory.CreateDirectory(dataFolderLocation);
 		}
 	}
 }

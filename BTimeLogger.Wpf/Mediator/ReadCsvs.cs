@@ -1,8 +1,10 @@
 ﻿using BTimeLogger.Csv;
+using BTimeLogger.Wpf.Controls;
 using BTimeLogger.Wpf.Services.AppData;
 using MediatR;
 using System.Threading;
 using System.Threading.Tasks;
+using WpfCore.MessageBus;
 
 namespace BTimeLogger.Wpf.Mediator
 {
@@ -24,19 +26,22 @@ namespace BTimeLogger.Wpf.Mediator
 		private readonly IMediator _mediator;
 		private readonly ICsvChangeTracker _csvChangeTracker;
 		private readonly IReportLocationsPrincipal _reportLocationsPrincipal;
+		private readonly IEventAggregator _ea;
 
 		public ReadCsvsHandler(
 			ICsvLocationPrincipal csvLocationPrincipal,
 			IIntervalsCsvReader intervalsCsvReader,
 			IMediator mediator,
 			ICsvChangeTracker csvChangeTracker,
-			IReportLocationsPrincipal reportLocationsPrincipal)
+			IReportLocationsPrincipal reportLocationsPrincipal,
+			IEventAggregator ea)
 		{
 			_csvLocationPrincipal = csvLocationPrincipal;
 			_intervalsCsvReader = intervalsCsvReader;
 			_mediator = mediator;
 			_csvChangeTracker = csvChangeTracker;
 			_reportLocationsPrincipal = reportLocationsPrincipal;
+			_ea = ea;
 		}
 
 		public async Task<Unit> Handle(ReadCsvs request, CancellationToken cancellationToken)
@@ -56,6 +61,8 @@ namespace BTimeLogger.Wpf.Mediator
 			await _intervalsCsvReader.ReadIntervalCsv(request.IntervalCsvLocation);
 
 			_csvChangeTracker.ClearChanges();
+
+			_ea.SendMessage(new ReportSourceChanged());
 
 			return Unit.Value;
 		}

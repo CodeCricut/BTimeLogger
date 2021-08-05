@@ -1,6 +1,4 @@
-﻿using BTimeLogger.Wpf.Services.AppData;
-
-namespace BTimeLogger.Wpf.Controls
+﻿namespace BTimeLogger.Wpf.Controls
 {
 	public interface IHomeViewModelFactory
 	{
@@ -9,15 +7,16 @@ namespace BTimeLogger.Wpf.Controls
 
 	class HomeViewModelFactory : IHomeViewModelFactory
 	{
-		private readonly IReportLocationsPrincipal _reportLocationsPrincipal;
+		private readonly IOpenRecentReportListViewModelFactory _openRecentReportListViewModelFactory;
 
-		public HomeViewModelFactory(IReportLocationsPrincipal reportLocationsPrincipal)
+		public HomeViewModelFactory(IOpenRecentReportListViewModelFactory openRecentReportListViewModelFactory)
 		{
-			_reportLocationsPrincipal = reportLocationsPrincipal;
+			_openRecentReportListViewModelFactory = openRecentReportListViewModelFactory;
 		}
 		public HomeViewModel Create()
 		{
-			return new HomeViewModel(_reportLocationsPrincipal);
+			OpenRecentReportListViewModel openRecentVM = _openRecentReportListViewModelFactory.Create();
+			return new HomeViewModel(openRecentVM);
 		}
 	}
 }

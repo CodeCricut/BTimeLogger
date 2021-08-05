@@ -38,4 +38,6 @@
     <system:String x:Key="parent">Parent</system:String>
     <system:String x:Key="createNewInterval">Create New Interval</system:String>
     <system:String x:Key="createNewActivity">Create New Activity</system:String>
+    <system:String x:Key="openRecent">Open Recent</system:String>
+    <system:String x:Key="getStarted">Get Started</system:String>
 </ResourceDictionary>

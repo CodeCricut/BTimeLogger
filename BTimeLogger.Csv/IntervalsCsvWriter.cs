@@ -99,6 +99,8 @@ namespace BTimeLogger.Csv
 
 		private int GetNumGroupColumns()
 		{
+			if (_intervals.Count() <= 0) return 0;
+
 			Interval intervalWithMostAncestors = _intervals.OrderByDescending(interval =>
 				interval.Activity.Code.Parts.Length).First();
 

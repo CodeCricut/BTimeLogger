@@ -6,19 +6,37 @@
              xmlns:local="clr-namespace:BTimeLogger.Wpf.Controls"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
-    <StackPanel DataContext="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type local:Home}}}">
-        <ListView ItemsSource="{Binding ViewModel.ReportLocations, Mode=OneWay}"
-                  ScrollViewer.HorizontalScrollBarVisibility="Disabled"
-                  VerticalAlignment="Top"
-                  Name="listView">
-            <!--<ListView.ItemTemplate>
-                <DataTemplate DataType="{x:Type }">
-                <TextBlock Text="{Binding }"
-                    <local:IntervalListItem ViewModel="{Binding }" />
-                </DataTemplate>
-            </ListView.ItemTemplate>-->
-        </ListView>
-        <Button Command="{Binding ViewModel.LoadCommand}">Load</Button>
-        <TextBlock>Home</TextBlock>
-    </StackPanel>
+    <Grid DataContext="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type local:Home}}}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="5*"/>
+            <ColumnDefinition />
+            <ColumnDefinition Width="4*"/>
+        </Grid.ColumnDefinitions>
+
+        <StackPanel>
+            
+        <TextBlock Text="{StaticResource appTitle}"
+                   FontSize="40" />
+            <TextBlock Text="{StaticResource appShortDesc}"
+                       FontSize="15"
+                       Margin="0 0 0 20"
+                       Foreground="{StaticResource skinFontSecondaryBrush}"/>
+        </StackPanel>
+        
+        <TextBlock Text="{StaticResource openRecent}"
+                   FontSize="25" Grid.Row="1"
+                   Margin="0 0 0 10"/>
+        
+        <local:OpenRecentReportList 
+            ViewModel="{Binding ViewModel.OpenRecentReportListViewModel}" 
+            Grid.Row="2"/>
+
+        <TextBlock Text="{StaticResource getStarted}"
+                   FontSize="25" Grid.Column="2" Grid.Row="1"/>
+    </Grid>
 </UserControl>

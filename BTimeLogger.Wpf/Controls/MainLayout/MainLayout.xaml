@@ -11,6 +11,7 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition />
+            <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition />
@@ -44,6 +45,11 @@
                 Grid.Row="1"
                 Grid.Column="1">
             <ContentControl Content="{Binding ViewModel.SelectedFullscreenViewModel}" />
+        </Border>
+        
+        <!--Bottom banner-->
+        <Border Grid.Row="2" Padding="5">
+            <TextBlock Text="hello" />
         </Border>
     </Grid>
 </UserControl>

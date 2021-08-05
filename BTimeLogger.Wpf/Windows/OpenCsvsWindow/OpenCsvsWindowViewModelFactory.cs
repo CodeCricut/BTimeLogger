@@ -27,7 +27,7 @@ namespace BTimeLogger.Wpf.Windows
 
 		public OpenCsvsWindowViewModel Create()
 		{
-			return new OpenCsvsWindowViewModel(_viewManager, _ea, _mediator);
+			return new OpenCsvsWindowViewModel(_viewManager, _mediator);
 		}
 	}
 }

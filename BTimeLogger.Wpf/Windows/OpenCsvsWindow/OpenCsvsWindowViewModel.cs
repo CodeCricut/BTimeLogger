@@ -1,10 +1,8 @@
-﻿using BTimeLogger.Wpf.Controls;
-using BTimeLogger.Wpf.Mediator;
+﻿using BTimeLogger.Wpf.Mediator;
 using MediatR;
 using System;
 using System.Threading.Tasks;
 using WpfCore.Commands;
-using WpfCore.MessageBus;
 using WpfCore.Services;
 using WpfCore.ViewModel;
 
@@ -13,7 +11,6 @@ namespace BTimeLogger.Wpf.Windows
 	public class OpenCsvsWindowViewModel : BaseViewModel
 	{
 		private readonly IViewManager _viewManager;
-		private readonly IEventAggregator _ea;
 		private readonly IMediator _mediator;
 		private string _intervalsCsvLocation;
 		public string IntervalsCsvLocation
@@ -43,13 +40,11 @@ namespace BTimeLogger.Wpf.Windows
 		public AsyncDelegateCommand CreateReportCommand { get; set; }
 
 		public OpenCsvsWindowViewModel(IViewManager viewManager,
-			IEventAggregator ea,
 			IMediator mediator)
 		{
 			CancelCommand = new DelegateCommand(Cancel);
 			CreateReportCommand = new AsyncDelegateCommand(CreateReport, CanCreateReport);
 			_viewManager = viewManager;
-			_ea = ea;
 			_mediator = mediator;
 		}
 
@@ -67,12 +62,10 @@ namespace BTimeLogger.Wpf.Windows
 
 				await _mediator.Send(new ReadCsvs(IntervalsCsvLocation));
 
-				_ea.SendMessage(new ReportSourceChanged());
-
 				Loading = false;
 				CloseDialog();
 			}
-			catch (Exception e)
+			catch (Exception)
 			{
 				Loading = false;
 				InvalidReportInfo = true;
