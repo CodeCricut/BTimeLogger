@@ -15,15 +15,27 @@ namespace BTimeLogger.Wpf.Controls
 	public abstract class PieChartViewModel : BaseViewModel
 	{
 		private string _chartTitle;
-
 		public string ChartTitle
 		{
 			get => _chartTitle;
 			set { Set(ref _chartTitle, value); }
 		}
 
-		public bool IsChartPopulated { get => Categories.Count > 0; }
-		public bool IsChartNotPopulated { get => !IsChartPopulated; }
+		private bool _isLoading;
+		public bool IsLoading
+		{
+			get { return _isLoading; }
+			set
+			{
+				Set(ref _isLoading, value);
+				RaisePropertyChanged(nameof(IsChartPopulated));
+				RaisePropertyChanged(nameof(IsChartNotPopulated));
+			}
+		}
+
+		public bool IsChartPopulated { get => Categories.Count > 0 && !IsLoading; }
+
+		public bool IsChartNotPopulated { get => !IsChartPopulated && !IsLoading; }
 
 		public ObservableCollection<CategoryViewModel> Categories { get; set; } = new ObservableCollection<CategoryViewModel>();
 
@@ -93,34 +105,53 @@ namespace BTimeLogger.Wpf.Controls
 
 		public async Task UpdateChart()
 		{
-			await UpdateTitle();
-			await UpdateSlices();
+			if (!IsLoading)
+			{
+				await UpdateTitle();
+				await UpdateSlices();
+			}
 		}
 
-		private async Task UpdateTitle()
+		private Task UpdateTitle()
 		{
-			string chartTitle = await GetTitle();
-			Application.Current.Dispatcher.Invoke(() => ChartTitle = chartTitle);
+			return Task.Factory.StartNew(async () =>
+			{
+				IsLoading = true;
+
+				string chartTitle = await GetTitle();
+
+				Application.Current.Dispatcher.Invoke(() =>
+				{
+					ChartTitle = chartTitle;
+					IsLoading = false;
+				});
+			});
 		}
 
 		protected abstract Task<string> GetTitle();
 
 		private async Task UpdateSlices()
 		{
-			IEnumerable<CategoryViewModel> newCategories = (await GetCategories())
+			IsLoading = true;
+			await Task.Factory.StartNew(async () =>
+			{
+				IEnumerable<CategoryViewModel> newCategories = (await GetCategories())
 				.RemoveCategoriesBelowPercentThreshold()
 				.ToList()
 				.AddOtherCategory();
 
-			Application.Current.Dispatcher.Invoke(() =>
-			{
-				Categories.Clear();
-				foreach (var category in newCategories)
-					Categories.Add(category);
+				Application.Current.Dispatcher.Invoke(() =>
+				{
+					Categories.Clear();
+					foreach (var category in newCategories)
+						Categories.Add(category);
 
-				ResetSliceGeometries();
+					ResetSliceGeometries();
 
-				AddSliceGeometries();
+					AddSliceGeometries();
+
+					IsLoading = false;
+				});
 			});
 		}
 

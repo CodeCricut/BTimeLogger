@@ -27,9 +27,17 @@
                    Grid.RowSpan="2"
                    Visibility="{Binding ViewModel.IsChartNotPopulated, Converter={StaticResource boolToVis}}" />
 
+        <TextBlock Text="{StaticResource loading}"
+                   FontSize="{Binding ViewModel.TitleFontSize}"
+                   HorizontalAlignment="Center"
+                   VerticalAlignment="Center"
+                   Grid.RowSpan="2"
+                   Visibility="{Binding ViewModel.IsLoading, Converter={StaticResource boolToVis}}" />
+
         <ItemsControl ItemsSource="{Binding ViewModel.SliceGeometries}"
                       Width="{Binding ViewModel.ChartWidth}"
                       Height="{Binding ViewModel.ChartHeight}"
+                      Visibility="{Binding ViewModel.IsChartPopulated, Converter={StaticResource boolToVis}}"
                       Margin="20"
                       Grid.Row="1"
                       VerticalAlignment="Top">

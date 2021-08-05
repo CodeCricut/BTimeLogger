@@ -31,7 +31,8 @@ namespace BTimeLogger.Domain.Services
 				bool parentExists = _unsavedActivities.TryGetValue(activity.Code.ParentCode, out Activity parent);
 				if (!parentExists) throw new KeyNotFoundException();
 
-				parent.Children.Add(activity);
+				if (!parent.Children.Contains(activity))
+					parent.Children.Add(activity);
 			}
 
 			_unsavedActivities.Add(activity.Code, activity);
