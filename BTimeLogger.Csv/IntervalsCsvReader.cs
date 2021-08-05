@@ -4,9 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
-using System.Linq;
 using System.Threading.Tasks;
-using static BTimeLogger.Activity;
 
 namespace BTimeLogger.Csv
 {
@@ -132,7 +130,6 @@ namespace BTimeLogger.Csv
 
 			Activity activity = new()
 			{
-				Children = Array.Empty<Activity>(),
 				IsGroup = isGroup,
 				Name = activityCode.ActivityName,
 				Parent = immediateParent
@@ -140,9 +137,7 @@ namespace BTimeLogger.Csv
 
 			if (immediateParent != null)
 			{
-				List<Activity> parentChildren = immediateParent.Children.ToList();
-				parentChildren.Add(activity);
-				immediateParent.Children = parentChildren.ToArray();
+				immediateParent.Children.Add(activity);
 			}
 
 			return activity;

@@ -48,20 +48,16 @@ namespace BTimeLogger.Wpf.Controls
 				if (GroupsSource.NoActivityGroupSelected)
 				{
 					NoGroupActivitySelected?.Invoke(this, args);
-					//_ea.SendMessage(IncludedIntervalActivitiesChanged.NoIncludedActivities());
 					RePopulateActivities();
 				}
 				else
 				{
 					GroupActivitySelected?.Invoke(this, args);
-					//_ea.SendMessage(IncludedIntervalActivitiesChanged.SingleActivity(GroupsSource.SelectedGroupActivity.Activity.Code));
 					RePopulateActivities();
 				}
 			};
 
 			SelectedActivities.CollectionChanged += (_, args) => ActivitiesSelected?.Invoke(this, args);
-			//SelectedActivities.CollectionChanged += (object _, NotifyCollectionChangedEventArgs e) =>
-			//	_ea.SendMessage(new IncludedIntervalActivitiesChanged(SelectedActivities.SelectActivityCodes()));
 
 			ReloadCommand.Execute();
 		}

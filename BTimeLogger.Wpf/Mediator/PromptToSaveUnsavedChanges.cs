@@ -34,13 +34,17 @@ namespace BTimeLogger.Wpf.Mediator
 			_unsavedChangesDialogViewModelFactory = unsavedChangesDialogViewModelFactory;
 		}
 
-		public async Task<bool?> Handle(PromptToSaveUnsavedChanges request, CancellationToken cancellationToken)
+		public Task<bool?> Handle(PromptToSaveUnsavedChanges request, CancellationToken cancellationToken)
 		{
-			if (!_csvChangeTracker.ChangesMade) return true;
+			return Task.Factory.StartNew(() =>
+			{
 
-			UnsavedChangesDialogViewModel vm = _unsavedChangesDialogViewModelFactory.Create();
+				if (!_csvChangeTracker.ChangesMade) return true;
 
-			return _viewManager.ShowDialog(vm);
+				UnsavedChangesDialogViewModel vm = _unsavedChangesDialogViewModelFactory.Create();
+
+				return _viewManager.ShowDialog(vm);
+			});
 		}
 	}
 }

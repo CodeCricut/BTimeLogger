@@ -150,7 +150,7 @@ namespace BTimeLogger.Wpf.Controls
 			double line1X = _radius * Math.Cos(_angle * Math.PI / 180) + _centerX;
 			double line1Y = _radius * Math.Sin(_angle * Math.PI / 180) + _centerY;
 
-			_angle = category.Percentage * 360 / 100 + _prevAngle;
+			_angle = PercentToAngle(category.Percentage) + _prevAngle;
 
 			double arcX = _radius * Math.Cos(_angle * Math.PI / 180) + _centerX;
 			double arcY = _radius * Math.Sin(_angle * Math.PI / 180) + _centerY;
@@ -199,6 +199,11 @@ namespace BTimeLogger.Wpf.Controls
 			SliceGeometries.Add(sliceGeometry);
 
 			_prevAngle = _angle;
+		}
+
+		private static float PercentToAngle(float percent)
+		{
+			return percent * 360 / 100;
 		}
 	}
 }

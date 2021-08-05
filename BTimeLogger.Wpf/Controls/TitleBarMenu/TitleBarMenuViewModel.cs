@@ -13,6 +13,7 @@ namespace BTimeLogger.Wpf.Controls
 		private readonly IViewManager _viewManager;
 		private readonly IOpenCsvsWindowViewModelFactory _createReportWindowViewModelFactory;
 		private readonly ICreateNewIntervalWindowViewModelFactory _createNewIntervalWindowViewModelFactory;
+		private readonly ICreateNewActivityWindowViewModelFactory _createNewActivityWindowViewModelFactory;
 		private readonly ISaveAsWindowViewModelFactory _saveAsWindowViewModelFactory;
 		private readonly IMediator _mediator;
 
@@ -22,16 +23,19 @@ namespace BTimeLogger.Wpf.Controls
 		public AsyncDelegateCommand SaveAsCommand { get; }
 
 		public AsyncDelegateCommand CreateIntervalCommand { get; }
+		public AsyncDelegateCommand CreateActivityCommand { get; }
 
 		public TitleBarMenuViewModel(IViewManager viewManager,
 			IOpenCsvsWindowViewModelFactory createReportWindowViewModelFactory,
 			ICreateNewIntervalWindowViewModelFactory createNewIntervalWindowViewModelFactory,
+			ICreateNewActivityWindowViewModelFactory createNewActivityWindowViewModelFactory,
 			ISaveAsWindowViewModelFactory saveAsWindowViewModelFactory,
 			IMediator mediator)
 		{
 			_viewManager = viewManager;
 			_createReportWindowViewModelFactory = createReportWindowViewModelFactory;
 			_createNewIntervalWindowViewModelFactory = createNewIntervalWindowViewModelFactory;
+			_createNewActivityWindowViewModelFactory = createNewActivityWindowViewModelFactory;
 			_saveAsWindowViewModelFactory = saveAsWindowViewModelFactory;
 			_mediator = mediator;
 
@@ -41,6 +45,7 @@ namespace BTimeLogger.Wpf.Controls
 			SaveAsCommand = new AsyncDelegateCommand(SaveAs);
 
 			CreateIntervalCommand = new AsyncDelegateCommand(CreateNewInterval);
+			CreateActivityCommand = new AsyncDelegateCommand(CreateNewActivity);
 		}
 
 		private void OpenCsvs(object obj)
@@ -70,6 +75,14 @@ namespace BTimeLogger.Wpf.Controls
 		{
 			CreateNewIntervalWindowViewModel createIntervalWindowVM = _createNewIntervalWindowViewModelFactory.Create();
 			_viewManager.ShowDialog(createIntervalWindowVM);
+
+			return Task.CompletedTask;
+		}
+
+		private Task CreateNewActivity(object arg)
+		{
+			CreateNewActivityWindowViewModel createActivityWindowVM = _createNewActivityWindowViewModelFactory.Create();
+			_viewManager.ShowDialog(createActivityWindowVM);
 
 			return Task.CompletedTask;
 		}

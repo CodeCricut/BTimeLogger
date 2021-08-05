@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using static BTimeLogger.Activity;
 
 namespace BTimeLogger.Domain.Services
 {
@@ -27,7 +26,17 @@ namespace BTimeLogger.Domain.Services
 
 		public Task AddActivity(Activity activity)
 		{
-			return Task.Factory.StartNew(() => _unsavedActivities.Add(activity.Code, activity));
+			if (activity.HasParent)
+			{
+				bool parentExists = _unsavedActivities.TryGetValue(activity.Code.ParentCode, out Activity parent);
+				if (!parentExists) throw new KeyNotFoundException();
+
+				parent.Children.Add(activity);
+			}
+
+			_unsavedActivities.Add(activity.Code, activity);
+
+			return Task.CompletedTask;
 		}
 
 		public Task<IEnumerable<Activity>> GetActivities()

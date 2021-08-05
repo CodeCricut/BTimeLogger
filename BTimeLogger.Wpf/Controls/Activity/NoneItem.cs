@@ -6,7 +6,6 @@ namespace BTimeLogger.Wpf.Controls
 	{
 		public NoneItem() : base(new Activity()
 		{
-			Children = Array.Empty<Activity>(),
 			IsGroup = true,
 			Name = "None",
 			Parent = null

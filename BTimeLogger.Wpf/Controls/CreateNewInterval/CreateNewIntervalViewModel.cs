@@ -23,6 +23,7 @@ namespace BTimeLogger.Wpf.Controls
 				Set(ref _fromDate, value);
 				RaisePropertyChanged(nameof(FromDateTime));
 				RaisePropertyChanged(nameof(DurationString));
+				CreateIntervalCommand.RaiseCanExecuteChanged();
 			}
 		}
 
@@ -35,6 +36,8 @@ namespace BTimeLogger.Wpf.Controls
 				Set(ref _toDate, value);
 				RaisePropertyChanged(nameof(ToDateTime));
 				RaisePropertyChanged(nameof(DurationString));
+				CreateIntervalCommand.RaiseCanExecuteChanged();
+
 			}
 		}
 		#endregion
@@ -48,6 +51,8 @@ namespace BTimeLogger.Wpf.Controls
 				Set(ref _fromTime, value);
 				RaisePropertyChanged(nameof(FromDateTime));
 				RaisePropertyChanged(nameof(DurationString));
+				CreateIntervalCommand.RaiseCanExecuteChanged();
+
 			}
 		}
 
@@ -60,6 +65,8 @@ namespace BTimeLogger.Wpf.Controls
 				Set(ref _toTime, value);
 				RaisePropertyChanged(nameof(ToDateTime));
 				RaisePropertyChanged(nameof(DurationString));
+				CreateIntervalCommand.RaiseCanExecuteChanged();
+
 			}
 		}
 		#endregion
@@ -76,7 +83,8 @@ namespace BTimeLogger.Wpf.Controls
 			set { Set(ref _comment, value); }
 		}
 
-		private bool CanCreateNewInterval(object _) => !ActivityTypeSelectorViewModel.NoneSelected;
+		private bool CanCreateNewInterval(object _) => !ActivityTypeSelectorViewModel.NoneSelected
+			&& ToDateTime >= FromDateTime;
 
 		public AsyncDelegateCommand CreateIntervalCommand { get; }
 
@@ -100,8 +108,8 @@ namespace BTimeLogger.Wpf.Controls
 
 		private async Task CreateNewInterval(object arg)
 		{
-			Interval updatedInterval = CreateIntervalWithProps();
-			await _mediator.Send(new Mediator.CreateNewInterval(updatedInterval));
+			Interval newInterval = CreateIntervalWithProps();
+			await _mediator.Send(new Mediator.CreateNewInterval(newInterval));
 			InteractionFinished?.Invoke(this, new());
 		}
 

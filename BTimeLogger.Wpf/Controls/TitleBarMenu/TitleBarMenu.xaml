@@ -25,6 +25,8 @@
         <MenuItem Header="_Create">
             <MenuItem Header="Interval"
                       Command="{Binding ViewModel.CreateIntervalCommand}" />
+            <MenuItem Header="Activity"
+                      Command="{Binding ViewModel.CreateActivityCommand}" />
         </MenuItem>
     </Menu>
 </UserControl> 

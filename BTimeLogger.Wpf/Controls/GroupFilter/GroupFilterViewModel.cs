@@ -18,7 +18,7 @@ namespace BTimeLogger.Wpf.Controls
 
 		public ActivityGroupSourceViewModel GroupsSource { get; } = new();
 
-		public Activity SelectedActivity { get => GroupsSource.SelectedGroupActivity.Activity; }
+		public Activity SelectedActivity { get => GroupsSource.SelectedGroupActivity?.Activity ?? null; }
 
 		public AsyncDelegateCommand ReloadCommand { get; }
 

@@ -33,4 +33,9 @@
     <system:String x:Key="save">Save</system:String>
     <system:String x:Key="dontSave">Don't Save</system:String>
     <system:String x:Key="comment">Comment</system:String>
+    <system:String x:Key="activityName">Activity Name</system:String>
+    <system:String x:Key="isGroup">Is Group</system:String>
+    <system:String x:Key="parent">Parent</system:String>
+    <system:String x:Key="createNewInterval">Create New Interval</system:String>
+    <system:String x:Key="createNewActivity">Create New Activity</system:String>
 </ResourceDictionary>
