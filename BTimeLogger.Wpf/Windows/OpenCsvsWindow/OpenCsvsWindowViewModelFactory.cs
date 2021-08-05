@@ -1,5 +1,4 @@
-﻿using BTimeLogger.Csv;
-using MediatR;
+﻿using MediatR;
 using WpfCore.MessageBus;
 using WpfCore.Services;
 
@@ -18,7 +17,6 @@ namespace BTimeLogger.Wpf.Windows
 
 		public OpenCsvsWindowViewModelFactory(
 			IViewManager viewManager,
-			IIntervalsCsvReader intervalsCsvReader,
 			IEventAggregator ea,
 			IMediator mediator)
 		{

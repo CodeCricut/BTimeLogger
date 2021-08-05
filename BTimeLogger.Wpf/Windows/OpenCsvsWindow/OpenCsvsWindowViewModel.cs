@@ -15,7 +15,6 @@ namespace BTimeLogger.Wpf.Windows
 		private readonly IViewManager _viewManager;
 		private readonly IEventAggregator _ea;
 		private readonly IMediator _mediator;
-
 		private string _intervalsCsvLocation;
 		public string IntervalsCsvLocation
 		{
@@ -67,12 +66,13 @@ namespace BTimeLogger.Wpf.Windows
 				InvalidReportInfo = false;
 
 				await _mediator.Send(new ReadCsvs(IntervalsCsvLocation));
+
 				_ea.SendMessage(new ReportSourceChanged());
 
 				Loading = false;
 				CloseDialog();
 			}
-			catch (Exception)
+			catch (Exception e)
 			{
 				Loading = false;
 				InvalidReportInfo = true;

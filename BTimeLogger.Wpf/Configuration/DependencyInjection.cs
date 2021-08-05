@@ -1,5 +1,6 @@
 ﻿using BTimeLogger.Csv;
 using BTimeLogger.Wpf.Services;
+using BTimeLogger.Wpf.Services.AppData;
 using BTimeLogger.Wpf.Services.ViewManagement;
 using MediatR;
 using Microsoft.Extensions.Configuration;
@@ -17,8 +18,14 @@ namespace BTimeLogger.Wpf.Configuration
 			if (services == null) throw new ArgumentNullException(nameof(services));
 			if (configuration == null) throw new ArgumentNullException(nameof(configuration));
 
+			services.Configure<ReportLocationsDataFileSettings>(opts =>
+				configuration.GetSection(ReportLocationsDataFileSettings.ReportLocationsDataFile)
+				.Bind(opts));
 
 			return services
+				.AddSingleton<IAppDataService, AppDataService>()
+				.AddSingleton<IReportLocationsPrincipal, ReportLocationsPrincipal>()
+
 				.AddSingleton<IGroupStatisticCategoriesConverter, GroupStatisticCategoriesConverter>()
 
 				.AddSingleton<ICsvChangeTracker, CsvChangeTracker>()

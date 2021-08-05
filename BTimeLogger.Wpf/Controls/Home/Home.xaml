@@ -6,7 +6,19 @@
              xmlns:local="clr-namespace:BTimeLogger.Wpf.Controls"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
-    <Grid>
+    <StackPanel DataContext="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type local:Home}}}">
+        <ListView ItemsSource="{Binding ViewModel.ReportLocations, Mode=OneWay}"
+                  ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                  VerticalAlignment="Top"
+                  Name="listView">
+            <!--<ListView.ItemTemplate>
+                <DataTemplate DataType="{x:Type }">
+                <TextBlock Text="{Binding }"
+                    <local:IntervalListItem ViewModel="{Binding }" />
+                </DataTemplate>
+            </ListView.ItemTemplate>-->
+        </ListView>
+        <Button Command="{Binding ViewModel.LoadCommand}">Load</Button>
         <TextBlock>Home</TextBlock>
-    </Grid>
+    </StackPanel>
 </UserControl>

@@ -61,7 +61,7 @@
 
 
             <TextBlock Grid.Column="2"
-                       Margin="4 0 0 0"
+                       Margin="10 0"
                        VerticalAlignment="Center"
                        FontSize="14"
                        HorizontalAlignment="Right"

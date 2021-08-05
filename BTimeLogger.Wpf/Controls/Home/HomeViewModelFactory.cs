@@ -1,4 +1,6 @@
-﻿namespace BTimeLogger.Wpf.Controls
+﻿using BTimeLogger.Wpf.Services.AppData;
+
+namespace BTimeLogger.Wpf.Controls
 {
 	public interface IHomeViewModelFactory
 	{
@@ -7,9 +9,15 @@
 
 	class HomeViewModelFactory : IHomeViewModelFactory
 	{
+		private readonly IReportLocationsPrincipal _reportLocationsPrincipal;
+
+		public HomeViewModelFactory(IReportLocationsPrincipal reportLocationsPrincipal)
+		{
+			_reportLocationsPrincipal = reportLocationsPrincipal;
+		}
 		public HomeViewModel Create()
 		{
-			return new();
+			return new HomeViewModel(_reportLocationsPrincipal);
 		}
 	}
 }
