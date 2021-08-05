@@ -43,4 +43,5 @@
     <system:String x:Key="astericks">*</system:String>
     <system:String x:Key="clearAllLocations">Clear All</system:String>
     <system:String x:Key="open">Open</system:String>
+    <system:String x:Key="createNewProject">Create New Project</system:String>
 </ResourceDictionary>

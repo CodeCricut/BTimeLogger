@@ -2,5 +2,8 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
     <BitmapImage x:Key="logo"
                  UriSource="./Pictures/transparentClock.png" />
-    
+    <BitmapImage x:Key="folder"
+                 UriSource="./Pictures/folder.png" />
+    <BitmapImage x:Key="newFile"
+                 UriSource="./Pictures/newFile.png" />
 </ResourceDictionary>

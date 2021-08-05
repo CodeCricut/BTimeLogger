@@ -10,6 +10,8 @@
   <ItemGroup>
     <None Remove="Configuration\appsettings.json" />
     <None Remove="Resources\Pictures\clockIcon.ico" />
+    <None Remove="Resources\Pictures\folder.png" />
+    <None Remove="Resources\Pictures\newFile.png" />
     <None Remove="Resources\Pictures\transparentClock.png" />
   </ItemGroup>
 
@@ -42,6 +44,8 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Resource Include="Resources\Pictures\clockIcon.ico" />
+    <Resource Include="Resources\Pictures\folder.png" />
+    <Resource Include="Resources\Pictures\newFile.png" />
     <Resource Include="Resources\Pictures\transparentClock.png" />
   </ItemGroup>
 
