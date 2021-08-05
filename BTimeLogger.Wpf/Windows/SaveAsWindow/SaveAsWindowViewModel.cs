@@ -47,7 +47,7 @@ namespace BTimeLogger.Wpf.Windows
 				await _mediator.Send(new SaveAs(IntervalsCsvLocation));
 				_viewManager.Close(this);
 			}
-			catch (System.Exception e)
+			catch (System.Exception)
 			{
 				IntervalsCsvLocation = string.Empty;
 				InvalidFileLocation = true;

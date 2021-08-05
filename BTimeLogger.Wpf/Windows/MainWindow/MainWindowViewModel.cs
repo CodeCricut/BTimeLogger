@@ -1,5 +1,4 @@
 ﻿using BTimeLogger.Wpf.Controls;
-using BTimeLogger.Wpf.Mediator;
 using MediatR;
 using System;
 using WpfCore.Services;
@@ -35,8 +34,8 @@ namespace BTimeLogger.Wpf.Windows
 
 		private void HandleCloseRequested(object sender, EventArgs e)
 		{
-			bool? saved = _mediator.Send(new PromptToSaveUnsavedChanges())
-				.ConfigureAwait(false).GetAwaiter().GetResult();
+			bool? saved = _mediator.Send(new Mediator.PromptToSaveUnsavedChanges())
+				.GetAwaiter().GetResult();
 
 			if (saved.HasValue && saved.Value) // Not cancelled
 			{

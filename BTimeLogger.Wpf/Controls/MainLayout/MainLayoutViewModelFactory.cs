@@ -22,6 +22,7 @@ namespace BTimeLogger.Wpf.Controls
 		private readonly IPartialIntervalListViewModelFactory _partialIntervalListViewModel;
 		private readonly IGroupStatisticsPieChartViewModelFactory _groupStatisticsPieChartViewModelFactory;
 		private readonly IGroupFilterViewModelFactory _groupFilterViewModelFactory;
+		private readonly ICurrentReportBannerViewModelFactory _currentReportBannerViewModel;
 
 		public MainLayoutViewModelFactory(
 			IViewManager viewManager,
@@ -35,7 +36,8 @@ namespace BTimeLogger.Wpf.Controls
 			IPaginatedIntervalListViewModelFactory paginatedIntervalListViewModel,
 			IPartialIntervalListViewModelFactory partialIntervalListViewModel,
 			IGroupStatisticsPieChartViewModelFactory groupStatisticsPieChartViewModelFactory,
-			IGroupFilterViewModelFactory groupFilterViewModelFactory)
+			IGroupFilterViewModelFactory groupFilterViewModelFactory,
+			ICurrentReportBannerViewModelFactory currentReportBannerViewModel)
 		{
 			_viewManager = viewManager;
 			_homeViewModelFactory = homeViewModelFactory;
@@ -49,6 +51,7 @@ namespace BTimeLogger.Wpf.Controls
 			_partialIntervalListViewModel = partialIntervalListViewModel;
 			_groupStatisticsPieChartViewModelFactory = groupStatisticsPieChartViewModelFactory;
 			_groupFilterViewModelFactory = groupFilterViewModelFactory;
+			_currentReportBannerViewModel = currentReportBannerViewModel;
 		}
 
 		public MainLayoutViewModel Create()
@@ -68,7 +71,8 @@ namespace BTimeLogger.Wpf.Controls
 
 			var statsVM = _statisticsViewModelFactory.Create(groupStatisticsPieChartViewModel, groupFilterVM, statTimeSpanPanelVM);
 
-			return new MainLayoutViewModel(homeVM, intervalsVM, statsVM);
+			CurrentReportBannerViewModel currentReportBannerVM = _currentReportBannerViewModel.Create();
+			return new MainLayoutViewModel(homeVM, intervalsVM, statsVM, currentReportBannerVM);
 		}
 	}
 }

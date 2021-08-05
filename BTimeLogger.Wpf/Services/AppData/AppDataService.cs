@@ -22,6 +22,8 @@ namespace BTimeLogger.Wpf.Services.AppData
 
 		public string GetFileLocation(string fileName)
 		{
+			if (string.IsNullOrWhiteSpace(fileName)) throw new ArgumentException(nameof(fileName));
+
 			string appDataFolder = GetAppDataFolderLocation();
 			return Path.Combine(appDataFolder, fileName);
 		}

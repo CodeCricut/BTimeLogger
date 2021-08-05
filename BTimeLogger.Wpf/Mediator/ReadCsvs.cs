@@ -55,7 +55,7 @@ namespace BTimeLogger.Wpf.Mediator
 
 
 			// TODO: use cancellation token, with csvreaders having SaveChanges function
-			_csvLocationPrincipal.IntervalCsvLocation = request.IntervalCsvLocation;
+			_csvLocationPrincipal.CsvLocation = request.IntervalCsvLocation;
 			_reportLocationsPrincipal.AddReportLocation(request.IntervalCsvLocation);
 
 			await _intervalsCsvReader.ReadIntervalCsv(request.IntervalCsvLocation);

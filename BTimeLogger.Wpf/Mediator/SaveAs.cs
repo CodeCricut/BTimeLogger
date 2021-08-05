@@ -34,8 +34,8 @@ namespace BTimeLogger.Wpf.Mediator
 
 		public Task<Unit> Handle(SaveAs request, CancellationToken cancellationToken)
 		{
-			_csvLocationsPrincipal.IntervalCsvLocation = request.FileLocation;
-			return _mediator.Send(new Save());
+			_csvLocationsPrincipal.CsvLocation = request.FileLocation;
+			return _mediator.Send(new Save(), cancellationToken);
 		}
 	}
 }

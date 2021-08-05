@@ -1,4 +1,5 @@
 ﻿using BTimeLogger.Csv;
+using BTimeLogger.Wpf.Services.AppData;
 using BTimeLogger.Wpf.Windows;
 using MediatR;
 using System.Threading;
@@ -18,19 +19,22 @@ namespace BTimeLogger.Wpf.Mediator
 		private readonly ISaveAsWindowViewModelFactory _saveAsWindowViewModelFactory;
 		private readonly IViewManager _viewManager;
 		private readonly ICsvChangeTracker _csvChangeTracker;
+		private readonly IReportLocationsPrincipal _reportLocationsPrincipal;
 
 		public SaveHandler(
 			ICsvLocationPrincipal csvLocationPrincipal,
 			IIntervalsCsvWriter intervalsCsvWriter,
 			ISaveAsWindowViewModelFactory saveAsWindowViewModelFactory,
 			IViewManager viewManager,
-			ICsvChangeTracker csvChangeTracker)
+			ICsvChangeTracker csvChangeTracker,
+			IReportLocationsPrincipal reportLocationsPrincipal)
 		{
 			_csvLocationPrincipal = csvLocationPrincipal;
 			_intervalsCsvWriter = intervalsCsvWriter;
 			_saveAsWindowViewModelFactory = saveAsWindowViewModelFactory;
 			_viewManager = viewManager;
 			_csvChangeTracker = csvChangeTracker;
+			_reportLocationsPrincipal = reportLocationsPrincipal;
 		}
 
 		public async Task<Unit> Handle(Save request, CancellationToken cancellationToken)
@@ -38,7 +42,9 @@ namespace BTimeLogger.Wpf.Mediator
 			if (!_csvChangeTracker.ChangesMade) return Unit.Value;
 			if (_csvLocationPrincipal.LocationsAreSelected)
 			{
-				await _intervalsCsvWriter.WriteIntervals(_csvLocationPrincipal.IntervalCsvLocation);
+				await _intervalsCsvWriter.WriteIntervals(_csvLocationPrincipal.CsvLocation);
+				_reportLocationsPrincipal.AddReportLocation(_csvLocationPrincipal.CsvLocation);
+
 				_csvChangeTracker.ClearChanges();
 			}
 			else

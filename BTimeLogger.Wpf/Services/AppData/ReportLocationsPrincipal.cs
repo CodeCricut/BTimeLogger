@@ -1,6 +1,7 @@
 ﻿using BTimeLogger.Wpf.Configuration;
 using BTimeLogger.Wpf.Util;
 using Microsoft.Extensions.Options;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -33,6 +34,8 @@ namespace BTimeLogger.Wpf.Services.AppData
 
 		public void AddReportLocation(string reportLocation)
 		{
+			if (string.IsNullOrWhiteSpace(reportLocation)) throw new ArgumentException(nameof(reportLocation));
+
 			string dataFileLocation = GetFileLocation();
 			if (ReportLocationAlreadyAdded(reportLocation)) return;
 
@@ -53,12 +56,17 @@ namespace BTimeLogger.Wpf.Services.AppData
 
 		public void RemoveReportLocation(string reportLocation)
 		{
+			if (string.IsNullOrWhiteSpace(reportLocation)) throw new ArgumentException(nameof(reportLocation));
+
 			string dataFileLocation = GetFileLocation();
 			RemoveLineWithValue(dataFileLocation, reportLocation);
 		}
 
 		private void RemoveLineWithValue(string fileLocation, string value)
 		{
+			if (string.IsNullOrWhiteSpace(fileLocation)) throw new ArgumentException(nameof(fileLocation));
+			if (string.IsNullOrWhiteSpace(value)) throw new ArgumentException(nameof(value));
+
 			IEnumerable<string> reportLocations = GetReportLocations();
 
 			IEnumerable<string> newReportLocations = reportLocations.Where(str => !str.Equals(value));
@@ -68,6 +76,8 @@ namespace BTimeLogger.Wpf.Services.AppData
 
 		private bool ReportLocationAlreadyAdded(string reportLocation)
 		{
+			if (string.IsNullOrWhiteSpace(reportLocation)) throw new ArgumentException(nameof(reportLocation));
+
 			return GetReportLocations().Any(loc => loc.Equals(reportLocation));
 		}
 

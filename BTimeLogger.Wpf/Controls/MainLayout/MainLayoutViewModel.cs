@@ -13,6 +13,8 @@ namespace BTimeLogger.Wpf.Controls
 		public DelegateCommand SelectIntervalsCommand { get; set; }
 		public DelegateCommand SelectStatisticsCommand { get; set; }
 
+		public CurrentReportBannerViewModel CurrentReportBannerViewModel { get; }
+
 		private BaseViewModel _selectedFullscreenViewModel;
 
 		public BaseViewModel SelectedFullscreenViewModel
@@ -23,11 +25,13 @@ namespace BTimeLogger.Wpf.Controls
 
 		public MainLayoutViewModel(HomeViewModel homeViewModel,
 			IntervalsViewModel intervalsViewModel,
-			StatisticsViewModel statisticsViewModel)
+			StatisticsViewModel statisticsViewModel,
+			CurrentReportBannerViewModel currentReportBannerViewModel)
 		{
 			_homeViewModel = homeViewModel;
 			_intervalsViewModel = intervalsViewModel;
 			_statisticsViewModel = statisticsViewModel;
+			CurrentReportBannerViewModel = currentReportBannerViewModel;
 
 			SelectHomeCommand = new DelegateCommand(SelectHome);
 			SelectIntervalsCommand = new DelegateCommand(SelectIntervals);

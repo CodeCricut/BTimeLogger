@@ -40,4 +40,5 @@
     <system:String x:Key="createNewActivity">Create New Activity</system:String>
     <system:String x:Key="openRecent">Open Recent</system:String>
     <system:String x:Key="getStarted">Get Started</system:String>
+    <system:String x:Key="astericks">*</system:String>
 </ResourceDictionary>
