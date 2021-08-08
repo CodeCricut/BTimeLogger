@@ -1,5 +1,4 @@
 ﻿using BTimeLogger.Wpf.Windows;
-using MediatR;
 using WpfCore.Commands;
 using WpfCore.Services;
 using WpfCore.ViewModel;
@@ -8,7 +7,6 @@ namespace BTimeLogger.Wpf.Controls
 {
 	public class HomeViewModel : BaseViewModel
 	{
-		private readonly IMediator _mediator;
 		private readonly ICreateNewProjectWindowViewModelFactory _createNewProjectWindowViewModelFactory;
 		private readonly IViewManager _viewManager;
 

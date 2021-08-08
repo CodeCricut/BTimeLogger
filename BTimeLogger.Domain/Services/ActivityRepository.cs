@@ -71,5 +71,17 @@ namespace BTimeLogger.Domain.Services
 				}
 			});
 		}
+
+		public Task RemoveChanges()
+		{
+			return Task.Factory.StartNew(() =>
+			{
+				_unsavedActivities.Clear();
+				foreach (var savedActivity in _activities)
+				{
+					_unsavedActivities.Add(savedActivity.Key, savedActivity.Value);
+				}
+			});
+		}
 	}
 }

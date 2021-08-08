@@ -6,7 +6,7 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace BTimeLogger.Csv
+namespace BTimeLogger.Csv.Services
 {
 	public interface IIntervalsCsvWriter
 	{

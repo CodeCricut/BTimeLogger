@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace BTimeLogger.Csv
+namespace BTimeLogger.Csv.Helpers
 {
 	public static class CsvFieldParser
 	{

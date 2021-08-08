@@ -1,4 +1,5 @@
-﻿using BTimeLogger.Domain.Services;
+﻿using BTimeLogger.Csv.Helpers;
+using BTimeLogger.Domain.Services;
 using CsvHelper;
 using System;
 using System.Collections.Generic;
@@ -6,7 +7,7 @@ using System.Globalization;
 using System.IO;
 using System.Threading.Tasks;
 
-namespace BTimeLogger.Csv
+namespace BTimeLogger.Csv.Services
 {
 	public interface IIntervalsCsvReader
 	{

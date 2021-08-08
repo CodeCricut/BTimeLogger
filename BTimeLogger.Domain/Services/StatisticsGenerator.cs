@@ -2,7 +2,6 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using static BTimeLogger.Activity;
 
 namespace BTimeLogger.Domain.Services
 {
@@ -13,8 +12,6 @@ namespace BTimeLogger.Domain.Services
 
 		Task<Statistic> GenerateStatistic(Activity activity, TimeSpan totalTime, DateTime from, DateTime to);
 		Task<IEnumerable<Statistic>> GenerateStatistics(IEnumerable<Activity> statActivity, TimeSpan totalTime, DateTime from, DateTime to);
-
-		//Task<IEnumerable<Statistic>> GenerateAllStatistics(DateTime from, DateTime to);
 	}
 
 	class StatisticsGenerator : IStatisticsGenerator

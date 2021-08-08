@@ -5,6 +5,9 @@ using System.Text;
 
 namespace BTimeLogger
 {
+	/// <summary>
+	/// Used to uniquely identify <see cref="Activity"/> objects.
+	/// </summary>
 	public class ActivityCode
 	{
 		private const char DELIM = '/';
@@ -14,8 +17,47 @@ namespace BTimeLogger
 			Value = value;
 		}
 
-		public string Value { get; set; }
-		public string[] Parts { get => Value.Split(DELIM); }
+		/// <summary>
+		/// Create a code for the given <paramref name="activity"/>.
+		/// </summary>
+		public static ActivityCode CreateCode(Activity activity)
+		{
+			if (activity == null) throw new ArgumentNullException(nameof(activity));
+
+			string activityName = activity.Name;
+			string[] groupNames = GetGroupNames(activity);
+			return CreateCode(activityName, groupNames);
+		}
+
+		/// <summary>
+		/// Create a code for an <see cref="Activity"/> with the <paramref name="activityName"/> name and <paramref name="groupNames"/> 
+		/// group names, where <paramref name="groupNames"/> is an ordered array of parent group names, going from most removed to least
+		/// removed (Ex. { "GrandparentName", "ParentName" })
+		/// </summary>
+		public static ActivityCode CreateCode(string activityName, string[] groupNames)
+		{
+			if (activityName == null) throw new ArgumentNullException(nameof(activityName));
+			if (groupNames == null) throw new ArgumentNullException(nameof(groupNames));
+
+			StringBuilder builder = new();
+			for (int i = 0; i < groupNames.Length; i++)
+			{
+				builder.Append(groupNames[i]);
+				builder.Append(DELIM);
+			}
+			builder.Append(activityName);
+			return new ActivityCode(builder.ToString());
+		}
+
+		public string Value { get; private set; }
+
+		public string[] Parts
+		{
+			get => string.IsNullOrWhiteSpace(Value)
+				? Array.Empty<string>()
+				: Value.Split(DELIM);
+		}
+
 		public string ActivityName
 		{
 			get
@@ -24,6 +66,7 @@ namespace BTimeLogger
 				else return Parts[Parts.Length - 1];
 			}
 		}
+
 		public string[] GroupNames
 		{
 			get
@@ -32,6 +75,7 @@ namespace BTimeLogger
 				return Parts.Take(Parts.Length - 1).ToArray();
 			}
 		}
+
 		public ActivityCode ParentCode
 		{
 			get
@@ -84,25 +128,6 @@ namespace BTimeLogger
 			return Value;
 		}
 
-		public static ActivityCode CreateCode(Activity activity)
-		{
-			string activityName = activity.Name;
-			string[] groupNames = GetGroupNames(activity);
-			return CreateCode(activityName, groupNames);
-		}
-
-		public static ActivityCode CreateCode(string activityName, string[] groupNames)
-		{
-			StringBuilder builder = new();
-			for (int i = 0; i < groupNames.Length; i++)
-			{
-				builder.Append(groupNames[i]);
-				builder.Append(DELIM);
-			}
-			builder.Append(activityName);
-			return new ActivityCode(builder.ToString());
-		}
-
 		private static string[] GetGroupNames(Activity activity)
 		{
 			List<string> groupNames = new();
@@ -117,6 +142,5 @@ namespace BTimeLogger
 			groupNames.Reverse();
 			return groupNames.ToArray();
 		}
-
 	}
 }

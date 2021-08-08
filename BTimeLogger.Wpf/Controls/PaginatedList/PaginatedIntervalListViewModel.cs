@@ -31,7 +31,6 @@ namespace BTimeLogger.Wpf.Controls
 			_intervalRepository = intervalRepository;
 			_intervalListItemViewModelFactory = intervalListItemViewModelFactory;
 
-			//ea.RegisterHandler<ReportSourceChanged>(HandleReportSourceChanged);
 			ea.RegisterHandler<IncludedIntervalActivitiesChanged>(HandleIncludedActivitiesChanged);
 			ea.RegisterHandler<IntervalsTimeSpanChanged>(HandleIntervalTimeSpanChanged);
 		}
@@ -64,12 +63,6 @@ namespace BTimeLogger.Wpf.Controls
 				_intervalSearchFilter.From, _intervalSearchFilter.To))
 				.OrderByDescending(interval => interval.From);
 			_matchingIntervalsLoaded = true;
-		}
-
-		private void HandleReportSourceChanged(ReportSourceChanged obj)
-		{
-			_matchingIntervalsLoaded = false;
-			ResetToStartingPageCommand.Execute();
 		}
 
 		private void HandleIncludedActivitiesChanged(IncludedIntervalActivitiesChanged msg)

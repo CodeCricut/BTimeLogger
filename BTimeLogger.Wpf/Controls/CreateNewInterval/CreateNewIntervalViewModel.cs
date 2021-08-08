@@ -1,4 +1,5 @@
 ﻿using BTimeLogger.Csv.Helpers;
+using BTimeLogger.Domain.Helpers;
 using MediatR;
 using System;
 using System.Threading.Tasks;
@@ -14,7 +15,7 @@ namespace BTimeLogger.Wpf.Controls
 		public ActivityTypeSelectorViewModel ActivityTypeSelectorViewModel { get; }
 
 		#region Date
-		private DateTime _fromDate = DateTime.Now.Date;
+		private DateTime _fromDate;
 		public DateTime FromDate
 		{
 			get => _fromDate;
@@ -27,7 +28,7 @@ namespace BTimeLogger.Wpf.Controls
 			}
 		}
 
-		private DateTime _toDate = DateTime.Now.Date;
+		private DateTime _toDate;
 		public DateTime ToDate
 		{
 			get => _toDate;
@@ -42,7 +43,7 @@ namespace BTimeLogger.Wpf.Controls
 		}
 		#endregion
 		#region Time
-		private TimeSpan _fromTime = DateTime.Now.TimeOfDay;
+		private TimeSpan _fromTime;
 		public TimeSpan FromTime
 		{
 			get => _fromTime;
@@ -99,6 +100,10 @@ namespace BTimeLogger.Wpf.Controls
 			CreateIntervalCommand = new AsyncDelegateCommand(CreateNewInterval, CanCreateNewInterval);
 
 			ActivityTypeSelectorViewModel.PropertyChanged += (_, _) => CreateIntervalCommand.RaiseCanExecuteChanged();
+
+			DateTime timeOfCreation = DateTime.Now.RoundToNearest(TimeSpan.FromMinutes(1));
+			_fromDate = _toDate = timeOfCreation.Date;
+			_fromTime = _toTime = timeOfCreation.TimeOfDay;
 		}
 
 		private void TimeSpanPanelViewModel_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)

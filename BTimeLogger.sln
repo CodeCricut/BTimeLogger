@@ -11,9 +11,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BTimeLogger.Csv", "BTimeLog
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BTimeLogger.Csv.Tests", "BTimeLogger.Csv.Tests\BTimeLogger.Csv.Tests.csproj", "{B3C51ED0-E557-4035-8E5A-C53E938BA02E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BTimeLogger.Wpf", "BTimeLogger.Wpf\BTimeLogger.Wpf.csproj", "{832524CC-8BC5-4FAE-A7D4-0B671426E173}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BTimeLogger.Wpf", "BTimeLogger.Wpf\BTimeLogger.Wpf.csproj", "{832524CC-8BC5-4FAE-A7D4-0B671426E173}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WpfCore", "..\ATimeLogger\WpfCore\WpfCore.csproj", "{EB9F81EE-9435-4A3E-BC77-6AF2913C4D96}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{1B149F00-9F54-477A-A947-0132C5976B55}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -48,6 +50,10 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{C997D2FB-68B7-4796-A0F2-E51612AFF6B6} = {1B149F00-9F54-477A-A947-0132C5976B55}
+		{B3C51ED0-E557-4035-8E5A-C53E938BA02E} = {1B149F00-9F54-477A-A947-0132C5976B55}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {67092692-7522-4E8E-A3CC-C1A7B175DB0A}

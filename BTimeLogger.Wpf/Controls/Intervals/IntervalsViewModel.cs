@@ -47,6 +47,8 @@ namespace BTimeLogger.Wpf.Controls
 				ea.SendMessage(new IntervalsTimeSpanChanged(TimeSpanPanelViewModel.From, TimeSpanPanelViewModel.To));
 
 			CreateNewIntervalCommand = new AsyncDelegateCommand(CreateNewInterval);
+
+			ea.SendMessage(new IntervalsTimeSpanChanged(TimeSpanPanelViewModel.From, TimeSpanPanelViewModel.To));
 		}
 
 		private Task CreateNewInterval(object arg)

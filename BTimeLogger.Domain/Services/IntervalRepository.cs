@@ -3,7 +3,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using static BTimeLogger.Activity;
 
 namespace BTimeLogger.Domain.Services
 {
@@ -89,6 +88,18 @@ namespace BTimeLogger.Domain.Services
 				foreach (var unsavedInterval in _unsavedIntervals)
 				{
 					_intervals.Add(unsavedInterval.Key, unsavedInterval.Value);
+				}
+			});
+		}
+
+		public Task RemoveChanges()
+		{
+			return Task.Factory.StartNew(() =>
+			{
+				_unsavedIntervals.Clear();
+				foreach (KeyValuePair<Guid, Interval> savedInterval in _intervals)
+				{
+					_unsavedIntervals.Add(savedInterval.Key, savedInterval.Value);
 				}
 			});
 		}

@@ -1,6 +1,6 @@
 ﻿using System.IO;
 
-namespace BTimeLogger.Csv
+namespace BTimeLogger.Csv.Services
 {
 	public interface ICsvLocationPrincipal
 	{

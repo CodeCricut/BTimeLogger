@@ -13,5 +13,11 @@ namespace BTimeLogger.Domain.Services
 		/// Save all working changes made to the repository.
 		/// </summary>
 		Task SaveChanges();
+
+		/// <summary>
+		/// Remove all working changes made to the repository.
+		/// </summary>
+		/// <returns></returns>
+		Task RemoveChanges();
 	}
 }
