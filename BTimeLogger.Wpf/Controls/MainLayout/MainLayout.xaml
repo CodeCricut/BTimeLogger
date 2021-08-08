@@ -49,7 +49,7 @@
         
         <!--Bottom banner-->
         <Border Grid.Row="2" Padding="5" Margin="0 10 0 0" Grid.ColumnSpan="3" 
-                Background="{StaticResource skinBackgroundDarkBrush}">
+                Background="{DynamicResource skinBackgroundDarkBrush}">
             <local:CurrentReportBanner ViewModel="{Binding ViewModel.CurrentReportBannerViewModel}" />
         </Border>
     </Grid>

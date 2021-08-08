@@ -26,6 +26,13 @@ namespace BTimeLogger.Wpf.Controls
 			get { return _isGroup; }
 			set { Set(ref _isGroup, value); CreateCommand.RaiseCanExecuteChanged(); }
 		}
+
+		private bool _invalidActivityInfo;
+		public bool InvalidActivityInfo
+		{
+			get { return _invalidActivityInfo; }
+			set { Set(ref _invalidActivityInfo, value); }
+		}
 		#endregion
 
 		public DelegateCommand CancelCommand { get; }
@@ -45,9 +52,18 @@ namespace BTimeLogger.Wpf.Controls
 
 		private async Task Create(object obj)
 		{
-			Activity activity = CreateActivityWithProps();
-			await _mediator.Send(new Mediator.CreateNewActivity(activity));
-			InteractionFinished?.Invoke(this, new());
+			try
+			{
+				InvalidActivityInfo = false;
+
+				Activity activity = CreateActivityWithProps();
+				await _mediator.Send(new Mediator.CreateNewActivity(activity));
+				InteractionFinished?.Invoke(this, new());
+			}
+			catch (Exception)
+			{
+				InvalidActivityInfo = true;
+			}
 		}
 
 		private Activity CreateActivityWithProps()

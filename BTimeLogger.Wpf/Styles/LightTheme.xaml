@@ -13,7 +13,7 @@
     <SolidColorBrush x:Key="skinBackgroundDarkBrush"
                      Color="{StaticResource skinBackgroundDark}" />
 
-    <Color x:Key="skinFontColor">Black</Color>
+    <Color x:Key="skinFontColor">#595959</Color>
     <SolidColorBrush x:Key="skinFontBrush"
                      Color="{StaticResource skinFontColor}" />
 

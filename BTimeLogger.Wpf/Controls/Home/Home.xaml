@@ -26,7 +26,7 @@
             <TextBlock Text="{StaticResource appShortDesc}"
                        FontSize="15"
                        Margin="0 0 0 20"
-                       Foreground="{StaticResource skinFontSecondaryBrush}" />
+                       Foreground="{DynamicResource skinFontSecondaryBrush}" />
         </StackPanel>
 
         <TextBlock Text="{StaticResource openRecent}"
@@ -50,7 +50,7 @@
             </Grid.RowDefinitions>
             
             <!--Create new button-->
-            <Border Background="{StaticResource skinBackgroundLightBrush}"
+            <Border Background="{DynamicResource skinBackgroundLightBrush}"
                     Padding="10">
                 <Grid>
                     <Grid.ColumnDefinitions>
@@ -70,7 +70,7 @@
                                    FontSize="20"
                                    Margin="0 0 0 5" />
                         <TextBlock Text="Get started with a new project."
-                                   Foreground="{StaticResource skinFontSecondaryBrush}" />
+                                   Foreground="{DynamicResource skinFontSecondaryBrush}" />
 
                     </StackPanel>
 

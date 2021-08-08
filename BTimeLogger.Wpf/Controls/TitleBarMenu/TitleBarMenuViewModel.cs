@@ -1,4 +1,5 @@
 ﻿using BTimeLogger.Wpf.Mediator;
+using BTimeLogger.Wpf.Services;
 using BTimeLogger.Wpf.Windows;
 using MediatR;
 using System.Threading.Tasks;
@@ -16,6 +17,7 @@ namespace BTimeLogger.Wpf.Controls
 		private readonly ICreateNewActivityWindowViewModelFactory _createNewActivityWindowViewModelFactory;
 		private readonly ISaveAsWindowViewModelFactory _saveAsWindowViewModelFactory;
 		private readonly IMediator _mediator;
+		private readonly ISkinManager _skinManager;
 
 		public DelegateCommand OpenCsvsCommand { get; }
 		public AsyncDelegateCommand ExitCommand { get; }
@@ -25,12 +27,18 @@ namespace BTimeLogger.Wpf.Controls
 		public AsyncDelegateCommand CreateIntervalCommand { get; }
 		public AsyncDelegateCommand CreateActivityCommand { get; }
 
+		private bool _hasDarkSkinEnabled;
+		public bool HasDarkSkinEnabled { get => _hasDarkSkinEnabled; set => Set(ref _hasDarkSkinEnabled, value); }
+
+		public DelegateCommand ToggleSkinCommand { get; }
+
 		public TitleBarMenuViewModel(IViewManager viewManager,
 			IOpenCsvsWindowViewModelFactory createReportWindowViewModelFactory,
 			ICreateNewIntervalWindowViewModelFactory createNewIntervalWindowViewModelFactory,
 			ICreateNewActivityWindowViewModelFactory createNewActivityWindowViewModelFactory,
 			ISaveAsWindowViewModelFactory saveAsWindowViewModelFactory,
-			IMediator mediator)
+			IMediator mediator,
+			ISkinManager skinManager)
 		{
 			_viewManager = viewManager;
 			_createReportWindowViewModelFactory = createReportWindowViewModelFactory;
@@ -38,6 +46,7 @@ namespace BTimeLogger.Wpf.Controls
 			_createNewActivityWindowViewModelFactory = createNewActivityWindowViewModelFactory;
 			_saveAsWindowViewModelFactory = saveAsWindowViewModelFactory;
 			_mediator = mediator;
+			_skinManager = skinManager;
 
 			OpenCsvsCommand = new DelegateCommand(OpenCsvs);
 			ExitCommand = new AsyncDelegateCommand(Exit);
@@ -46,6 +55,15 @@ namespace BTimeLogger.Wpf.Controls
 
 			CreateIntervalCommand = new AsyncDelegateCommand(CreateNewInterval);
 			CreateActivityCommand = new AsyncDelegateCommand(CreateNewActivity);
+
+			ToggleSkinCommand = new DelegateCommand(ToggleSkin);
+			HasDarkSkinEnabled = _skinManager.AppSkin == Model.Skin.Dark;
+		}
+
+		private void ToggleSkin(object obj)
+		{
+			_skinManager.ToggleSkin();
+			HasDarkSkinEnabled = _skinManager.AppSkin == Model.Skin.Dark;
 		}
 
 		private void OpenCsvs(object obj)

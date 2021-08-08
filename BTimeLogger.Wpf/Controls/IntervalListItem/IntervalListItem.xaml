@@ -41,7 +41,7 @@
                         <StackPanel.Resources>
                             <Style TargetType="{x:Type TextBlock}">
                                 <Setter Property="Foreground"
-                                        Value="{StaticResource skinFontSecondaryBrush}" />
+                                        Value="{DynamicResource skinFontSecondaryBrush}" />
                             </Style>
                         </StackPanel.Resources>
                         <TextBlock Text="{Binding ViewModel.Interval.From, Mode=OneWay}" />

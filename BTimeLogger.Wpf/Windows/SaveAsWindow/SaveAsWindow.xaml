@@ -18,19 +18,19 @@
     </WindowChrome.WindowChrome>
     <Border Padding="25 40"
             DataContext="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type local:SaveAsWindow}}}"
-            Background="{StaticResource skinBackgroundLightBrush}">
+            Background="{DynamicResource skinBackgroundLightBrush}">
         <Grid>
             <StackPanel Orientation="Vertical">
 
                 <TextBlock Text="Save as"
                            FontSize="25"
-                           Foreground="{StaticResource skinFontBrush}"
+                           Foreground="{DynamicResource skinFontBrush}"
                            HorizontalAlignment="Left" />
 
 
                 <TextBlock Text="Invalid file location"
                            HorizontalAlignment="Center"
-                           Foreground="{StaticResource skinFontWarningBrush}"
+                           Foreground="{DynamicResource skinFontWarningBrush}"
                            Visibility="{Binding ViewModel.InvalidFileLocation, Converter={StaticResource boolToVis}}" />
 
                 <controls:FilePicker Description="Intervals Report Location (.csv)"

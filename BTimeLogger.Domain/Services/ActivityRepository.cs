@@ -26,6 +26,9 @@ namespace BTimeLogger.Domain.Services
 
 		public Task AddActivity(Activity activity)
 		{
+			if (_activities.ContainsKey(activity.Code))
+				throw new System.Exception();
+
 			if (activity.HasParent)
 			{
 				bool parentExists = _unsavedActivities.TryGetValue(activity.Code.ParentCode, out Activity parent);

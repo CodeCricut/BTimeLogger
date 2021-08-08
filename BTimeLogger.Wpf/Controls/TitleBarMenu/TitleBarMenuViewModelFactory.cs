@@ -1,4 +1,5 @@
-﻿using BTimeLogger.Wpf.Windows;
+﻿using BTimeLogger.Wpf.Services;
+using BTimeLogger.Wpf.Windows;
 using MediatR;
 using WpfCore.Services;
 
@@ -17,13 +18,15 @@ namespace BTimeLogger.Wpf.Controls
 		private readonly ICreateNewIntervalWindowViewModelFactory _createNewIntervalWindowViewModelFactory;
 		private readonly ICreateNewActivityWindowViewModelFactory _createNewActivityWindowViewModelFactory;
 		private readonly ISaveAsWindowViewModelFactory _saveAsWindowViewModelFactory;
+		private readonly ISkinManager _skinManager;
 
 		public TitleBarMenuViewModelFactory(IViewManager viewManager,
 			IOpenCsvsWindowViewModelFactory openCsvsWindowViewModelFactory,
 			IMediator mediator,
 			ICreateNewIntervalWindowViewModelFactory createNewIntervalWindowViewModelFactory,
 			ICreateNewActivityWindowViewModelFactory createNewActivityWindowViewModelFactory,
-			ISaveAsWindowViewModelFactory saveAsWindowViewModelFactory)
+			ISaveAsWindowViewModelFactory saveAsWindowViewModelFactory,
+			ISkinManager skinManager)
 		{
 			_viewManager = viewManager;
 			_openCsvsWindowViewModelFactory = openCsvsWindowViewModelFactory;
@@ -31,12 +34,13 @@ namespace BTimeLogger.Wpf.Controls
 			_createNewIntervalWindowViewModelFactory = createNewIntervalWindowViewModelFactory;
 			_createNewActivityWindowViewModelFactory = createNewActivityWindowViewModelFactory;
 			_saveAsWindowViewModelFactory = saveAsWindowViewModelFactory;
+			_skinManager = skinManager;
 		}
 
 		public TitleBarMenuViewModel Create()
 		{
 			return new TitleBarMenuViewModel(_viewManager, _openCsvsWindowViewModelFactory, _createNewIntervalWindowViewModelFactory,
-				_createNewActivityWindowViewModelFactory, _saveAsWindowViewModelFactory, _mediator);
+				_createNewActivityWindowViewModelFactory, _saveAsWindowViewModelFactory, _mediator, _skinManager);
 		}
 	}
 }

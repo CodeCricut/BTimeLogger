@@ -18,13 +18,13 @@
     </WindowChrome.WindowChrome>
     <Border Padding="25 40"
             DataContext="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type local:OpenCsvsWindow}}}"
-            Background="{StaticResource skinBackgroundLightBrush}">
+            Background="{DynamicResource skinBackgroundLightBrush}">
         <Grid>
             
             <TextBlock Text="{StaticResource loading}"
                        HorizontalAlignment="Center"
                        VerticalAlignment="Center"
-                       Foreground="{StaticResource skinFontSecondaryBrush}"
+                       Foreground="{DynamicResource skinFontSecondaryBrush}"
                        FontSize="18"
                        Visibility="{Binding ViewModel.Loading, Converter={StaticResource boolToVis}}" />
             
@@ -33,13 +33,13 @@
 
                 <TextBlock Text="{StaticResource pickReportLocations}"
                            FontSize="25"
-                           Foreground="{StaticResource skinFontBrush}"
+                           Foreground="{DynamicResource skinFontBrush}"
                            HorizontalAlignment="Left"/>
 
 
                 <TextBlock Text="{StaticResource invalidReport}"
                            HorizontalAlignment="Center"
-                           Foreground="{StaticResource skinFontWarningBrush}"
+                           Foreground="{DynamicResource skinFontWarningBrush}"
                            Visibility="{Binding ViewModel.InvalidReportInfo, Converter={StaticResource boolToVis}}" />
 
                

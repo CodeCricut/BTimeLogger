@@ -115,13 +115,14 @@ namespace BTimeLogger.Wpf.Controls
 
 		private Interval CreateIntervalWithProps()
 		{
+			TimeSpan duration = ToDateTime - FromDateTime;
 			return new Interval()
 			{
 				Activity = ActivityTypeSelectorViewModel.SelectedActivity.Activity,
 				Comment = Comment,
 				From = FromDateTime,
 				To = ToDateTime,
-				Duration = ToDateTime - FromDateTime
+				Duration = duration
 			};
 		}
 	}

@@ -17,7 +17,7 @@
                       ResizeBorderThickness="{x:Static SystemParameters.WindowResizeBorderThickness}" />
     </WindowChrome.WindowChrome>
     <Border DataContext="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type local:ModifyIntervalWindow}}}"
-            Background="{StaticResource skinBackgroundLightBrush}"
+            Background="{DynamicResource skinBackgroundLightBrush}"
             >
         <StackPanel>
             <controls:WindowButtons ViewModel="{Binding ViewModel.WindowButtonsViewModel}" HorizontalAlignment="Right" />

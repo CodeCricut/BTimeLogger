@@ -1,7 +1,8 @@
-﻿using System;
+﻿using BTimeLogger.Wpf.Model;
+using System;
 using System.Windows;
 
-namespace ATimeLogger.WPF.Resources
+namespace BTimeLogger.Wpf.Resources
 {
 	/// <summary>
 	/// https://michaelscodingspot.com/wpf-complete-guide-themes-skins/
@@ -16,7 +17,6 @@ namespace ATimeLogger.WPF.Resources
 		}
 
 		private Uri _darkSource;
-
 		public Uri DarkSource
 		{
 			get { return _darkSource; }
@@ -25,7 +25,12 @@ namespace ATimeLogger.WPF.Resources
 
 		public void UpdateSource()
 		{
-			base.Source = DarkSource ?? LightSource; // TODO: add theme changer 
+			Skin currentSkin = (App.Current as App).SkinManager.AppSkin;
+			Uri skinSource = currentSkin == Skin.Dark
+				? DarkSource
+				: LightSource;
+			if (skinSource != null && Source != skinSource)
+				Source = skinSource; // Update the ResourceDictionaries source, therefore updating the theme that is applied.
 		}
 	}
 }

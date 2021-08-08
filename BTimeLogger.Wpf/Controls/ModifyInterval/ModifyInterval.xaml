@@ -42,7 +42,7 @@
             <TextBlock Text="{Binding ViewModel.DurationString}"
                        Name="Duration"
                        FontSize="20"
-                       Foreground="{StaticResource skinFontSecondaryBrush}" />
+                       Foreground="{DynamicResource skinFontSecondaryBrush}" />
         </StackPanel>
         
         <StackPanel Grid.Row="1"

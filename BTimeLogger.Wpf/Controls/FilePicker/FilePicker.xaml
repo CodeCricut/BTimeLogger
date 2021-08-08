@@ -5,7 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:local="clr-namespace:BTimeLogger.Wpf.Controls"
              mc:Ignorable="d">
-    <Border Background="{StaticResource skinBackgroundBrush}"
+    <Border Background="{DynamicResource skinBackgroundBrush}"
             CornerRadius="5"
             Padding="5"
             DataContext="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type local:FilePicker}}}">
@@ -21,7 +21,7 @@
             <TextBlock HorizontalAlignment="Stretch"
                        TextWrapping="Wrap"
                        Text="{Binding Text, Mode=OneWay}"
-                       Foreground="{StaticResource skinFontSecondaryBrush}"
+                       Foreground="{DynamicResource skinFontSecondaryBrush}"
                        VerticalAlignment="Center"
                        FontSize="10"
                        Grid.Row="1"

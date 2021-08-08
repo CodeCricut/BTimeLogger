@@ -2,6 +2,7 @@
 using BTimeLogger.Wpf.Mediator;
 using MediatR;
 using System;
+using System.ComponentModel;
 using System.Threading.Tasks;
 using WpfCore.Commands;
 using WpfCore.ViewModel;
@@ -25,6 +26,7 @@ namespace BTimeLogger.Wpf.Controls
 				Set(ref _fromDate, value);
 				RaisePropertyChanged(nameof(FromDateTime));
 				RaisePropertyChanged(nameof(DurationString));
+				SaveCommand.RaiseCanExecuteChanged();
 			}
 		}
 
@@ -37,6 +39,7 @@ namespace BTimeLogger.Wpf.Controls
 				Set(ref _toDate, value);
 				RaisePropertyChanged(nameof(ToDateTime));
 				RaisePropertyChanged(nameof(DurationString));
+				SaveCommand.RaiseCanExecuteChanged();
 			}
 		}
 		#endregion
@@ -50,6 +53,7 @@ namespace BTimeLogger.Wpf.Controls
 				Set(ref _fromTime, value);
 				RaisePropertyChanged(nameof(FromDateTime));
 				RaisePropertyChanged(nameof(DurationString));
+				SaveCommand.RaiseCanExecuteChanged();
 			}
 		}
 
@@ -62,6 +66,7 @@ namespace BTimeLogger.Wpf.Controls
 				Set(ref _toTime, value);
 				RaisePropertyChanged(nameof(ToDateTime));
 				RaisePropertyChanged(nameof(DurationString));
+				SaveCommand.RaiseCanExecuteChanged();
 			}
 		}
 		#endregion
@@ -78,7 +83,8 @@ namespace BTimeLogger.Wpf.Controls
 			set { _comment = value; }
 		}
 
-		private bool CanSave(object _) => !ActivityTypeSelectorViewModel.NoneSelected;
+		private bool CanSave(object _) => !ActivityTypeSelectorViewModel.NoneSelected
+			&& FromDateTime <= ToDateTime;
 		public AsyncDelegateCommand SaveCommand { get; }
 
 		public AsyncDelegateCommand DeleteCommand { get; }
@@ -94,15 +100,16 @@ namespace BTimeLogger.Wpf.Controls
 
 			ActivityTypeSelectorViewModel = activityTypeSelectorViewModel;
 
-			UpdatePropsWithInterval();
 
 			SaveCommand = new AsyncDelegateCommand(Save, CanSave);
 			DeleteCommand = new AsyncDelegateCommand(Delete);
 
 			ActivityTypeSelectorViewModel.PropertyChanged += (_, _) => SaveCommand.RaiseCanExecuteChanged();
+
+			UpdatePropsWithInterval();
 		}
 
-		private void TimeSpanPanelViewModel_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+		private void TimeSpanPanelViewModel_PropertyChanged(object sender, PropertyChangedEventArgs e)
 		{
 			RaisePropertyChanged(nameof(DurationString));
 		}
@@ -129,7 +136,7 @@ namespace BTimeLogger.Wpf.Controls
 				Comment = Comment,
 				From = FromDateTime,
 				To = ToDateTime,
-				Duration = FromDateTime - ToDateTime,
+				Duration = ToDateTime - FromDateTime,
 				Guid = _intervalViewModel.Interval.Guid
 			};
 		}

@@ -22,12 +22,12 @@
     </WindowChrome.WindowChrome>
     <Border Padding="25 40"
             DataContext="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type local:UnsavedChangesDialog}}}"
-            Background="{StaticResource skinBackgroundLightBrush}">
+            Background="{DynamicResource skinBackgroundLightBrush}">
         <Grid>
             <StackPanel Orientation="Vertical">
                 <TextBlock Text="Unsaved changes"
                            FontSize="25"
-                           Foreground="{StaticResource skinFontBrush}"
+                           Foreground="{DynamicResource skinFontBrush}"
                            HorizontalAlignment="Center" />
 
                 <TextBlock Text="Would you like to save your changes before proceeding? Unsaved changes will be lost."

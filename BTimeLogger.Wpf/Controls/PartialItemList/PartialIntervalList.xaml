@@ -57,7 +57,7 @@
                         Command="{Binding ViewModel.LoadMoreItemsCommand}"
                         Content="{StaticResource loadMore}" />
                 <TextBlock Text="{Binding ViewModel.LoadedOutOfTotalItems}"
-                           Foreground="{StaticResource skinFontSecondaryBrush}"
+                           Foreground="{DynamicResource skinFontSecondaryBrush}"
                            HorizontalAlignment="Center" />
             </StackPanel>
         </Grid>

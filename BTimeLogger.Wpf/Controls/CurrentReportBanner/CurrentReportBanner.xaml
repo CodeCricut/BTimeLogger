@@ -10,9 +10,9 @@
         DataContext="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type local:CurrentReportBanner}}}"
         Orientation="Horizontal">
         <TextBlock Text="{Binding ViewModel.CurrentReportLocation}"
-                   Foreground="{StaticResource skinFontSecondaryBrush}" />
+                   Foreground="{DynamicResource skinFontSecondaryBrush}" />
         <TextBlock Text="{StaticResource astericks}"
-                   Foreground="{StaticResource skinFontSecondaryBrush}"
+                   Foreground="{DynamicResource skinFontSecondaryBrush}"
                    Visibility="{Binding ViewModel.HasUnsavedChanges, Converter={StaticResource boolToVis}}"/>
     </StackPanel>
 </UserControl>

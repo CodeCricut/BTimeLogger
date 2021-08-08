@@ -38,7 +38,7 @@
     </Window.InputBindings>
     
     <Grid DataContext="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type local:MainWindow}}}"
-          Background="{StaticResource skinBackgroundBrush}">
+          Background="{DynamicResource skinBackgroundBrush}">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />

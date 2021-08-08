@@ -177,18 +177,21 @@ namespace BTimeLogger.Wpf.Controls
 		private void AddSliceGeometry(CategoryViewModel categoryVm)
 		{
 			Category category = categoryVm.Category;
+			float percentage = category.Percentage;
+			if (percentage == 100) percentage = 99.99f; // Prevents geometry errors
 
 			double line1X = _radius * Math.Cos(_angle * Math.PI / 180) + _centerX;
 			double line1Y = _radius * Math.Sin(_angle * Math.PI / 180) + _centerY;
 
-			_angle = PercentToAngle(category.Percentage) + _prevAngle;
+			_angle = PercentToAngle(percentage) + _prevAngle;
 
 			double arcX = _radius * Math.Cos(_angle * Math.PI / 180) + _centerX;
 			double arcY = _radius * Math.Sin(_angle * Math.PI / 180) + _centerY;
 
 			var line1Segment = new LineSegment(new Point(line1X, line1Y), false);
+
 			double arcWidth = _radius, arcHeight = _radius;
-			bool isLargeArc = category.Percentage > 50;
+			bool isLargeArc = percentage > 50;
 			var arcSegment = new ArcSegment()
 			{
 				Size = new Size(arcWidth, arcHeight),

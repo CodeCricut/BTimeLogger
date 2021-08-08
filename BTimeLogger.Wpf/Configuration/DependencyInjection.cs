@@ -23,6 +23,8 @@ namespace BTimeLogger.Wpf.Configuration
 				.Bind(opts));
 
 			return services
+				.AddSingleton<ISkinManager, SkinManager>()
+
 				.AddSingleton<IAppDataService, AppDataService>()
 				.AddSingleton<IReportLocationsPrincipal, ReportLocationsPrincipal>()
 

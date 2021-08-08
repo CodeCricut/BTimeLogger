@@ -160,7 +160,7 @@
             <Trigger Property="IsEnabled"
                      Value="False">
                 <Setter Property="Foreground"
-                        Value="{StaticResource skinFontSecondaryBrush}" />
+                        Value="{DynamicResource skinFontSecondaryBrush}" />
             </Trigger>
         </ControlTemplate.Triggers>
     </ControlTemplate>

@@ -2,6 +2,7 @@
 using BTimeLogger.Domain;
 using BTimeLogger.Wpf.Configuration;
 using BTimeLogger.Wpf.Mediator;
+using BTimeLogger.Wpf.Services;
 using MediatR;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -21,9 +22,12 @@ namespace BTimeLogger.Wpf
 		/// </summary>
 		public IServiceProvider Services { get; init; }
 
+		public ISkinManager SkinManager { get; private set; }
+
 		public App()
 		{
 			Services = BuildServiceProvider();
+			SkinManager = Services.GetRequiredService<ISkinManager>();
 		}
 
 		protected override void OnStartup(StartupEventArgs e)
