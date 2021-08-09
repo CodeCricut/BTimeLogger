@@ -1,4 +1,5 @@
 ﻿using System.Collections.ObjectModel;
+using System.Linq;
 using WpfCore.ViewModel;
 
 namespace BTimeLogger.Wpf.Controls
@@ -20,10 +21,11 @@ namespace BTimeLogger.Wpf.Controls
 
 		public void SelectActivity(ActivityViewModel activity)
 		{
-			if (!Items.Contains(activity))
+			bool HasEqualActivityCodes(ActivityViewModel avm) => avm.Activity.Code.Equals(activity.Activity.Code);
+			if (!Items.Any(HasEqualActivityCodes))
 				Items.Add(activity);
 
-			SelectedGroupActivity = activity;
+			SelectedGroupActivity = Items.First(HasEqualActivityCodes);
 		}
 
 		public bool NoneItemSelected { get => SelectedGroupActivity is NoneItem; }

@@ -49,6 +49,21 @@ namespace BTimeLogger
 			return new ActivityCode(builder.ToString());
 		}
 
+		public static ActivityCode CreateCode(string codeValue)
+		{
+			if (string.IsNullOrEmpty(codeValue) ||
+				!ValueFormatIsCorrect(codeValue))
+				throw new ArgumentException(nameof(codeValue));
+
+			return new ActivityCode(codeValue);
+		}
+
+		private static bool ValueFormatIsCorrect(string codeValue)
+		{
+			// TODO;
+			return true;
+		}
+
 		public string Value { get; private set; }
 
 		public string[] Parts

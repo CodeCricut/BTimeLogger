@@ -35,6 +35,31 @@ namespace BTimeLogger.Domain.Tests.Model
 		{
 			AssertThrowsArgumentNull(() => CreateCode_NullActivity());
 		}
+
+		[Test]
+		public void CreateCode_NullValue_ThrowsArgumentNull()
+		{
+			Assert.Fail(); // TODO
+		}
+
+		[Test]
+		public void CreateCode_EmptyValue_ThrowsArgumentException()
+		{
+			Assert.Fail(); // TODO
+		}
+
+		[Test]
+		public void CreateCode_InvalidFormatValue_ThrowsArgumentException()
+		{
+			Assert.Fail(); // TODO
+		}
+
+		[Test]
+		public void CreateCode_ValidFormatValue_CreatesCode()
+		{
+			Assert.Fail(); // TODO
+		}
+
 		[Test]
 		public void CreateCode_DefaultActivity_CodeIsEmpty()
 		{

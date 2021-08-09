@@ -31,7 +31,8 @@ namespace BTimeLogger.Wpf.Services
 				Color = ColorUtil.GetCloseColor(BaseColor, 150),
 				Percentage = (float)child.PercentOfTrackedTimeInTimespan,
 				Title = child.Activity.Name,
-				Note = child.Duration.ToCsvFormat()
+				Note = child.Duration.ToCsvFormat(),
+				Id = child.Activity.Code.ToString()
 			};
 		}
 

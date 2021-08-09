@@ -53,6 +53,8 @@ namespace BTimeLogger.Wpf.Controls
 			}
 		}
 
+		public string Id => Category.Id;
+
 		public CategoryViewModel(Category category)
 		{
 			Category = category ?? throw new ArgumentNullException(nameof(category));

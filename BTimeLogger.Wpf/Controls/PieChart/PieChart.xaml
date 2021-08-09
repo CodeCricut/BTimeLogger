@@ -34,7 +34,7 @@
                    Grid.RowSpan="2"
                    Visibility="{Binding ViewModel.IsLoading, Converter={StaticResource boolToVis}}" />
 
-        <ItemsControl ItemsSource="{Binding ViewModel.SliceGeometries}"
+        <ItemsControl ItemsSource="{Binding ViewModel.PieSlices}"
                       Width="{Binding ViewModel.ChartWidth}"
                       Height="{Binding ViewModel.ChartHeight}"
                       Visibility="{Binding ViewModel.IsChartPopulated, Converter={StaticResource boolToVis}}"
@@ -44,20 +44,44 @@
             <ItemsControl.ItemTemplate>
                 <DataTemplate>
                     <Canvas >
-                        <Path Fill="{Binding SliceFill}"
-                              Data="{Binding SliceGeometryData}" />
-                        <Line X1="{Binding CenterX}"
-                              Y1="{Binding CenterY}"
-                              X2="{Binding EndX1}"
-                              Y2="{Binding EndY1}"
-                              Stroke="{Binding OutlineColor}"
-                              StrokeThickness="{Binding OutlineThickness}" />
-                        <Line X1="{Binding CenterX}"
-                              Y1="{Binding CenterY}"
-                              X2="{Binding EndX2}"
-                              Y2="{Binding EndY2}"
-                              Stroke="{Binding OutlineColor}"
-                              StrokeThickness="{Binding OutlineThickness}" />
+                        
+                        <Button Command="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type local:PieChart}},
+                                       Path=ViewModel.SelectCategoryCommand}"
+                                CommandParameter="{Binding Category.Id}">
+                            <Button.Template>
+                                <ControlTemplate>
+                                    <Path 
+                                          Data="{Binding SliceGeometry.SliceGeometryData}">
+                                        <Path.Style>
+                                            
+                                        <Style TargetType="{x:Type Path}">
+                                            <Setter Property="Fill"
+                                                        Value="{Binding SliceGeometry.SliceFill}" />
+                                            <Style.Triggers>
+                                                <Trigger Property="IsMouseOver"
+                                                         Value="True">
+                                                    <Setter Property="Fill"
+                                                            Value="{Binding SliceGeometry.OutlineColor}" />
+                                                </Trigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                        </Path.Style>
+                                    </Path>
+                                </ControlTemplate>
+                            </Button.Template>
+                        </Button>
+                        <Line X1="{Binding SliceGeometry.CenterX}"
+                              Y1="{Binding SliceGeometry.CenterY}"
+                              X2="{Binding SliceGeometry.EndX1}"
+                              Y2="{Binding SliceGeometry.EndY1}"
+                              Stroke="{Binding SliceGeometry.OutlineColor}"
+                              StrokeThickness="{Binding SliceGeometry.OutlineThickness}" />
+                        <Line X1="{Binding SliceGeometry.CenterX}"
+                              Y1="{Binding SliceGeometry.CenterY}"
+                              X2="{Binding SliceGeometry.EndX2}"
+                              Y2="{Binding SliceGeometry.EndY2}"
+                              Stroke="{Binding SliceGeometry.OutlineColor}"
+                              StrokeThickness="{Binding SliceGeometry.OutlineThickness}" />
                     </Canvas>
                 </DataTemplate>
             </ItemsControl.ItemTemplate>

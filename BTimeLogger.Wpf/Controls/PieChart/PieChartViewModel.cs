@@ -14,6 +14,8 @@ namespace BTimeLogger.Wpf.Controls
 {
 	public abstract class PieChartViewModel : BaseViewModel
 	{
+		private readonly IPieSliceViewModelFactory _pieSliceViewModelFactory;
+
 		private string _chartTitle;
 		public string ChartTitle
 		{
@@ -39,8 +41,7 @@ namespace BTimeLogger.Wpf.Controls
 
 		public ObservableCollection<CategoryViewModel> Categories { get; set; } = new ObservableCollection<CategoryViewModel>();
 
-		public ObservableCollection<PieSliceGeometryViewModel> SliceGeometries { get; set; } = new ObservableCollection<PieSliceGeometryViewModel>();
-
+		public ObservableCollection<PieSliceViewModel> PieSlices { get; set; } = new();
 
 		private double _chartWidth = 500;
 		public double ChartWidth
@@ -82,8 +83,6 @@ namespace BTimeLogger.Wpf.Controls
 			set { Set(ref _titleFontSize, value); }
 		}
 
-
-
 		private double _centerX;
 		private double _centerY;
 		private double _radius;
@@ -92,15 +91,25 @@ namespace BTimeLogger.Wpf.Controls
 
 		public AsyncDelegateCommand UpdateChartCommand { get; }
 
-		public PieChartViewModel()
+		public AsyncDelegateCommand SelectCategoryCommand { get; }
+
+		public PieChartViewModel(IPieSliceViewModelFactory pieSliceViewModelFactory)
 		{
+			_pieSliceViewModelFactory = pieSliceViewModelFactory;
+
 			UpdateChartCommand = new AsyncDelegateCommand(_ => UpdateChart());
+			SelectCategoryCommand = new AsyncDelegateCommand(SelectCategory);
 
 			Categories.CollectionChanged += (_, args) =>
 			{
 				RaisePropertyChanged(nameof(IsChartPopulated));
 				RaisePropertyChanged(nameof(IsChartNotPopulated));
 			};
+		}
+
+		protected virtual Task SelectCategory(object selectedCategoryId)
+		{
+			return Task.CompletedTask;
 		}
 
 		public async Task UpdateChart()
@@ -146,23 +155,23 @@ namespace BTimeLogger.Wpf.Controls
 					foreach (var category in newCategories)
 						Categories.Add(category);
 
-					ResetSliceGeometries();
+					ResetPieSlices();
 
-					AddSliceGeometries();
+					AddPieSlices();
 
 					IsLoading = false;
 				});
 			});
 		}
 
-		protected abstract Task<IEnumerable<CategoryViewModel>> GetCategories();
-
-		private void ResetSliceGeometries()
+		private void ResetPieSlices()
 		{
-			SliceGeometries.Clear();
+			PieSlices.Clear();
 		}
 
-		private void AddSliceGeometries()
+		protected abstract Task<IEnumerable<CategoryViewModel>> GetCategories();
+
+		private void AddPieSlices()
 		{
 			_centerX = ChartWidth / 2;
 			_centerY = ChartHeight / 2;
@@ -171,10 +180,14 @@ namespace BTimeLogger.Wpf.Controls
 			_angle = 0;
 			_prevAngle = 0;
 			foreach (CategoryViewModel category in Categories)
-				AddSliceGeometry(category);
+			{
+				PieSliceGeometryViewModel sliceGeo = CreatePieSliceGeometry(category);
+				PieSliceViewModel pieSlice = _pieSliceViewModelFactory.Create(category, sliceGeo);
+				PieSlices.Add(pieSlice);
+			}
 		}
 
-		private void AddSliceGeometry(CategoryViewModel categoryVm)
+		private PieSliceGeometryViewModel CreatePieSliceGeometry(CategoryViewModel categoryVm)
 		{
 			Category category = categoryVm.Category;
 			float percentage = category.Percentage;
@@ -230,9 +243,9 @@ namespace BTimeLogger.Wpf.Controls
 				OutlineThickness = 2,
 			};
 
-			SliceGeometries.Add(sliceGeometry);
-
 			_prevAngle = _angle;
+
+			return sliceGeometry;
 		}
 
 		private static float PercentToAngle(float percent)

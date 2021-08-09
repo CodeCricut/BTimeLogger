@@ -14,24 +14,43 @@ namespace BTimeLogger.Wpf.Controls
 		private readonly IGroupStatisticGenerator _groupStatsRepo;
 		private readonly IGroupStatisticCategoriesConverter _statCategoryConverter;
 		private readonly ICategoryViewModelFactory _catVMFactory;
-
+		private readonly IEventAggregator _ea;
+		private readonly IActivityRepository _activityRepository;
 		private GroupStatisticSearchFilter _groupStatisticSearchFilter = new();
 
 		public GroupStatisticsPieChartViewModel(
 			IGroupStatisticGenerator groupStatsRepo,
 			IGroupStatisticCategoriesConverter statCategoryConverter,
 			ICategoryViewModelFactory catVMFactory,
-			IEventAggregator ea)
+			IEventAggregator ea,
+			IPieSliceViewModelFactory pieSliceVMFactory,
+			IActivityRepository activityRepository) : base(pieSliceVMFactory)
 		{
 			_groupStatsRepo = groupStatsRepo;
 			_statCategoryConverter = statCategoryConverter;
 			_catVMFactory = catVMFactory;
-
+			_ea = ea;
+			_activityRepository = activityRepository;
 			ea.RegisterHandler<GroupStatisticsTypeChanged>(msg => HandleGroupStatTypeChanged(msg.NewGroupType));
 			ea.RegisterHandler<ReportSourceChanged>(HandleReportSourceChanged);
 			ea.RegisterHandler<StatisticsTimeSpanChanged>(HandleTimeSpanChanged);
 
 			UpdateChartCommand.Execute();
+		}
+
+		protected override async Task SelectCategory(object selectedCategoryId)
+		{
+			try
+			{
+				ActivityCode selectedCategoryCode = ActivityCode.CreateCode(selectedCategoryId as string);
+				Activity selectedCategory = await _activityRepository.GetActivity(selectedCategoryCode);
+				if (selectedCategory == null || !selectedCategory.IsGroup) throw new System.Exception();
+
+				_ea.SendMessage(new NewPieChartGroupSelected(selectedCategory));
+			}
+			catch (System.Exception)
+			{
+			}
 		}
 
 		private void HandleTimeSpanChanged(StatisticsTimeSpanChanged msg)
