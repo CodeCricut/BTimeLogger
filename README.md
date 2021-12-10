@@ -104,6 +104,12 @@ The `WpfCore` is a class library that contains classes common to creating WPF ap
 
 ### Services and Dependency Injection
 
+[Dependency injection](https://docs.microsoft.com/en-us/dotnet/core/extensions/dependency-injection) is used throughout the solution to achieve Inversion of Control between classes and their dependencies. Classes are dependent upon high-level abstractions rather than concrete implementation which results in more modular, testable, and maintainable functional units.
+
+The `BTimeLogger.Domain`, `BTimeLogger.Csv`, and `WpfCore` projects contain a `DependencyInjection` class which registers all services of the project to a DI container. These projects can also request services from the layers they depend upon (ex. `BTimeLogger.Wpf` can have `BTimeLogger.Domain` dependencies injected into class constructors).
+
+The `BTimeLogger.Wpf` project creates a DI container in the `App` class and registers all services for the app using the aforementioned `DependencyInjection` classes.
+
 ## Testing & Test Results
 
 ### Manual System Tests
