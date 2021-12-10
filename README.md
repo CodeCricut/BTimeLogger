@@ -6,9 +6,7 @@
 
 **Project status**: feature-incomplete, not fully tested, test failures, and known bugs
 
-**Authors**:
-
--   Andrew Richerson <aricherson2@huskers.unl.edu>
+**Author**: Andrew Richerson
 
 ## Features
 
