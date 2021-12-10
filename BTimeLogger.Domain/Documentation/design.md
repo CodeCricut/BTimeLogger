@@ -36,4 +36,10 @@ Within the `Services` directory, you will find repositories for the `Activity` a
 
 The `StatisticsGenerator` and `GroupStatisticGenerator` services are also found here, which are responsible for creating a `Statistic` given activity data.
 
+The `DependencyInjection` class can be used by projects depending on this one to register available services to a DI Container.
+
 ## Testing & Test Results
+
+Unit tests for library can be found in the `BTimeLogger.Domain.Tests` project.
+
+Currently, the code is not fully tested and not all tests are passing.
