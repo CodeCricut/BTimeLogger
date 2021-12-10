@@ -81,6 +81,29 @@ Additional dependencies for the project can be found in the `.csproj` files of e
 
 ## Software Architecture
 
+### Layers
+
+BTimeLogger is split up into projects which act as functional layers:
+
+1. Domain/Data layer (`BTimeLogger.Domain`)
+
+This is the core layer of the application which depends upon no other layer. It contains the
+model types used by the application (such as `Activity` and `Interval`), and services to interact with those models (such as `IntervalRepository`).
+
+2. CSV layer layer (`BTimeLogger.Csv`)
+
+This layer contains the models and services used to read and write application data to and from CSV files. It provides a very simple/abstract way for other tiers to read and write data without having to deal with the intricacies of data conversion and file manipulation.
+
+3. Presentation/WPF layer (`BTimeLogger.Wpf` and `WpfCore`)
+
+The presentation layer houses all the models, services, and views necessary for the WPF desktop app. It rests upon the previously mentioned layers for data management and CSV manipulation.
+
+The `BTimeLogger.Wpf` app contains the application starting point (`App.OnStartup`).
+
+The `WpfCore` is a class library that contains classes common to creating WPF apps. It is contained within its own project for modularity and so it may be used in other WPF apps.
+
+### Services and Dependency Injection
+
 ## Testing & Test Results
 
 ### Manual System Tests
