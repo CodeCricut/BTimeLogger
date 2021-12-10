@@ -2,6 +2,9 @@
 
 namespace BTimeLogger
 {
+	/// <summary>
+	/// Represents a unique activity type only, and does not include any interval data.
+	/// </summary>
 	public partial class Activity
 	{
 		public string Name { get; set; } = string.Empty;

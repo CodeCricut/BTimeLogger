@@ -2,6 +2,9 @@
 
 namespace BTimeLogger
 {
+	/// <summary>
+	/// Represents the time spent doing a certain <see cref="Activity"/> and the data that pertains to tracking an activity.
+	/// </summary>
 	public class Interval
 	{
 		public Activity Activity { get; set; }
