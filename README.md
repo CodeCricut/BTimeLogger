@@ -95,6 +95,8 @@ Additional documentation can be found in the `Documentation/design.md` file of t
 
 This layer contains the models and services used to read and write application data to and from CSV files. It provides a very simple/abstract way for other tiers to read and write data without having to deal with the intricacies of data conversion and file manipulation.
 
+Additional documentation can be found in the `Documentation/design.md` file of the project.
+
 3. Presentation/WPF layer (`BTimeLogger.Wpf` and `WpfCore`)
 
 The presentation layer houses all the models, services, and views necessary for the WPF desktop app. It rests upon the previously mentioned layers for data management and CSV manipulation.
