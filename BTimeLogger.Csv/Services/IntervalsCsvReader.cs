@@ -9,11 +9,20 @@ using System.Threading.Tasks;
 
 namespace BTimeLogger.Csv.Services
 {
+	/// <summary>
+	/// Read interval data from a CSV file.
+	/// </summary>
 	public interface IIntervalsCsvReader
 	{
 		Task ReadIntervalCsv(string fileLocation);
 	}
 
+
+	/// <summary>
+	/// Reads a CSV file containing interval records and adds the intervals and activities
+	/// found in it to the corresponding repository (either <see cref="IIntervalRepository"/> 
+	/// or <see cref="IActivityRepository"/>).
+	/// </summary>
 	class IntervalsCsvReader : IIntervalsCsvReader
 	{
 		protected const int BASE_INTERVAL_COLUMN_COUNT = 5;

@@ -22,13 +22,15 @@ The architecture of this layer is very simple.
 
 Within the `Model` directory, you will find the model types which correspond to records in CSV files.
 
-The main model types include:
-
--   `CsvIntervalRecord` - the model which corresponds to records storing `Interval`s in CSV files
+Namely, you will find `CsvIntervalRecord` which represents records storing `Interval`s in CSV files.
 
 ### Services
 
-Within the `Services` directory, you will find
+Within the `Services` directory, you will find the following services:
+
+-   `IntervalsCsvReader` - reads a CSV file containing interval records and adds the intervals and activities found in it to the corresponding repository (either `IIntervalRepository` or `IActivityRepository`).
+-   `IntervalsCsvWriter` - writes data from the activity and interval repositories into a CSV file
+-   `CsvLocationsPrincipal` - a very simple service for maintaining the location of the CSV file to read and write to
 
 The `DependencyInjection` class can be used by projects depending on this one to register available services to a DI Container.
 
