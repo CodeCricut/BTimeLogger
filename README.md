@@ -74,8 +74,9 @@ To run the release version of the app, publish the app with `dotnet publish --co
 
 The main dependencies of the solution include
 
--   MediatR
--   Scrutor
+-   [Microsoft Dependency Injection](https://www.nuget.org/packages/Microsoft.Extensions.DependencyInjection) - dependency injection library for .NET
+-   [Scrutor](https://github.com/khellang/Scrutor) - DI extensions; used to register all depenendencies of a type (for example all view model factories) to the DI container
+-   [MediatR](https://github.com/jbogard/MediatR) - used to implement global messaging using CQRS within the WPF app
 
 Additional dependencies for the project can be found in the `.csproj` files of each project.
 
