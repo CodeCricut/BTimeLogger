@@ -24,7 +24,6 @@ namespace BTimeLogger.Wpf.Windows
 
 		public ModifyIntervalWindowViewModel Create(IntervalViewModel intervalViewModel)
 		{
-			// TODO: messy but yolo
 			var activityTypeSelectorVM = _activityTypeSelectorViewModelFactory.Create();
 			ModifyIntervalViewModel modifyIntervalVM = _modifyIntervalViewModelFactory.Create(intervalViewModel, activityTypeSelectorVM);
 

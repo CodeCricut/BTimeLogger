@@ -3,7 +3,7 @@ using WpfCore.ViewModel;
 
 namespace BTimeLogger.Wpf.Controls
 {
-	// TODO: verify To after From, error message prop
+	// TODO Issue #5: Add date validation and error message property
 	public class TimeSpanPanelViewModel : BaseViewModel
 	{
 		private DateTime _from = DateTime.Now.Date;

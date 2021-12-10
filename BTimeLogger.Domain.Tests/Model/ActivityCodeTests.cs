@@ -4,6 +4,7 @@ using System.Linq;
 
 namespace BTimeLogger.Domain.Tests.Model
 {
+	// TODO Issue #4: Write ActivityCodeTests
 	public class ActivityCodeTests
 	{
 		private ActivityCode _code;
@@ -219,7 +220,7 @@ namespace BTimeLogger.Domain.Tests.Model
 
 		private void CreateCode_NullActivity()
 		{
-			_code = ActivityCode.CreateCode((Activity) null);
+			_code = ActivityCode.CreateCode((Activity)null);
 		}
 
 		private void CreateCode_ActivityName()

@@ -27,7 +27,7 @@ namespace BTimeLogger.Wpf.Mediator
 
 		public async Task<Unit> Handle(ClearAllData request, CancellationToken cancellationToken)
 		{
-			// TODO: use cancellation token
+			// TODO Issue #6: Add cancel option to ClearAllData request
 			await _activityRepository.Clear();
 			await _intervalRepository.Clear();
 

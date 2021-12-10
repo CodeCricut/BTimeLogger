@@ -14,6 +14,7 @@ namespace BTimeLogger.Domain.Services
 		Task<IEnumerable<Statistic>> GenerateStatistics(IEnumerable<Activity> statActivity, TimeSpan totalTime, DateTime from, DateTime to);
 	}
 
+	// TODO Issue #3: Clean up StatisticsGenerator
 	class StatisticsGenerator : IStatisticsGenerator
 	{
 		private static readonly byte TOTAL_PERCENT = 100;

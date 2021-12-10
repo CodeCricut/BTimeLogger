@@ -47,6 +47,7 @@ namespace BTimeLogger.Wpf.Mediator
 
 		public async Task<Unit> Handle(ReadCsvs request, CancellationToken cancellationToken)
 		{
+			// TODO Issue #8: Add cancel option to ReadCsvs command
 			bool continueReading = true;
 			if (_csvChangeTracker.ChangesMade)
 			{
@@ -65,7 +66,6 @@ namespace BTimeLogger.Wpf.Mediator
 		{
 			await _mediator.Send(new ClearAllData());
 
-			// TODO: use cancellation token, with csvreaders having SaveChanges function
 			_csvLocationPrincipal.CsvLocation = request.IntervalCsvLocation;
 			_reportLocationsPrincipal.AddReportLocation(request.IntervalCsvLocation);
 

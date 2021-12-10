@@ -60,7 +60,7 @@ namespace BTimeLogger
 
 		private static bool ValueFormatIsCorrect(string codeValue)
 		{
-			// TODO;
+			// TODO Issue #2: Implement ValueFormatIsCorrect
 			return true;
 		}
 
@@ -105,6 +105,9 @@ namespace BTimeLogger
 			}
 		}
 
+		/// <summary>
+		/// Get the complete ancestry of this <see cref="ActivityCode"/>, including this activity code.
+		/// </summary>
 		public IEnumerable<ActivityCode> AncestorCodes
 		{
 			get

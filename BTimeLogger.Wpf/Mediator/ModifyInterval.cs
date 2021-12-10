@@ -35,7 +35,7 @@ namespace BTimeLogger.Wpf.Mediator
 
 		public async Task<Unit> Handle(ModifyInterval request, CancellationToken cancellationToken)
 		{
-			// TODO: cancellation token
+			// TODO Issue #7: Add cancel option to ModifyInterval command
 			Interval intervalToUpdate = request.Interval;
 			await _intervalRepository.UpdateInterval(intervalToUpdate.Guid, intervalToUpdate);
 			await _intervalRepository.SaveChanges();

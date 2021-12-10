@@ -19,8 +19,7 @@ namespace BTimeLogger.Wpf.Mediator
 
 		public Task<bool> Handle(Shutdown request, CancellationToken cancellationToken)
 		{
-			// TODO: ask user if they would like to save
-			//await _mediator.Send(new Save());
+			// TODO Issue #9: Ask user if they would like to save before exiting
 
 			App.Current.Shutdown();
 			return Task.FromResult(true);
