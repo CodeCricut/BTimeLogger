@@ -8,12 +8,19 @@ using System.Threading.Tasks;
 
 namespace BTimeLogger.Csv.Services
 {
+	/// <summary>
+	/// Writes interval data to a CSV file
+	/// </summary>
 	public interface IIntervalsCsvWriter
 	{
 		Task WriteIntervals(string fileLocation);
 
 	}
 
+	/// <summary>
+	/// Write interval data currently saved to the <see cref="IIntervalRepository"/> to
+	/// a CSV file.
+	/// </summary>
 	class IntervalsCsvWriter : IIntervalsCsvWriter
 	{
 		private readonly IIntervalRepository _intervalRepository;

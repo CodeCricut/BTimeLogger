@@ -2,6 +2,9 @@
 
 namespace BTimeLogger.Csv.Services
 {
+	/// <summary>
+	/// A very simple service for maintaing the location of the CSV file.
+	/// </summary>
 	public interface ICsvLocationPrincipal
 	{
 		public bool LocationsAreSelected { get; }
