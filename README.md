@@ -60,7 +60,7 @@ A list of recent reports is saved for easy navigation:
 
 ## Cloning/downloading the project
 
-To clone the repository, run the following commands in the directory you would like to clone the project: `https://github.com/CodeCricut/BTimeLogger`.
+To clone the repository, run the following commands in the directory you would like to clone the project: `git clone https://github.com/CodeCricut/BTimeLogger`.
 
 ## Running
 
