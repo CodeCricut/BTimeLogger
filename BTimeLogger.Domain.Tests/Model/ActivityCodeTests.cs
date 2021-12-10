@@ -219,7 +219,7 @@ namespace BTimeLogger.Domain.Tests.Model
 
 		private void CreateCode_NullActivity()
 		{
-			_code = ActivityCode.CreateCode(null);
+			_code = ActivityCode.CreateCode((Activity) null);
 		}
 
 		private void CreateCode_ActivityName()
