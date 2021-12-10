@@ -58,6 +58,18 @@ A list of recent reports is saved for easy navigation:
 
 ![Image demonstration of the open recent reports feature](/Resources/Home_Recents_Demo.png)
 
+## Cloning/downloading the project
+
+To clone the repository, run the following commands in the directory you would like to clone the project: `https://github.com/CodeCricut/BTimeLogger`.
+
+## Running
+
+To run the app without building the release version, run the following command in the `BTimeLogger` directory:
+
+`dotnet run --project BTimeLogger.Wpf`
+
+To run the release version of the app, publish the app with `dotnet publish --configuration release` and run the executable found at `BTimeLogger.Wpf/bin/Release/net5.0-windows/BTimeLogger.Wpf.exe` (the exact directory may vary depending on your system).
+
 ## Dependencies
 
 The main dependencies of the solution include
@@ -66,12 +78,6 @@ The main dependencies of the solution include
 -   Scrutor
 
 Additional dependencies for the project can be found in the `.csproj` files of each project.
-
-## Building
-
-## Running
-
-For development,
 
 ## Software Architecture
 
