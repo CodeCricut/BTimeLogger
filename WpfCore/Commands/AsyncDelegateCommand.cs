@@ -4,6 +4,10 @@ using System.Windows.Input;
 
 namespace WpfCore.Commands
 {
+	/// <summary>
+	/// Simple implemenation of <see cref="ICommand"/> which executes an asynchronous delegate action
+	/// when the command is executed.
+	/// </summary>
 	public class AsyncDelegateCommand : ICommand
 	{
 		private readonly Func<object, Task> _execute;

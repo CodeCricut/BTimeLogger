@@ -3,6 +3,10 @@ using System.Windows.Input;
 
 namespace WpfCore.Commands
 {
+	/// <summary>
+	/// Simple implemenation of <see cref="ICommand"/> which executes a delegate action
+	/// when the command is executed.
+	/// </summary>
 	public class DelegateCommand : ICommand
 	{
 		private readonly Action<object> _execute;
