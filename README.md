@@ -89,6 +89,8 @@ BTimeLogger is split up into projects which act as functional layers:
 This is the core layer of the application which depends upon no other layer. It contains the
 model types used by the application (such as `Activity` and `Interval`), and services to interact with those models (such as `IntervalRepository`).
 
+Additional documentation can be found in the `Documentation/design.md` file of the project.
+
 2. CSV layer layer (`BTimeLogger.Csv`)
 
 This layer contains the models and services used to read and write application data to and from CSV files. It provides a very simple/abstract way for other tiers to read and write data without having to deal with the intricacies of data conversion and file manipulation.
