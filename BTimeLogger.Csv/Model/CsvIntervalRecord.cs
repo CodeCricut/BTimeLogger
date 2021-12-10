@@ -2,6 +2,10 @@
 
 namespace BTimeLogger.Csv
 {
+	/// <summary>
+	/// This class represents a record in a CSV file which stores information
+	/// about an <see cref="Interval"/>.
+	/// </summary>
 	public class CsvIntervalRecord
 	{
 		public string[] Groups { get; set; }
