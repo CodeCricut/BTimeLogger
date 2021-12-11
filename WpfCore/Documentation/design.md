@@ -18,47 +18,25 @@ Exact dependency details can be seen in `WpfCore.csproj`.
 
 This library is designed to be the core of a WPF app using [MVVM architecture](https://docs.microsoft.com/en-us/archive/msdn-magazine/2009/february/patterns-wpf-apps-with-the-model-view-viewmodel-design-pattern). The MVVM pattern helps create a WPF application in which concerns like presentation logic and buisness logic are separate.
 
-**Model**:
-The model deals with business logic, data persistence, and other behavior not specific to the presentation.
+More details can be found in `mvvm.md`.
 
-**View**:
-The view is only responsible for the presentation of the app---not the presentation logic
-or interaction with the model. The view is synced with the ViewModel using data binding.
+### Window Manager
 
-**ViewModel**:
-"ViewModels" represent the data and UI logic of a view. ViewModel state is synced with View state, and the ViewModel needs no reference to the View. This leads to testable ViewModels which don't require UI testing.
+A [window manager](http://nichesoftware.co.nz/2015/08/23/wpf-window-manager.html) is available to handle the details of window creation and destruction, and to decouple views
+from view models.
 
-ViewModel state is propogated to views via data binding. The view can bind UI events such as button clicks to commands in the view model.
+More details can be found in `window-manager.md`.
 
-ViewModels contain all logic related to presentation logic and interaction with the model layer; the View never performs any of this logic.
+### Message Bus (Event Aggregator)
 
-#### Commands
+The [Event Aggregator pattern](http://www.nichesoftware.co.nz/2015/08/16/wpf-event-aggregates.html) is a pattern used to handle communication between disparate parts of the application without those parts having references to each other. Instead, a
+central "message bus" or "event aggregator" is referenced by both and brokers messages.
 
-WPF uses [commands](https://docs.microsoft.com/en-us/dotnet/api/system.windows.input.icommand?view=net-6.0) deriving from `ICommand` to specify behavior in the ViewModel to which the View can invoke.
+The interface and default implementation of an event aggregator can be found within the `MessageBus` directory.
 
-Commands provide the commanding behavior for UI elements such as `Button`s; they let
-you define what action should be taken when certain events happen within the UI (like when a button is clicked).
-
-Within the `Commands` directory, you'll find the following classes:
-
-`DelegateCommand` - simple implementation of `ICommand` which allows you use a delegate action to define command behavior
-
-The `ICommand` interface is cumbersome to implement for every command in the application. This class provides the common functionality of commands and allows you to simply pass a
-delegate to invoke when the command is executed.
-
--   `AsyncDelegateCommand` - same as `DelegateCommand` save for the fact that you can define an asynchronous function to call when the command is executed
-
-#### Message Bus
-
-#### Services
-
-Within the `Services` directory, you will find the following services:
+### Services
 
 The `DependencyInjection` class can be used by projects depending on this one to register available services to a DI Container.
-
-#### View
-
-#### View Model
 
 ## Testing & Test Results
 
