@@ -7,6 +7,9 @@ using System.Windows.Media;
 
 namespace BTimeLogger.Wpf.Services
 {
+	/// <summary>
+	/// Converter between <see cref="GroupStatistic"/> domain model type to WPF <see cref="Category"/> model type (used for pie charts).
+	/// </summary>
 	public interface IStatisticCategoryConverter
 	{
 		IEnumerable<Category> Convert(GroupStatistic groupStat);

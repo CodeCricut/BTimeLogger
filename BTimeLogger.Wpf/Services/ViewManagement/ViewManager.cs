@@ -7,6 +7,10 @@ using WpfCore.ViewModel;
 namespace BTimeLogger.Wpf.Services.ViewManagement
 {
 	// TODO Issue #10: Clean up ViewManager
+
+	/// <summary>
+	/// Manages the opening/closing of windows for this WPF application.
+	/// </summary>
 	class ViewManager : IViewManager
 	{
 		private readonly Dictionary<BaseViewModel, Window> _activeViews = new Dictionary<BaseViewModel, Window>();

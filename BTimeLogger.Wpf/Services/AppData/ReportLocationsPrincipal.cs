@@ -18,6 +18,9 @@ namespace BTimeLogger.Wpf.Services.AppData
 		void ClearReportLocations();
 	}
 
+	/// <summary>
+	/// A persistent repository of report locations, where a report location is the path to a CSV report.
+	/// </summary>
 	class ReportLocationsPrincipal : IReportLocationsPrincipal
 	{
 		private readonly IAppDataService _appDataService;
