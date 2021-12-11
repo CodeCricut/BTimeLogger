@@ -32,11 +32,10 @@ Users can view the list of tracked intervals, and filter by activity type and da
 
 ### View interval statistics
 
-Users can generate and view statistics about how they spend their time. For any interval or group, the user can view:
+Users can generate and view statistics about how they spend their time. For any activity or group, the user can view:
 
 -   total time spent
--   percentage of total time spent on an activity or group
--   percentage of group time spent on an activity
+-   percentage of total time spent on the activity/group
 
 Users are given the ability to filter the data by activity type and data.
 
@@ -74,7 +73,7 @@ The main dependencies of the solution include
 
 -   [Microsoft Dependency Injection](https://www.nuget.org/packages/Microsoft.Extensions.DependencyInjection) - dependency injection library for .NET
 -   [Scrutor](https://github.com/khellang/Scrutor) - DI extensions; used to register all depenendencies of a type (for example all view model factories) to the DI container
--   [MediatR](https://github.com/jbogard/MediatR) - used to implement global messaging using CQRS within the WPF app
+-   [MediatR](https://github.com/jbogard/MediatR) - used to implement global messaging within the WPF app
 
 Additional dependencies for the project can be found in the `.csproj` files of each project.
 
@@ -105,6 +104,8 @@ The `BTimeLogger.Wpf` app contains the application starting point (`App.OnStartu
 
 The `WpfCore` is a class library that contains classes common to creating WPF apps. It is contained within its own project for modularity and so it may be used in other WPF apps.
 
+Additional documentation can be found in the `Documentation` directories of both projects.
+
 ### Services and Dependency Injection
 
 [Dependency injection](https://docs.microsoft.com/en-us/dotnet/core/extensions/dependency-injection) is used throughout the solution to achieve Inversion of Control between classes and their dependencies. Classes are dependent upon high-level abstractions rather than concrete implementation which results in more modular, testable, and maintainable functional units.
@@ -117,4 +118,13 @@ The `BTimeLogger.Wpf` project creates a DI container in the `App` class and regi
 
 ### Manual System Tests
 
+Manual system tests of the WPF application have been performed (note that these
+tests are not yet documented).
+
+The manual system tests do not achieve 100% coverage and not all tests are passing.
+
 ### Unit Tests
+
+The `WpfCore`, `BTimeLogger.Domain`, and `BTimeLogger.Csv` projects have NUnit tests projects associated with them. More details can be found in the design documents of each project.
+
+The automated unit tests do not achieve 100% coverage and not all tests are passing.
