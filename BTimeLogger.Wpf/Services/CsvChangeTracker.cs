@@ -3,6 +3,8 @@ using WpfCore.MessageBus;
 
 namespace BTimeLogger.Csv
 {
+	// TODO: I feel this might be improperly named as it doesn't keep track if changes have been made to the CSV report, but
+	// rather if changes have been made to the data which will eventually be propogated to the report. 
 	public interface ICsvChangeTracker
 	{
 		bool ChangesMade { get; }

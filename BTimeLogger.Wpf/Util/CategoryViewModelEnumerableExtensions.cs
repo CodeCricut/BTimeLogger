@@ -23,7 +23,7 @@ namespace BTimeLogger.Wpf.Util
 
 			CategoryViewModel otherCategory = new(new Category()
 			{
-				Color = GroupStatisticCategoriesConverter.BaseColor,
+				Color = StatisticCategoryConverter.BaseColor,
 				Percentage = remainingPercentage,
 				Title = otherCatTitle
 			});

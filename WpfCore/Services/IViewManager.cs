@@ -2,6 +2,9 @@
 
 namespace WpfCore.Services
 {
+	/// <summary>
+	/// Manages the opening/closing of views for this application.
+	/// </summary>
 	public interface IViewManager
 	{
 		/// <summary>

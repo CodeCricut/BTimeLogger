@@ -4,6 +4,9 @@ using System.Windows;
 
 namespace BTimeLogger.Wpf.Services
 {
+	/// <summary>
+	/// Manager for the app's skin/theme.
+	/// </summary>
 	public interface ISkinManager
 	{
 		Skin AppSkin { get; set; }

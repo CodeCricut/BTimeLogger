@@ -12,14 +12,14 @@ namespace BTimeLogger.Wpf.Controls
 	class GroupStatisticsPieChartViewModelFactory : IGroupStatisticsPieChartViewModelFactory
 	{
 		private readonly IGroupStatisticGenerator _groupStatisticRepository;
-		private readonly IGroupStatisticCategoriesConverter _statCategoryConvertr;
+		private readonly IStatisticCategoryConverter _statCategoryConvertr;
 		private readonly ICategoryViewModelFactory _categoryViewModelFactory;
 		private readonly IPieSliceViewModelFactory _pieSliceVMFactory;
 		private readonly IEventAggregator _ea;
 		private readonly IActivityRepository _activityRepository;
 
 		public GroupStatisticsPieChartViewModelFactory(IGroupStatisticGenerator groupStatisticRepository,
-			IGroupStatisticCategoriesConverter statCategoryConvertr,
+			IStatisticCategoryConverter statCategoryConvertr,
 			ICategoryViewModelFactory categoryViewModelFactory,
 			IPieSliceViewModelFactory pieSliceVMFactory,
 			IEventAggregator ea,

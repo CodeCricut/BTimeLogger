@@ -12,7 +12,7 @@ namespace BTimeLogger.Wpf.Controls
 	public class GroupStatisticsPieChartViewModel : PieChartViewModel
 	{
 		private readonly IGroupStatisticGenerator _groupStatsRepo;
-		private readonly IGroupStatisticCategoriesConverter _statCategoryConverter;
+		private readonly IStatisticCategoryConverter _statCategoryConverter;
 		private readonly ICategoryViewModelFactory _catVMFactory;
 		private readonly IEventAggregator _ea;
 		private readonly IActivityRepository _activityRepository;
@@ -20,7 +20,7 @@ namespace BTimeLogger.Wpf.Controls
 
 		public GroupStatisticsPieChartViewModel(
 			IGroupStatisticGenerator groupStatsRepo,
-			IGroupStatisticCategoriesConverter statCategoryConverter,
+			IStatisticCategoryConverter statCategoryConverter,
 			ICategoryViewModelFactory catVMFactory,
 			IEventAggregator ea,
 			IPieSliceViewModelFactory pieSliceVMFactory,

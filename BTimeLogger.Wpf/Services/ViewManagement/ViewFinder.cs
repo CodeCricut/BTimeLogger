@@ -7,8 +7,14 @@ using WpfCore.ViewModel;
 
 namespace BTimeLogger.Wpf.Services.ViewManagement
 {
+	/// <summary>
+	/// Interface for finding views associated with view models.
+	/// </summary>
 	interface IViewFinder
 	{
+		/// <summary>
+		/// Find the associated <see cref="Window"/> for the <paramref name="viewModel"/>.
+		/// </summary>
 		Window FindViewForViewModel<TViewModel>(TViewModel viewModel) where TViewModel : BaseViewModel;
 	}
 
@@ -16,11 +22,18 @@ namespace BTimeLogger.Wpf.Services.ViewManagement
 	{
 		private readonly IServiceProvider _viewServiceProvider;
 
+		// Using the service provider directly is an antipattern, but we can use it just here to request views of a specific
+		// type when those types aren't known at compile-time.
 		public ViewFinder(IServiceProvider viewServiceProvider)
 		{
 			_viewServiceProvider = viewServiceProvider;
 		}
 
+		/// <summary>
+		/// Find the associated <see cref="Window"/> for the <paramref name="viewModel"/> by searching the assembly
+		/// for windows implementing <see cref="IHaveViewModel{TViewModel}"/> where <c>TViewModel</c> is the <typeparamref name="TViewModel"/> generic
+		/// argument type. 
+		/// </summary>
 		public Window FindViewForViewModel<TViewModel>(TViewModel viewModel) where TViewModel : BaseViewModel
 		{
 			Type viewType = GetAssociatedViewType(viewModel.GetType());

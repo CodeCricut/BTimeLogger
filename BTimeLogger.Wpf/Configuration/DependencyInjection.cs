@@ -28,7 +28,7 @@ namespace BTimeLogger.Wpf.Configuration
 				.AddSingleton<IAppDataService, AppDataService>()
 				.AddSingleton<IReportLocationsPrincipal, ReportLocationsPrincipal>()
 
-				.AddSingleton<IGroupStatisticCategoriesConverter, GroupStatisticCategoriesConverter>()
+				.AddSingleton<IStatisticCategoryConverter, StatisticCategoryConverter>()
 
 				.AddSingleton<ICsvChangeTracker, CsvChangeTracker>()
 
