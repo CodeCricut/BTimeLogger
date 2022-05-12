@@ -19,7 +19,7 @@
 
 ## Demo
 
-[![A video demo of the app](Resources\video-demo-thumb.png)](https://vimeo.com/709151098)
+[![A video demo of the app](./Resources/video-demo-thumb.png)](https://vimeo.com/709151098)
 
 ## Cloning/downloading the project
 
