@@ -19,10 +19,18 @@
                       ResizeBorderThickness="{x:Static SystemParameters.WindowResizeBorderThickness}" />
     </WindowChrome.WindowChrome>
     <Window.InputBindings>
+        <KeyBinding Key="N"
+                    Modifiers="Ctrl"
+                    Command="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type local:MainWindow}}, 
+            Path=ViewModel.TitleBarMenuViewModel.NewReportCommand}" />
         <KeyBinding Key="O"
                     Modifiers="Ctrl"
                     Command="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type local:MainWindow}}, 
             Path=ViewModel.TitleBarMenuViewModel.OpenCsvsCommand}" />
+        <KeyBinding Key="O"
+                    Modifiers="Ctrl+Shift"
+                    Command="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type local:MainWindow}}, 
+            Path=ViewModel.TitleBarMenuViewModel.OpenRecentCsvsCommand}" />
         <KeyBinding Key="S"
                     Modifiers="Ctrl"
                     Command="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type local:MainWindow}}, 

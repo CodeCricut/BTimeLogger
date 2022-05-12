@@ -12,12 +12,14 @@ namespace BTimeLogger.Wpf.Controls
 	public class TitleBarMenuViewModel : BaseViewModel
 	{
 		private readonly IViewManager _viewManager;
+		private readonly ICreateNewProjectWindowViewModelFactory _createNewProjectWindowViewModelFactory;
 		private readonly IOpenCsvsWindowViewModelFactory _createReportWindowViewModelFactory;
 		private readonly IOpenRecentCsvsWindowViewModelFactory _openRecentCsvsWindowViewModelFactory;
 		private readonly ISaveAsWindowViewModelFactory _saveAsWindowViewModelFactory;
 		private readonly IMediator _mediator;
 		private readonly ISkinManager _skinManager;
 
+		public DelegateCommand NewReportCommand { get; }
 		public DelegateCommand OpenCsvsCommand { get; }
 		public DelegateCommand OpenRecentCsvsCommand { get; }
 		public AsyncDelegateCommand ExitCommand { get; }
@@ -30,6 +32,7 @@ namespace BTimeLogger.Wpf.Controls
 		public DelegateCommand ToggleSkinCommand { get; }
 
 		public TitleBarMenuViewModel(IViewManager viewManager,
+			ICreateNewProjectWindowViewModelFactory createNewProjectWindowViewModelFactory,
 			IOpenCsvsWindowViewModelFactory createReportWindowViewModelFactory,
 			IOpenRecentCsvsWindowViewModelFactory openRecentCsvsWindowViewModelFactory,
 			ISaveAsWindowViewModelFactory saveAsWindowViewModelFactory,
@@ -37,12 +40,14 @@ namespace BTimeLogger.Wpf.Controls
 			ISkinManager skinManager)
 		{
 			_viewManager = viewManager;
+			_createNewProjectWindowViewModelFactory = createNewProjectWindowViewModelFactory;
 			_createReportWindowViewModelFactory = createReportWindowViewModelFactory;
 			_openRecentCsvsWindowViewModelFactory = openRecentCsvsWindowViewModelFactory;
 			_saveAsWindowViewModelFactory = saveAsWindowViewModelFactory;
 			_mediator = mediator;
 			_skinManager = skinManager;
 
+			NewReportCommand = new DelegateCommand(OpenNewReportWindow);
 			OpenCsvsCommand = new DelegateCommand(OpenCsvs);
 			OpenRecentCsvsCommand = new DelegateCommand(OpenRecentCsvs);
 			ExitCommand = new AsyncDelegateCommand(Exit);
@@ -59,6 +64,12 @@ namespace BTimeLogger.Wpf.Controls
 			HasDarkSkinEnabled = _skinManager.AppSkin == Model.Skin.Dark;
 		}
 
+		private void OpenNewReportWindow(object obj)
+		{
+			CreateNewProjectWindowViewModel newProjVm = _createNewProjectWindowViewModelFactory.Create();
+			_viewManager.ShowDialog(newProjVm);
+		}
+
 		private void OpenCsvs(object obj)
 		{
 			OpenCsvsWindowViewModel reportWindow = _createReportWindowViewModelFactory.Create();
@@ -72,9 +83,15 @@ namespace BTimeLogger.Wpf.Controls
 		}
 
 
-		private Task Exit(object obj)
+		private async Task Exit(object obj)
 		{
-			return _mediator.Send(new Shutdown());
+			bool? saved = await _mediator.Send(new PromptToSaveUnsavedChanges());
+
+			if (saved.HasValue && saved.Value) // Not cancelled
+			{
+				await _mediator.Send(new Shutdown());
+			}
+
 		}
 
 		private Task Save(object _)

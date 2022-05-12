@@ -9,6 +9,9 @@
     <Menu Style="{DynamicResource TitleBarMenuStyle}"
           DataContext="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type local:TitleBarMenu}}}">
         <MenuItem Header="_File">
+            <MenuItem Header="_New"
+                      InputGestureText="Ctrl+N"
+                      Command="{Binding ViewModel.NewReportCommand}" />
             <MenuItem Header="_Open"
                       InputGestureText="Ctrl+O"
                       Command="{Binding ViewModel.OpenCsvsCommand}" />
