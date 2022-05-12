@@ -27,7 +27,7 @@ namespace BTimeLogger.Wpf.Windows
 
 			CancelCommand = new DelegateCommand(Cancel);
 
-			ea.RegisterHandler<ReportSourceChanged>(msg => CloseDialog());
+			ea.RegisterHandler<ReportSelected>(msg => CloseDialog());
 
 		}
 
