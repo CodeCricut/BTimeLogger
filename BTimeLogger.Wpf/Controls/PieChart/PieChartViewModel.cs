@@ -57,7 +57,7 @@ namespace BTimeLogger.Wpf.Controls
 			}
 		}
 
-		private double _chartHeight = 450;
+		private double _chartHeight = 300;
 		public double ChartHeight
 		{
 			get => _chartHeight;

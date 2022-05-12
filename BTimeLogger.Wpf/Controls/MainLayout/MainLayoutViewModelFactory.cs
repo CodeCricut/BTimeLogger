@@ -1,4 +1,6 @@
-﻿namespace BTimeLogger.Wpf.Controls
+﻿using WpfCore.MessageBus;
+
+namespace BTimeLogger.Wpf.Controls
 {
 	public interface IMainLayoutViewModelFactory
 	{
@@ -7,27 +9,33 @@
 
 	internal class MainLayoutViewModelFactory : IMainLayoutViewModelFactory
 	{
+		private readonly IEventAggregator _ea;
 		private readonly IGroupedActivityFilterViewModelFactory _groupedActivityFilterViewModel;
 		private readonly ITimeSpanPanelViewModelFactory _timeSpanPanelViewModelFactory;
 		private readonly IPaginatedIntervalListViewModelFactory _paginatedIntervalListViewModel;
 		private readonly IPartialIntervalListViewModelFactory _partialIntervalListViewModel;
 		private readonly IGroupStatisticsPieChartViewModelFactory _groupStatisticsPieChartViewModelFactory;
 		private readonly ICurrentReportBannerViewModelFactory _currentReportBannerViewModel;
+		private readonly IActivityViewModelFactory _activityViewModelFactory;
 
 		public MainLayoutViewModelFactory(
+			IEventAggregator ea,
 			IGroupedActivityFilterViewModelFactory groupedActivityFilterViewModel,
 			ITimeSpanPanelViewModelFactory timeSpanPanelViewModelFactory,
 			IPaginatedIntervalListViewModelFactory paginatedIntervalListViewModel,
 			IPartialIntervalListViewModelFactory partialIntervalListViewModel,
 			IGroupStatisticsPieChartViewModelFactory groupStatisticsPieChartViewModelFactory,
-			ICurrentReportBannerViewModelFactory currentReportBannerViewModel)
+			ICurrentReportBannerViewModelFactory currentReportBannerViewModel,
+			IActivityViewModelFactory activityViewModelFactory)
 		{
+			_ea = ea;
 			_groupedActivityFilterViewModel = groupedActivityFilterViewModel;
 			_timeSpanPanelViewModelFactory = timeSpanPanelViewModelFactory;
 			_paginatedIntervalListViewModel = paginatedIntervalListViewModel;
 			_partialIntervalListViewModel = partialIntervalListViewModel;
 			_groupStatisticsPieChartViewModelFactory = groupStatisticsPieChartViewModelFactory;
 			_currentReportBannerViewModel = currentReportBannerViewModel;
+			_activityViewModelFactory = activityViewModelFactory;
 		}
 
 		public MainLayoutViewModel Create()
@@ -40,8 +48,13 @@
 			var statTimeSpanPanelVM = _timeSpanPanelViewModelFactory.Create();
 
 			CurrentReportBannerViewModel currentReportBannerVM = _currentReportBannerViewModel.Create();
-			return new MainLayoutViewModel(groupedActivityFilterVM, statTimeSpanPanelVM, partialIntervalListVM, groupStatisticsPieChartViewModel,
-								  currentReportBannerVM);
+			return new MainLayoutViewModel(_ea,
+								  groupedActivityFilterVM,
+								  statTimeSpanPanelVM,
+								  partialIntervalListVM,
+								  groupStatisticsPieChartViewModel,
+								  currentReportBannerVM,
+								  _activityViewModelFactory);
 		}
 	}
 }

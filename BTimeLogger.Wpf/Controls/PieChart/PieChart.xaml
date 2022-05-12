@@ -48,6 +48,10 @@
                         <Button Command="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type local:PieChart}},
                                        Path=ViewModel.SelectCategoryCommand}"
                                 CommandParameter="{Binding Category.Id}">
+                            <Button.ToolTip>
+                                <ToolTip Content="{Binding Category.Title}"
+                                         Background="{DynamicResource skinBackgroundDarkBrush}"></ToolTip>
+                            </Button.ToolTip>
                             <Button.Template>
                                 <ControlTemplate>
                                     <Path 
@@ -61,7 +65,7 @@
                                                 <Trigger Property="IsMouseOver"
                                                          Value="True">
                                                     <Setter Property="Fill"
-                                                            Value="{Binding SliceGeometry.OutlineColor}" />
+                                                            Value="Blue" />
                                                 </Trigger>
                                             </Style.Triggers>
                                         </Style>
