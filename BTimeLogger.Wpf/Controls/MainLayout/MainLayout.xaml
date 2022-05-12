@@ -18,7 +18,7 @@
         </Grid.ColumnDefinitions>
 
 
-        <Border Padding="32 0"
+        <Border Padding="10 0"
                 Grid.Row="1"
                 Grid.Column="1">
             <Grid>
@@ -29,17 +29,27 @@
                 </Grid.ColumnDefinitions>
 
 
-                <!--Filters-->
-                <Border Padding="20 0" Grid.Column="0" >
+                <Border Padding="0 0 10 0" Grid.Column="0" >
                     <StackPanel Orientation="Vertical">
                         <Border Style="{DynamicResource CardBorderStyle}"
-                                Padding="10" >
-                            <local:GroupedActivityFilter ViewModel="{Binding ViewModel.GroupedActivityFilterViewModel}" />
+                                Padding="10">
+                            <StackPanel Orientation="Vertical">
+                                <TextBlock FontSize="20"
+                                           Margin="0 0 0 10">Start tracking</TextBlock>
+
+                                <Button Margin="0 0 0 10" Command="{Binding ViewModel.CreateActivityCommand}">New Activity</Button>
+                                <Button Margin="0 0 0 10" Command="{Binding ViewModel.CreateIntervalCommand}">Create Interval</Button>
+                            </StackPanel>
                         </Border>
+                        
+                        <!--Filters-->
                         <Border Style="{DynamicResource CardBorderStyle}"
-                                Padding="10"
-                                Margin="0 10 0 0">
-                            <local:TimeSpanPanel ViewModel="{Binding ViewModel.TimeSpanPanelViewModel}" />
+                                Padding="10" Margin="0 20">
+                            <StackPanel Orientation="Vertical">
+                                <TextBlock FontSize="20" Margin="0 0 0 10">Filters</TextBlock>
+                                <local:GroupedActivityFilter ViewModel="{Binding ViewModel.GroupedActivityFilterViewModel}" />
+                                <local:TimeSpanPanel ViewModel="{Binding ViewModel.TimeSpanPanelViewModel}" />
+                            </StackPanel>
                         </Border>
 
                     </StackPanel>

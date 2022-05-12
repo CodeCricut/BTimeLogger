@@ -13,8 +13,6 @@ namespace BTimeLogger.Wpf.Controls
 	{
 		private readonly IViewManager _viewManager;
 		private readonly IOpenCsvsWindowViewModelFactory _createReportWindowViewModelFactory;
-		private readonly ICreateNewIntervalWindowViewModelFactory _createNewIntervalWindowViewModelFactory;
-		private readonly ICreateNewActivityWindowViewModelFactory _createNewActivityWindowViewModelFactory;
 		private readonly ISaveAsWindowViewModelFactory _saveAsWindowViewModelFactory;
 		private readonly IMediator _mediator;
 		private readonly ISkinManager _skinManager;
@@ -24,9 +22,6 @@ namespace BTimeLogger.Wpf.Controls
 		public AsyncDelegateCommand SaveCommand { get; }
 		public AsyncDelegateCommand SaveAsCommand { get; }
 
-		public AsyncDelegateCommand CreateIntervalCommand { get; }
-		public AsyncDelegateCommand CreateActivityCommand { get; }
-
 		private bool _hasDarkSkinEnabled;
 		public bool HasDarkSkinEnabled { get => _hasDarkSkinEnabled; set => Set(ref _hasDarkSkinEnabled, value); }
 
@@ -34,16 +29,12 @@ namespace BTimeLogger.Wpf.Controls
 
 		public TitleBarMenuViewModel(IViewManager viewManager,
 			IOpenCsvsWindowViewModelFactory createReportWindowViewModelFactory,
-			ICreateNewIntervalWindowViewModelFactory createNewIntervalWindowViewModelFactory,
-			ICreateNewActivityWindowViewModelFactory createNewActivityWindowViewModelFactory,
 			ISaveAsWindowViewModelFactory saveAsWindowViewModelFactory,
 			IMediator mediator,
 			ISkinManager skinManager)
 		{
 			_viewManager = viewManager;
 			_createReportWindowViewModelFactory = createReportWindowViewModelFactory;
-			_createNewIntervalWindowViewModelFactory = createNewIntervalWindowViewModelFactory;
-			_createNewActivityWindowViewModelFactory = createNewActivityWindowViewModelFactory;
 			_saveAsWindowViewModelFactory = saveAsWindowViewModelFactory;
 			_mediator = mediator;
 			_skinManager = skinManager;
@@ -52,9 +43,6 @@ namespace BTimeLogger.Wpf.Controls
 			ExitCommand = new AsyncDelegateCommand(Exit);
 			SaveCommand = new AsyncDelegateCommand(Save);
 			SaveAsCommand = new AsyncDelegateCommand(SaveAs);
-
-			CreateIntervalCommand = new AsyncDelegateCommand(CreateNewInterval);
-			CreateActivityCommand = new AsyncDelegateCommand(CreateNewActivity);
 
 			ToggleSkinCommand = new DelegateCommand(ToggleSkin);
 			HasDarkSkinEnabled = _skinManager.AppSkin == Model.Skin.Dark;
@@ -86,22 +74,6 @@ namespace BTimeLogger.Wpf.Controls
 		{
 			SaveAsWindowViewModel vm = _saveAsWindowViewModelFactory.Create();
 			_viewManager.ShowDialog(vm);
-			return Task.CompletedTask;
-		}
-
-		private Task CreateNewInterval(object arg)
-		{
-			CreateNewIntervalWindowViewModel createIntervalWindowVM = _createNewIntervalWindowViewModelFactory.Create();
-			_viewManager.ShowDialog(createIntervalWindowVM);
-
-			return Task.CompletedTask;
-		}
-
-		private Task CreateNewActivity(object arg)
-		{
-			CreateNewActivityWindowViewModel createActivityWindowVM = _createNewActivityWindowViewModelFactory.Create();
-			_viewManager.ShowDialog(createActivityWindowVM);
-
 			return Task.CompletedTask;
 		}
 	}

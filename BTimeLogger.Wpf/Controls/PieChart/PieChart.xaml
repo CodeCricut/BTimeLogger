@@ -65,7 +65,7 @@
                                                 <Trigger Property="IsMouseOver"
                                                          Value="True">
                                                     <Setter Property="Fill"
-                                                            Value="Blue" />
+                                                            Value="{Binding SliceGeometry.OutlineColor}" />
                                                 </Trigger>
                                             </Style.Triggers>
                                         </Style>

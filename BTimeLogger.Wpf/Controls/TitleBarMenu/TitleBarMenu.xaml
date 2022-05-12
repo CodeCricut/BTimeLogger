@@ -22,12 +22,6 @@
                       InputGestureText="Alt+F4"
                       Command="{Binding ViewModel.ExitCommand}"/>
         </MenuItem>
-        <MenuItem Header="_Create">
-            <MenuItem Header="Interval"
-                      Command="{Binding ViewModel.CreateIntervalCommand}" />
-            <MenuItem Header="Activity"
-                      Command="{Binding ViewModel.CreateActivityCommand}" />
-        </MenuItem>
         <MenuItem Header="_Settings">
             <MenuItem Header="Dark Theme"
                       IsCheckable="True"
