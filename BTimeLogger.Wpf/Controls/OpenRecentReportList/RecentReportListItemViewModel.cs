@@ -48,6 +48,7 @@ namespace BTimeLogger.Wpf.Controls
 			try
 			{
 				await _mediator.Send(new ReadCsvs(ReportLocation));
+				_ea.SendMessage(new ReportSourceChanged());
 			}
 			catch (FileNotFoundException)
 			{

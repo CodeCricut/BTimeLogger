@@ -12,6 +12,9 @@
             <MenuItem Header="_Open"
                       InputGestureText="Ctrl+O"
                       Command="{Binding ViewModel.OpenCsvsCommand}" />
+            <MenuItem Header="_Open Recent"
+                      InputGestureText="Ctrl+Shift+O"
+                      Command="{Binding ViewModel.OpenRecentCsvsCommand}" />
             <MenuItem Header="_Save" 
                       InputGestureText="Ctrl+S"
                       Command="{Binding ViewModel.SaveCommand}"/>

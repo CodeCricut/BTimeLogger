@@ -14,18 +14,21 @@ namespace BTimeLogger.Wpf.Controls
 	{
 		private readonly IViewManager _viewManager;
 		private readonly IOpenCsvsWindowViewModelFactory _openCsvsWindowViewModelFactory;
+		private readonly IOpenRecentCsvsWindowViewModelFactory _openRecentCsvsWindowViewModelFactory;
 		private readonly IMediator _mediator;
 		private readonly ISaveAsWindowViewModelFactory _saveAsWindowViewModelFactory;
 		private readonly ISkinManager _skinManager;
 
 		public TitleBarMenuViewModelFactory(IViewManager viewManager,
 			IOpenCsvsWindowViewModelFactory openCsvsWindowViewModelFactory,
+			IOpenRecentCsvsWindowViewModelFactory openRecentCsvsWindowViewModelFactory,
 			IMediator mediator,
 			ISaveAsWindowViewModelFactory saveAsWindowViewModelFactory,
 			ISkinManager skinManager)
 		{
 			_viewManager = viewManager;
 			_openCsvsWindowViewModelFactory = openCsvsWindowViewModelFactory;
+			_openRecentCsvsWindowViewModelFactory = openRecentCsvsWindowViewModelFactory;
 			_mediator = mediator;
 			_saveAsWindowViewModelFactory = saveAsWindowViewModelFactory;
 			_skinManager = skinManager;
@@ -35,6 +38,7 @@ namespace BTimeLogger.Wpf.Controls
 		{
 			return new TitleBarMenuViewModel(_viewManager,
 									_openCsvsWindowViewModelFactory,
+									_openRecentCsvsWindowViewModelFactory,
 									_saveAsWindowViewModelFactory,
 									_mediator,
 									_skinManager);

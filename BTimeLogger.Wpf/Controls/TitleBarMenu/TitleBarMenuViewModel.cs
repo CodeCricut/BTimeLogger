@@ -13,11 +13,13 @@ namespace BTimeLogger.Wpf.Controls
 	{
 		private readonly IViewManager _viewManager;
 		private readonly IOpenCsvsWindowViewModelFactory _createReportWindowViewModelFactory;
+		private readonly IOpenRecentCsvsWindowViewModelFactory _openRecentCsvsWindowViewModelFactory;
 		private readonly ISaveAsWindowViewModelFactory _saveAsWindowViewModelFactory;
 		private readonly IMediator _mediator;
 		private readonly ISkinManager _skinManager;
 
 		public DelegateCommand OpenCsvsCommand { get; }
+		public DelegateCommand OpenRecentCsvsCommand { get; }
 		public AsyncDelegateCommand ExitCommand { get; }
 		public AsyncDelegateCommand SaveCommand { get; }
 		public AsyncDelegateCommand SaveAsCommand { get; }
@@ -29,17 +31,20 @@ namespace BTimeLogger.Wpf.Controls
 
 		public TitleBarMenuViewModel(IViewManager viewManager,
 			IOpenCsvsWindowViewModelFactory createReportWindowViewModelFactory,
+			IOpenRecentCsvsWindowViewModelFactory openRecentCsvsWindowViewModelFactory,
 			ISaveAsWindowViewModelFactory saveAsWindowViewModelFactory,
 			IMediator mediator,
 			ISkinManager skinManager)
 		{
 			_viewManager = viewManager;
 			_createReportWindowViewModelFactory = createReportWindowViewModelFactory;
+			_openRecentCsvsWindowViewModelFactory = openRecentCsvsWindowViewModelFactory;
 			_saveAsWindowViewModelFactory = saveAsWindowViewModelFactory;
 			_mediator = mediator;
 			_skinManager = skinManager;
 
 			OpenCsvsCommand = new DelegateCommand(OpenCsvs);
+			OpenRecentCsvsCommand = new DelegateCommand(OpenRecentCsvs);
 			ExitCommand = new AsyncDelegateCommand(Exit);
 			SaveCommand = new AsyncDelegateCommand(Save);
 			SaveAsCommand = new AsyncDelegateCommand(SaveAs);
@@ -59,6 +64,13 @@ namespace BTimeLogger.Wpf.Controls
 			OpenCsvsWindowViewModel reportWindow = _createReportWindowViewModelFactory.Create();
 			_viewManager.ShowDialog(reportWindow);
 		}
+
+		private void OpenRecentCsvs(object obj)
+		{
+			OpenRecentCsvsWindowViewModel reportWindow = _openRecentCsvsWindowViewModelFactory.Create();
+			_viewManager.ShowDialog(reportWindow);
+		}
+
 
 		private Task Exit(object obj)
 		{
