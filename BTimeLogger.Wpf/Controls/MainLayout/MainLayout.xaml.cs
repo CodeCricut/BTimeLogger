@@ -21,9 +21,5 @@ namespace BTimeLogger.Wpf.Controls
 			InitializeComponent();
 		}
 
-		private void Layout_Loaded(object sender, RoutedEventArgs e)
-		{
-			ViewModel.SelectHomeCommand.Execute();
-		}
 	}
 }

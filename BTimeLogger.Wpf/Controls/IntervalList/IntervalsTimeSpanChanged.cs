@@ -2,7 +2,7 @@
 
 namespace BTimeLogger.Wpf.Controls
 {
-	class IntervalsTimeSpanChanged
+	public class IntervalsTimeSpanChanged
 	{
 		public IntervalsTimeSpanChanged(DateTime from, DateTime to)
 		{

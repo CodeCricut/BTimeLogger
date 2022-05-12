@@ -1,6 +1,6 @@
 ﻿namespace BTimeLogger.Wpf.Controls
 {
-	class NewPieChartGroupSelected
+	public class NewPieChartGroupSelected
 	{
 		public NewPieChartGroupSelected(Activity selectedGroup)
 		{

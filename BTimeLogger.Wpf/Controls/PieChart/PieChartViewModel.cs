@@ -43,7 +43,8 @@ namespace BTimeLogger.Wpf.Controls
 
 		public ObservableCollection<PieSliceViewModel> PieSlices { get; set; } = new();
 
-		private double _chartWidth = 500;
+		// TODO: Don't hardcode these values; use responsive layout
+		private double _chartWidth = 300;
 		public double ChartWidth
 		{
 			get => _chartWidth;
@@ -56,7 +57,7 @@ namespace BTimeLogger.Wpf.Controls
 			}
 		}
 
-		private double _chartHeight = 500;
+		private double _chartHeight = 450;
 		public double ChartHeight
 		{
 			get => _chartHeight;

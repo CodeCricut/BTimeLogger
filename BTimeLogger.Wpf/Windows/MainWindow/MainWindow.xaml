@@ -72,6 +72,8 @@
                                     DisableCloseInteraction="True"/>
 
         </Grid>
+        
+        <!-- Main content of the app (minus the drag bar) -->
         <controls:MainLayout ViewModel="{Binding ViewModel.MainLayoutViewModel}"
                          Grid.Row="1" />
     </Grid>

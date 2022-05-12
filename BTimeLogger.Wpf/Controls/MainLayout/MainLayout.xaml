@@ -1,12 +1,12 @@
 ﻿<UserControl x:Class="BTimeLogger.Wpf.Controls.MainLayout"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:local="clr-namespace:BTimeLogger.Wpf.Controls"
-             mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800"
-             Loaded="Layout_Loaded">
+             mc:Ignorable="d"
+             d:DesignHeight="450"
+             d:DesignWidth="800">
     <Grid DataContext="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type local:MainLayout}}}">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
@@ -15,40 +15,72 @@
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition />
-            <ColumnDefinition Width="3*" />
         </Grid.ColumnDefinitions>
 
-      
-        <!--Left Menu-->
-        <StackPanel Grid.Row="1">
-            <StackPanel.Resources>
-                <Style TargetType="{x:Type RadioButton}"
-                       BasedOn="{StaticResource MenuButtonStyle}">
-                    <Setter Property="FontSize"
-                            Value="14" />
-                    <Setter Property="Height"
-                            Value="50" />
-                </Style>
-            </StackPanel.Resources>
-            <RadioButton Content="{StaticResource home}"
-                         Command="{Binding ViewModel.SelectHomeCommand}"
-                         IsChecked="True" />
-            <Border Style="{StaticResource MenuSeparatorStyle}" />
-            <RadioButton Content="{StaticResource intervals}"
-                         Command="{Binding ViewModel.SelectIntervalsCommand}" />
-            <RadioButton Content="{StaticResource statistics}"
-                         Command="{Binding ViewModel.SelectStatisticsCommand}" />
-        </StackPanel>
 
-        <!--Main Content-->
-        <Border Padding="10 0"
+        <Border Padding="32 0"
                 Grid.Row="1"
                 Grid.Column="1">
-            <ContentControl Content="{Binding ViewModel.SelectedFullscreenViewModel}" />
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                </Grid.ColumnDefinitions>
+
+
+                <!--Filters-->
+                <Border Padding="20 0" Grid.Column="0" >
+                    <StackPanel Orientation="Vertical">
+                        <Border Style="{DynamicResource CardBorderStyle}"
+                                Padding="10" >
+                            <local:GroupedActivityFilter ViewModel="{Binding ViewModel.GroupedActivityFilterViewModel}" />
+                        </Border>
+                        <Border Style="{DynamicResource CardBorderStyle}"
+                                Padding="10"
+                                Margin="0 10 0 0">
+                            <local:TimeSpanPanel ViewModel="{Binding ViewModel.TimeSpanPanelViewModel}" />
+                        </Border>
+
+                    </StackPanel>
+                </Border>
+
+
+                <!--Intervals-->
+                <Border Grid.Column="1" >
+                    <local:PartialIntervalList ViewModel="{Binding ViewModel.PartialIntervalListViewModel}" />
+                </Border>
+
+                <!--Pie chart-->
+                <Border Grid.Column="2">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition />
+                            <RowDefinition />
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition />
+                        </Grid.ColumnDefinitions>
+
+                        <local:PieChart ViewModel="{Binding ViewModel.GroupStatisticsPieChartViewModel}"
+                                        Grid.Row="0" />
+
+                        <Border Grid.Row="1"
+                                Padding="10">
+                            <local:PieChartCategories  ViewModel="{Binding  ViewModel.GroupStatisticsPieChartViewModel}"/>
+                        </Border>
+                    </Grid>
+                </Border>
+            </Grid>
+
+
         </Border>
-        
+
         <!--Bottom banner-->
-        <Border Grid.Row="2" Padding="5" Margin="0 10 0 0" Grid.ColumnSpan="3" 
+        <Border Grid.Row="2"
+                Padding="5"
+                Margin="0 10 0 0"
+                Grid.ColumnSpan="3"
                 Background="{DynamicResource skinBackgroundDarkBrush}">
             <local:CurrentReportBanner ViewModel="{Binding ViewModel.CurrentReportBannerViewModel}" />
         </Border>

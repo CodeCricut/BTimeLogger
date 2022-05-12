@@ -1,10 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using static BTimeLogger.Activity;
 
 namespace BTimeLogger.Wpf.Controls
 {
-	class IncludedIntervalActivitiesChanged
+	public class IncludedIntervalActivitiesChanged
 	{
 		public IncludedIntervalActivitiesChanged(IEnumerable<ActivityCode> newIncludedActivities)
 		{

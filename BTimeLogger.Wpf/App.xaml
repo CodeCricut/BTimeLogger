@@ -15,8 +15,6 @@
 
                 <ResourceDictionary Source="Resources/ImageResources.xaml" />
 
-                <ResourceDictionary Source="Resources/DataTemplates.xaml" />
-
                 <ResourceDictionary Source="Styles/CardBorderStyle.xaml" />
                 <ResourceDictionary Source="Styles/CheckBoxStyle.xaml" />
                 <ResourceDictionary Source="Styles/ComboBoxStyle.xaml" />

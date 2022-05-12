@@ -38,7 +38,7 @@
                 <TextBlock 
                            Text="{StaticResource loading}" Visibility="{Binding ViewModel.Loading, Converter={StaticResource boolToVis}}"/>
                 <TextBlock Visibility="{Binding ViewModel.IsEmpty, Converter={StaticResource boolToVis}}"
-                           Text="{StaticResource noActivitiesInRange}" />
+                           Text="{StaticResource noActivitiesInRange}" TextWrapping="Wrap" Background="Green"/>
             </StackPanel>
         </Grid>
     </Border>

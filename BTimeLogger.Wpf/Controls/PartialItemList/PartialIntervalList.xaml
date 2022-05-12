@@ -13,7 +13,6 @@
             <Grid.RowDefinitions>
                 <RowDefinition />
                 <RowDefinition Height="Auto" />
-                <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
 
             <ListView ItemsSource="{Binding ViewModel.LoadedItems, Mode=OneWay}"
@@ -29,8 +28,9 @@
                 </ListView.ItemTemplate>
             </ListView>
 
+            
             <StackPanel Orientation="Vertical"
-                        Grid.Row="1">
+                        Grid.Row="0">
                 <StackPanel.Resources>
                     <Style TargetType="{x:Type TextBlock}"
                            BasedOn="{StaticResource TextBlockStyle}">
@@ -42,20 +42,22 @@
                                 Value="20" />
                     </Style>
                 </StackPanel.Resources>
-                <TextBlock Visibility="{Binding ViewModel.Loading, Converter={StaticResource boolToVis}}"
-                           Text="{StaticResource loading}" />
-                <TextBlock Visibility="{Binding ViewModel.IsEmpty, Converter={StaticResource boolToVis}}"
-                           Text="{StaticResource noActivitiesInRange}" />
+                    <TextBlock Visibility="{Binding ViewModel.Loading, Converter={StaticResource boolToVis}}"
+                               Text="{StaticResource loading}" VerticalAlignment="Center"/>
+                <Border Padding="20" VerticalAlignment="Center">
+                    <TextBlock Visibility="{Binding ViewModel.IsEmpty, Converter={StaticResource boolToVis}}"
+                               Text="{StaticResource noActivitiesInRange}"  TextWrapping="Wrap" VerticalAlignment="Center"/>
+                </Border>
             </StackPanel>
 
-            <StackPanel Grid.Row="2"
+            <StackPanel Grid.Row="1"
                   Margin="0 10">
                 <Button HorizontalAlignment="Center"
                         Width="100"
                         Padding="10"
                         Visibility="{Binding ViewModel.ShowExplicitLoadMore, Converter={StaticResource boolToVis}}"
                         Command="{Binding ViewModel.LoadMoreItemsCommand}"
-                        Content="{StaticResource loadMore}" />
+                        Content="{StaticResource loadMore}" Margin="0 0 0 10"/>
                 <TextBlock Text="{Binding ViewModel.LoadedOutOfTotalItems}"
                            Foreground="{DynamicResource skinFontSecondaryBrush}"
                            HorizontalAlignment="Center" />
