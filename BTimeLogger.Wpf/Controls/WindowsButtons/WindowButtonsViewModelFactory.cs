@@ -1,15 +1,14 @@
-﻿namespace BTimeLogger.Wpf.Controls
-{
-	public interface IWindowButtonsViewModelFactory
-	{
-		WindowButtonsViewModel Create();
-	}
+﻿namespace BTimeLogger.Wpf.Controls;
 
-	class WindowButtonsViewModelFactory : IWindowButtonsViewModelFactory
+public interface IWindowButtonsViewModelFactory
+{
+	WindowButtonsViewModel Create();
+}
+
+class WindowButtonsViewModelFactory : IWindowButtonsViewModelFactory
+{
+	public WindowButtonsViewModel Create()
 	{
-		public WindowButtonsViewModel Create()
-		{
-			return new();
-		}
+		return new();
 	}
 }

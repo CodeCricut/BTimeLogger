@@ -1,19 +1,17 @@
 ﻿using BTimeLogger.Csv.Helpers;
-using WpfCore.ViewModel;
 
-namespace BTimeLogger.Wpf.Controls
+namespace BTimeLogger.Wpf.Controls;
+
+public class StatisticViewModel : BaseViewModel
 {
-	public class StatisticViewModel : BaseViewModel
+	private readonly Statistic _statistic;
+
+	public ActivityViewModel Activity { get; set; }
+	public string Duration { get => _statistic.Duration.ToCsvFormat(); }
+	public decimal Percent { get => _statistic.PercentOfTrackedTimeInTimespan; }
+
+	public StatisticViewModel(Statistic statistic)
 	{
-		private readonly Statistic _statistic;
-
-		public ActivityViewModel Activity { get; set; }
-		public string Duration { get => _statistic.Duration.ToCsvFormat(); }
-		public decimal Percent { get => _statistic.PercentOfTrackedTimeInTimespan; }
-
-		public StatisticViewModel(Statistic statistic)
-		{
-			_statistic = statistic;
-		}
+		_statistic = statistic;
 	}
 }

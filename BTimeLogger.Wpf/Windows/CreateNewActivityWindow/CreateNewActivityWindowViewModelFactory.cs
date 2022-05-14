@@ -1,30 +1,29 @@
 ﻿using BTimeLogger.Wpf.Controls;
 
-namespace BTimeLogger.Wpf.Windows
+namespace BTimeLogger.Wpf.Windows;
+
+public interface ICreateNewActivityWindowViewModelFactory
 {
-	public interface ICreateNewActivityWindowViewModelFactory
+	CreateNewActivityWindowViewModel Create();
+}
+
+class CreateNewActivityWindowViewModelFactory : ICreateNewActivityWindowViewModelFactory
+{
+	private readonly IWindowButtonsViewModelFactory _windowButtonsViewModel;
+	private readonly ICreateNewActivityViewModelFactory _createNewActivityViewModelFactory;
+
+	public CreateNewActivityWindowViewModelFactory(IWindowButtonsViewModelFactory windowButtonsViewModel,
+		ICreateNewActivityViewModelFactory createNewActivityViewModelFactory)
 	{
-		CreateNewActivityWindowViewModel Create();
+		_windowButtonsViewModel = windowButtonsViewModel;
+		_createNewActivityViewModelFactory = createNewActivityViewModelFactory;
 	}
 
-	class CreateNewActivityWindowViewModelFactory : ICreateNewActivityWindowViewModelFactory
+	public CreateNewActivityWindowViewModel Create()
 	{
-		private readonly IWindowButtonsViewModelFactory _windowButtonsViewModel;
-		private readonly ICreateNewActivityViewModelFactory _createNewActivityViewModelFactory;
+		WindowButtonsViewModel windowsButtonsVM = _windowButtonsViewModel.Create();
+		CreateNewActivityViewModel createNewActivityVM = _createNewActivityViewModelFactory.Create();
 
-		public CreateNewActivityWindowViewModelFactory(IWindowButtonsViewModelFactory windowButtonsViewModel,
-			ICreateNewActivityViewModelFactory createNewActivityViewModelFactory)
-		{
-			_windowButtonsViewModel = windowButtonsViewModel;
-			_createNewActivityViewModelFactory = createNewActivityViewModelFactory;
-		}
-
-		public CreateNewActivityWindowViewModel Create()
-		{
-			WindowButtonsViewModel windowsButtonsVM = _windowButtonsViewModel.Create();
-			CreateNewActivityViewModel createNewActivityVM = _createNewActivityViewModelFactory.Create();
-
-			return new CreateNewActivityWindowViewModel(windowsButtonsVM, createNewActivityVM);
-		}
+		return new CreateNewActivityWindowViewModel(windowsButtonsVM, createNewActivityVM);
 	}
 }

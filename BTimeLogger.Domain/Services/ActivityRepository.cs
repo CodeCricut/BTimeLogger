@@ -2,86 +2,85 @@
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace BTimeLogger.Domain.Services
+namespace BTimeLogger.Domain.Services;
+
+public interface IActivityRepository : IRepository
 {
-	public interface IActivityRepository : IRepository
+	Task<IEnumerable<Activity>> GetActivities();
+	Task<Activity> GetActivity(ActivityCode code);
+	Task<bool> ActivityExists(ActivityCode code);
+	Task AddActivity(Activity group);
+}
+
+class ActivityRepository : IActivityRepository
+{
+	private readonly Dictionary<ActivityCode, Activity> _activities = new();
+	private readonly Dictionary<ActivityCode, Activity> _unsavedActivities = new();
+
+	public Task<bool> ActivityExists(ActivityCode code)
 	{
-		Task<IEnumerable<Activity>> GetActivities();
-		Task<Activity> GetActivity(ActivityCode code);
-		Task<bool> ActivityExists(ActivityCode code);
-		Task AddActivity(Activity group);
+		if (code == null)
+			return Task.FromResult(false);
+		return Task.FromResult(_unsavedActivities.ContainsKey(code));
 	}
 
-	class ActivityRepository : IActivityRepository
+	public Task AddActivity(Activity activity)
 	{
-		private readonly Dictionary<ActivityCode, Activity> _activities = new();
-		private readonly Dictionary<ActivityCode, Activity> _unsavedActivities = new();
+		if (_activities.ContainsKey(activity.Code))
+			throw new System.Exception();
 
-		public Task<bool> ActivityExists(ActivityCode code)
+		if (activity.HasParent)
 		{
-			if (code == null)
-				return Task.FromResult(false);
-			return Task.FromResult(_unsavedActivities.ContainsKey(code));
+			bool parentExists = _unsavedActivities.TryGetValue(activity.Code.ParentCode, out Activity parent);
+			if (!parentExists) throw new KeyNotFoundException();
+
+			if (!parent.Children.Contains(activity))
+				parent.Children.Add(activity);
 		}
 
-		public Task AddActivity(Activity activity)
-		{
-			if (_activities.ContainsKey(activity.Code))
-				throw new System.Exception();
+		_unsavedActivities.Add(activity.Code, activity);
 
-			if (activity.HasParent)
+		return Task.CompletedTask;
+	}
+
+	public Task<IEnumerable<Activity>> GetActivities()
+	{
+		return Task.FromResult(_activities.Select(kvp => kvp.Value));
+	}
+
+	public Task<Activity> GetActivity(ActivityCode code)
+	{
+		if (code == null) return Task.FromResult<Activity>(null);
+		return Task.FromResult(_activities.GetValueOrDefault(code));
+	}
+
+	public Task Clear()
+	{
+		_unsavedActivities.Clear();
+		return Task.CompletedTask;
+	}
+
+	public Task SaveChanges()
+	{
+		return Task.Factory.StartNew(() =>
+		{
+			_activities.Clear();
+			foreach (var unsavedActivity in _unsavedActivities)
 			{
-				bool parentExists = _unsavedActivities.TryGetValue(activity.Code.ParentCode, out Activity parent);
-				if (!parentExists) throw new KeyNotFoundException();
-
-				if (!parent.Children.Contains(activity))
-					parent.Children.Add(activity);
+				_activities.Add(unsavedActivity.Key, unsavedActivity.Value);
 			}
+		});
+	}
 
-			_unsavedActivities.Add(activity.Code, activity);
-
-			return Task.CompletedTask;
-		}
-
-		public Task<IEnumerable<Activity>> GetActivities()
-		{
-			return Task.FromResult(_activities.Select(kvp => kvp.Value));
-		}
-
-		public Task<Activity> GetActivity(ActivityCode code)
-		{
-			if (code == null) return Task.FromResult<Activity>(null);
-			return Task.FromResult(_activities.GetValueOrDefault(code));
-		}
-
-		public Task Clear()
+	public Task RemoveChanges()
+	{
+		return Task.Factory.StartNew(() =>
 		{
 			_unsavedActivities.Clear();
-			return Task.CompletedTask;
-		}
-
-		public Task SaveChanges()
-		{
-			return Task.Factory.StartNew(() =>
+			foreach (var savedActivity in _activities)
 			{
-				_activities.Clear();
-				foreach (var unsavedActivity in _unsavedActivities)
-				{
-					_activities.Add(unsavedActivity.Key, unsavedActivity.Value);
-				}
-			});
-		}
-
-		public Task RemoveChanges()
-		{
-			return Task.Factory.StartNew(() =>
-			{
-				_unsavedActivities.Clear();
-				foreach (var savedActivity in _activities)
-				{
-					_unsavedActivities.Add(savedActivity.Key, savedActivity.Value);
-				}
-			});
-		}
+				_unsavedActivities.Add(savedActivity.Key, savedActivity.Value);
+			}
+		});
 	}
 }

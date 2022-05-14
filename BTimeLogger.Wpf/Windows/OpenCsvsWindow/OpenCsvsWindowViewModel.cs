@@ -2,84 +2,80 @@
 using MediatR;
 using System;
 using System.Threading.Tasks;
-using WpfCore.Commands;
-using WpfCore.Services;
-using WpfCore.ViewModel;
 
-namespace BTimeLogger.Wpf.Windows
+namespace BTimeLogger.Wpf.Windows;
+
+public class OpenCsvsWindowViewModel : BaseViewModel
 {
-	public class OpenCsvsWindowViewModel : BaseViewModel
+	private readonly IViewManager _viewManager;
+	private readonly IMediator _mediator;
+	private string _intervalsCsvLocation;
+	public string IntervalsCsvLocation
 	{
-		private readonly IViewManager _viewManager;
-		private readonly IMediator _mediator;
-		private string _intervalsCsvLocation;
-		public string IntervalsCsvLocation
+		get => _intervalsCsvLocation;
+		set { Set(ref _intervalsCsvLocation, value); CreateReportCommand.RaiseCanExecuteChanged(); }
+	}
+
+	private bool _loading;
+	public bool Loading
+	{
+		get => _loading; set
 		{
-			get => _intervalsCsvLocation;
-			set { Set(ref _intervalsCsvLocation, value); CreateReportCommand.RaiseCanExecuteChanged(); }
+			Set(ref _loading, value);
+			RaisePropertyChanged(nameof(InvalidReportInfo));
+			RaisePropertyChanged(nameof(NotLoading));
 		}
+	}
 
-		private bool _loading;
-		public bool Loading
+	public bool NotLoading { get => !Loading; }
+
+	private bool _invalidReportInfo;
+	public bool InvalidReportInfo { get => _invalidReportInfo && !Loading; set { Set(ref _invalidReportInfo, value); } }
+
+
+	public DelegateCommand CancelCommand { get; set; }
+	public AsyncDelegateCommand CreateReportCommand { get; set; }
+
+	public OpenCsvsWindowViewModel(IViewManager viewManager,
+		IMediator mediator)
+	{
+		CancelCommand = new DelegateCommand(Cancel);
+		CreateReportCommand = new AsyncDelegateCommand(CreateReport, CanCreateReport);
+		_viewManager = viewManager;
+		_mediator = mediator;
+	}
+
+	private bool CanCreateReport(object arg)
+	{
+		return !string.IsNullOrWhiteSpace(IntervalsCsvLocation);
+	}
+
+	private async Task CreateReport(object obj)
+	{
+		try
 		{
-			get => _loading; set
-			{
-				Set(ref _loading, value);
-				RaisePropertyChanged(nameof(InvalidReportInfo));
-				RaisePropertyChanged(nameof(NotLoading));
-			}
-		}
+			Loading = true;
+			InvalidReportInfo = false;
 
-		public bool NotLoading { get => !Loading; }
+			await _mediator.Send(new ReadCsvs(IntervalsCsvLocation));
 
-		private bool _invalidReportInfo;
-		public bool InvalidReportInfo { get => _invalidReportInfo && !Loading; set { Set(ref _invalidReportInfo, value); } }
-
-
-		public DelegateCommand CancelCommand { get; set; }
-		public AsyncDelegateCommand CreateReportCommand { get; set; }
-
-		public OpenCsvsWindowViewModel(IViewManager viewManager,
-			IMediator mediator)
-		{
-			CancelCommand = new DelegateCommand(Cancel);
-			CreateReportCommand = new AsyncDelegateCommand(CreateReport, CanCreateReport);
-			_viewManager = viewManager;
-			_mediator = mediator;
-		}
-
-		private bool CanCreateReport(object arg)
-		{
-			return !string.IsNullOrWhiteSpace(IntervalsCsvLocation);
-		}
-
-		private async Task CreateReport(object obj)
-		{
-			try
-			{
-				Loading = true;
-				InvalidReportInfo = false;
-
-				await _mediator.Send(new ReadCsvs(IntervalsCsvLocation));
-
-				Loading = false;
-				CloseDialog();
-			}
-			catch (Exception)
-			{
-				Loading = false;
-				InvalidReportInfo = true;
-			}
-		}
-
-		private void Cancel(object obj)
-		{
+			Loading = false;
 			CloseDialog();
 		}
-
-		private void CloseDialog()
+		catch (Exception)
 		{
-			_viewManager.Close(this);
+			Loading = false;
+			InvalidReportInfo = true;
 		}
+	}
+
+	private void Cancel(object obj)
+	{
+		CloseDialog();
+	}
+
+	private void CloseDialog()
+	{
+		_viewManager.Close(this);
 	}
 }

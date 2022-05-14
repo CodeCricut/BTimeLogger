@@ -1,39 +1,38 @@
 ﻿using BTimeLogger.Wpf.Controls;
 
-namespace BTimeLogger.Wpf.Windows
+namespace BTimeLogger.Wpf.Windows;
+
+public interface IModifyIntervalWindowViewModelFactory
 {
-	public interface IModifyIntervalWindowViewModelFactory
+	ModifyIntervalWindowViewModel Create(IntervalViewModel intervalViewModel);
+	ModifyIntervalWindowViewModel Create(ModifyIntervalViewModel modifyIntervalViewModel);
+}
+class ModifyIntervalWindowViewModelFactory : IModifyIntervalWindowViewModelFactory
+{
+	private readonly IModifyIntervalViewModelFactory _modifyIntervalViewModelFactory;
+	private readonly IWindowButtonsViewModelFactory _windowButtonsViewModelFactory;
+	private readonly IActivityTypeSelectorViewModelFactory _activityTypeSelectorViewModelFactory;
+
+	public ModifyIntervalWindowViewModelFactory(IModifyIntervalViewModelFactory modifyIntervalViewModelFactory,
+		IWindowButtonsViewModelFactory windowButtonsViewModelFactory,
+		IActivityTypeSelectorViewModelFactory activityTypeSelectorViewModelFactory)
 	{
-		ModifyIntervalWindowViewModel Create(IntervalViewModel intervalViewModel);
-		ModifyIntervalWindowViewModel Create(ModifyIntervalViewModel modifyIntervalViewModel);
+		_modifyIntervalViewModelFactory = modifyIntervalViewModelFactory;
+		_windowButtonsViewModelFactory = windowButtonsViewModelFactory;
+		_activityTypeSelectorViewModelFactory = activityTypeSelectorViewModelFactory;
 	}
-	class ModifyIntervalWindowViewModelFactory : IModifyIntervalWindowViewModelFactory
+
+	public ModifyIntervalWindowViewModel Create(IntervalViewModel intervalViewModel)
 	{
-		private readonly IModifyIntervalViewModelFactory _modifyIntervalViewModelFactory;
-		private readonly IWindowButtonsViewModelFactory _windowButtonsViewModelFactory;
-		private readonly IActivityTypeSelectorViewModelFactory _activityTypeSelectorViewModelFactory;
+		var activityTypeSelectorVM = _activityTypeSelectorViewModelFactory.Create();
+		ModifyIntervalViewModel modifyIntervalVM = _modifyIntervalViewModelFactory.Create(intervalViewModel, activityTypeSelectorVM);
 
-		public ModifyIntervalWindowViewModelFactory(IModifyIntervalViewModelFactory modifyIntervalViewModelFactory,
-			IWindowButtonsViewModelFactory windowButtonsViewModelFactory,
-			IActivityTypeSelectorViewModelFactory activityTypeSelectorViewModelFactory)
-		{
-			_modifyIntervalViewModelFactory = modifyIntervalViewModelFactory;
-			_windowButtonsViewModelFactory = windowButtonsViewModelFactory;
-			_activityTypeSelectorViewModelFactory = activityTypeSelectorViewModelFactory;
-		}
+		return Create(modifyIntervalVM);
+	}
 
-		public ModifyIntervalWindowViewModel Create(IntervalViewModel intervalViewModel)
-		{
-			var activityTypeSelectorVM = _activityTypeSelectorViewModelFactory.Create();
-			ModifyIntervalViewModel modifyIntervalVM = _modifyIntervalViewModelFactory.Create(intervalViewModel, activityTypeSelectorVM);
-
-			return Create(modifyIntervalVM);
-		}
-
-		public ModifyIntervalWindowViewModel Create(ModifyIntervalViewModel modifyIntervalViewModel)
-		{
-			var windowButtonsVM = _windowButtonsViewModelFactory.Create();
-			return new ModifyIntervalWindowViewModel(modifyIntervalViewModel, windowButtonsVM);
-		}
+	public ModifyIntervalWindowViewModel Create(ModifyIntervalViewModel modifyIntervalViewModel)
+	{
+		var windowButtonsVM = _windowButtonsViewModelFactory.Create();
+		return new ModifyIntervalWindowViewModel(modifyIntervalViewModel, windowButtonsVM);
 	}
 }

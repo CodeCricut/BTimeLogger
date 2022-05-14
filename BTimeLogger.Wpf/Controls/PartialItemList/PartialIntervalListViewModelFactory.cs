@@ -1,24 +1,22 @@
-﻿using WpfCore.MessageBus;
+﻿
+namespace BTimeLogger.Wpf.Controls;
 
-namespace BTimeLogger.Wpf.Controls
+public interface IPartialIntervalListViewModelFactory
 {
-	public interface IPartialIntervalListViewModelFactory
+	PartialIntervalListViewModel Create(PaginatedIntervalListViewModel paginatedIntervalListViewModel);
+}
+
+class PartialIntervalListViewModelFactory : IPartialIntervalListViewModelFactory
+{
+	private readonly IEventAggregator _ea;
+
+	public PartialIntervalListViewModelFactory(IEventAggregator ea)
 	{
-		PartialIntervalListViewModel Create(PaginatedIntervalListViewModel paginatedIntervalListViewModel);
+		_ea = ea;
 	}
 
-	class PartialIntervalListViewModelFactory : IPartialIntervalListViewModelFactory
+	public PartialIntervalListViewModel Create(PaginatedIntervalListViewModel paginatedIntervalListViewModel)
 	{
-		private readonly IEventAggregator _ea;
-
-		public PartialIntervalListViewModelFactory(IEventAggregator ea)
-		{
-			_ea = ea;
-		}
-
-		public PartialIntervalListViewModel Create(PaginatedIntervalListViewModel paginatedIntervalListViewModel)
-		{
-			return new PartialIntervalListViewModel(_ea, paginatedIntervalListViewModel);
-		}
+		return new PartialIntervalListViewModel(_ea, paginatedIntervalListViewModel);
 	}
 }

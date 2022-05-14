@@ -1,32 +1,30 @@
 ﻿using BTimeLogger.Domain.Services;
-using WpfCore.MessageBus;
 
-namespace BTimeLogger.Wpf.Controls
+namespace BTimeLogger.Wpf.Controls;
+
+public interface IIntervalListViewModelFactory
 {
-	public interface IIntervalListViewModelFactory
+	IntervalListViewModel Create();
+}
+
+class IntervalListViewModelFactory : IIntervalListViewModelFactory
+{
+	private readonly IEventAggregator _ea;
+	private readonly IIntervalRepository _intervalRepository;
+	private readonly IIntervalListItemViewModelFactory _intervalListItemVMFactory;
+
+	public IntervalListViewModelFactory(IEventAggregator ea,
+		IIntervalRepository intervalRepository,
+		IIntervalListItemViewModelFactory intervalListItemVMFactory
+		)
 	{
-		IntervalListViewModel Create();
+		_ea = ea;
+		_intervalRepository = intervalRepository;
+		_intervalListItemVMFactory = intervalListItemVMFactory;
 	}
 
-	class IntervalListViewModelFactory : IIntervalListViewModelFactory
+	public IntervalListViewModel Create()
 	{
-		private readonly IEventAggregator _ea;
-		private readonly IIntervalRepository _intervalRepository;
-		private readonly IIntervalListItemViewModelFactory _intervalListItemVMFactory;
-
-		public IntervalListViewModelFactory(IEventAggregator ea,
-			IIntervalRepository intervalRepository,
-			IIntervalListItemViewModelFactory intervalListItemVMFactory
-			)
-		{
-			_ea = ea;
-			_intervalRepository = intervalRepository;
-			_intervalListItemVMFactory = intervalListItemVMFactory;
-		}
-
-		public IntervalListViewModel Create()
-		{
-			return new IntervalListViewModel(_ea, _intervalRepository, _intervalListItemVMFactory);
-		}
+		return new IntervalListViewModel(_ea, _intervalRepository, _intervalListItemVMFactory);
 	}
 }

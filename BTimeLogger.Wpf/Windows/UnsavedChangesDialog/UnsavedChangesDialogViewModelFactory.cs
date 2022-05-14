@@ -1,28 +1,26 @@
 ﻿using MediatR;
-using WpfCore.Services;
 
-namespace BTimeLogger.Wpf.Windows
+namespace BTimeLogger.Wpf.Windows;
+
+public interface IUnsavedChangesDialogViewModelFactory
 {
-	public interface IUnsavedChangesDialogViewModelFactory
+	UnsavedChangesDialogViewModel Create();
+}
+
+class UnsavedChangesDialogViewModelFactory : IUnsavedChangesDialogViewModelFactory
+{
+	private readonly IMediator _mediator;
+	private readonly IViewManager _viewManager;
+
+	public UnsavedChangesDialogViewModelFactory(IMediator mediator,
+		IViewManager viewManager)
 	{
-		UnsavedChangesDialogViewModel Create();
+		_mediator = mediator;
+		_viewManager = viewManager;
 	}
 
-	class UnsavedChangesDialogViewModelFactory : IUnsavedChangesDialogViewModelFactory
+	public UnsavedChangesDialogViewModel Create()
 	{
-		private readonly IMediator _mediator;
-		private readonly IViewManager _viewManager;
-
-		public UnsavedChangesDialogViewModelFactory(IMediator mediator,
-			IViewManager viewManager)
-		{
-			_mediator = mediator;
-			_viewManager = viewManager;
-		}
-
-		public UnsavedChangesDialogViewModel Create()
-		{
-			return new UnsavedChangesDialogViewModel(_mediator, _viewManager);
-		}
+		return new UnsavedChangesDialogViewModel(_mediator, _viewManager);
 	}
 }

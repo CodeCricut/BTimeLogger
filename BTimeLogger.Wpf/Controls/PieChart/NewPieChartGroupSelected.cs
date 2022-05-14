@@ -1,12 +1,11 @@
-﻿namespace BTimeLogger.Wpf.Controls
-{
-	public class NewPieChartGroupSelected
-	{
-		public NewPieChartGroupSelected(Activity selectedGroup)
-		{
-			SelectedGroup = selectedGroup;
-		}
+﻿namespace BTimeLogger.Wpf.Controls;
 
-		public Activity SelectedGroup { get; }
+public class NewPieChartGroupSelected
+{
+	public NewPieChartGroupSelected(Activity selectedGroup)
+	{
+		SelectedGroup = selectedGroup;
 	}
+
+	public Activity SelectedGroup { get; }
 }

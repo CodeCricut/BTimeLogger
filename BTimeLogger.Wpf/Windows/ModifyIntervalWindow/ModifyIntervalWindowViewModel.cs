@@ -1,20 +1,18 @@
 ﻿using BTimeLogger.Wpf.Controls;
-using WpfCore.ViewModel;
 
-namespace BTimeLogger.Wpf.Windows
+namespace BTimeLogger.Wpf.Windows;
+
+public class ModifyIntervalWindowViewModel : BaseViewModel
 {
-	public class ModifyIntervalWindowViewModel : BaseViewModel
+	public ModifyIntervalWindowViewModel(ModifyIntervalViewModel modifyIntervalViewModel,
+		WindowButtonsViewModel windowButtonsViewModel)
 	{
-		public ModifyIntervalWindowViewModel(ModifyIntervalViewModel modifyIntervalViewModel,
-			WindowButtonsViewModel windowButtonsViewModel)
-		{
-			ModifyIntervalViewModel = modifyIntervalViewModel;
-			WindowButtonsViewModel = windowButtonsViewModel;
+		ModifyIntervalViewModel = modifyIntervalViewModel;
+		WindowButtonsViewModel = windowButtonsViewModel;
 
-			ModifyIntervalViewModel.InteractionFinished += (_, _) => WindowButtonsViewModel.CloseCommand.Execute();
-		}
-
-		public ModifyIntervalViewModel ModifyIntervalViewModel { get; }
-		public WindowButtonsViewModel WindowButtonsViewModel { get; }
+		ModifyIntervalViewModel.InteractionFinished += (_, _) => WindowButtonsViewModel.CloseCommand.Execute();
 	}
+
+	public ModifyIntervalViewModel ModifyIntervalViewModel { get; }
+	public WindowButtonsViewModel WindowButtonsViewModel { get; }
 }

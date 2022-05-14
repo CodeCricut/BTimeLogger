@@ -1,15 +1,14 @@
-﻿namespace BTimeLogger.Wpf.Controls
-{
-	public interface IActivityViewModelFactory
-	{
-		ActivityViewModel Create(Activity acvitivy);
-	}
+﻿namespace BTimeLogger.Wpf.Controls;
 
-	class ActivityViewModelFactory : IActivityViewModelFactory
+public interface IActivityViewModelFactory
+{
+	ActivityViewModel Create(Activity acvitivy);
+}
+
+class ActivityViewModelFactory : IActivityViewModelFactory
+{
+	public ActivityViewModel Create(Activity activity)
 	{
-		public ActivityViewModel Create(Activity activity)
-		{
-			return new ActivityViewModel(activity);
-		}
+		return new ActivityViewModel(activity);
 	}
 }

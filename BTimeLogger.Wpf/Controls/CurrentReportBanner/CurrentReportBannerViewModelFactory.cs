@@ -1,33 +1,31 @@
 ﻿using BTimeLogger.Csv;
 using BTimeLogger.Csv.Services;
-using WpfCore.MessageBus;
 
-namespace BTimeLogger.Wpf.Controls
+namespace BTimeLogger.Wpf.Controls;
+
+public interface ICurrentReportBannerViewModelFactory
 {
-	public interface ICurrentReportBannerViewModelFactory
+	CurrentReportBannerViewModel Create();
+}
+
+class CurrentReportBannerViewModelFactory : ICurrentReportBannerViewModelFactory
+{
+	private readonly ICsvLocationPrincipal _csvLocationPrincipal;
+	private readonly ICsvChangeTracker _csvChangeTracker;
+	private readonly IEventAggregator _ea;
+
+	public CurrentReportBannerViewModelFactory(
+		ICsvLocationPrincipal csvLocationPrincipal,
+		ICsvChangeTracker csvChangeTracker,
+		IEventAggregator ea)
 	{
-		CurrentReportBannerViewModel Create();
+		_csvLocationPrincipal = csvLocationPrincipal;
+		_csvChangeTracker = csvChangeTracker;
+		_ea = ea;
 	}
 
-	class CurrentReportBannerViewModelFactory : ICurrentReportBannerViewModelFactory
+	public CurrentReportBannerViewModel Create()
 	{
-		private readonly ICsvLocationPrincipal _csvLocationPrincipal;
-		private readonly ICsvChangeTracker _csvChangeTracker;
-		private readonly IEventAggregator _ea;
-
-		public CurrentReportBannerViewModelFactory(
-			ICsvLocationPrincipal csvLocationPrincipal,
-			ICsvChangeTracker csvChangeTracker,
-			IEventAggregator ea)
-		{
-			_csvLocationPrincipal = csvLocationPrincipal;
-			_csvChangeTracker = csvChangeTracker;
-			_ea = ea;
-		}
-
-		public CurrentReportBannerViewModel Create()
-		{
-			return new CurrentReportBannerViewModel(_csvLocationPrincipal, _csvChangeTracker, _ea);
-		}
+		return new CurrentReportBannerViewModel(_csvLocationPrincipal, _csvChangeTracker, _ea);
 	}
 }

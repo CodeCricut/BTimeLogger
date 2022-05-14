@@ -1,15 +1,14 @@
-﻿namespace BTimeLogger.Wpf.Controls
-{
-	public interface ITimeSpanPanelViewModelFactory
-	{
-		TimeSpanPanelViewModel Create();
-	}
+﻿namespace BTimeLogger.Wpf.Controls;
 
-	class TimeSpanPanelViewModelFactory : ITimeSpanPanelViewModelFactory
+public interface ITimeSpanPanelViewModelFactory
+{
+	TimeSpanPanelViewModel Create();
+}
+
+class TimeSpanPanelViewModelFactory : ITimeSpanPanelViewModelFactory
+{
+	public TimeSpanPanelViewModel Create()
 	{
-		public TimeSpanPanelViewModel Create()
-		{
-			return new TimeSpanPanelViewModel();
-		}
+		return new TimeSpanPanelViewModel();
 	}
 }

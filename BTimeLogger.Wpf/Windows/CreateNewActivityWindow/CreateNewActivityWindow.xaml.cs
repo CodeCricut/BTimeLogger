@@ -1,23 +1,21 @@
-﻿using HackerNews.WPF.Core.View;
-using System.Windows;
+﻿using System.Windows;
 
-namespace BTimeLogger.Wpf.Windows
+namespace BTimeLogger.Wpf.Windows;
+
+/// <summary>
+/// Interaction logic for CreateNewActivityWindow.xaml
+/// </summary>
+public partial class CreateNewActivityWindow : Window, IHaveViewModel<CreateNewActivityWindowViewModel>
 {
-	/// <summary>
-	/// Interaction logic for CreateNewActivityWindow.xaml
-	/// </summary>
-	public partial class CreateNewActivityWindow : Window, IHaveViewModel<CreateNewActivityWindowViewModel>
+	public CreateNewActivityWindowViewModel ViewModel { get; set; }
+
+	public CreateNewActivityWindow()
 	{
-		public CreateNewActivityWindowViewModel ViewModel { get; set; }
+		InitializeComponent();
+	}
 
-		public CreateNewActivityWindow()
-		{
-			InitializeComponent();
-		}
-
-		public void SetViewModel(CreateNewActivityWindowViewModel viewModel)
-		{
-			ViewModel = viewModel;
-		}
+	public void SetViewModel(CreateNewActivityWindowViewModel viewModel)
+	{
+		ViewModel = viewModel;
 	}
 }

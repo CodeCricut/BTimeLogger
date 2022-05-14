@@ -1,6 +1,5 @@
-﻿namespace BTimeLogger.Wpf.Controls
+﻿namespace BTimeLogger.Wpf.Controls;
+
+class ReportSelected
 {
-	class ReportSelected
-	{
-	}
 }

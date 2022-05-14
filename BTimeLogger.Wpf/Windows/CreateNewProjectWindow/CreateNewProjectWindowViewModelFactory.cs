@@ -1,27 +1,25 @@
 ﻿using MediatR;
-using WpfCore.Services;
 
-namespace BTimeLogger.Wpf.Windows
+namespace BTimeLogger.Wpf.Windows;
+
+public interface ICreateNewProjectWindowViewModelFactory
 {
-	public interface ICreateNewProjectWindowViewModelFactory
+	CreateNewProjectWindowViewModel Create();
+}
+
+class CreateNewProjectWindowViewModelFactory : ICreateNewProjectWindowViewModelFactory
+{
+	private readonly IMediator _mediator;
+	private readonly IViewManager _viewManager;
+
+	public CreateNewProjectWindowViewModelFactory(IMediator mediator, IViewManager viewManager)
 	{
-		CreateNewProjectWindowViewModel Create();
+		_mediator = mediator;
+		_viewManager = viewManager;
 	}
 
-	class CreateNewProjectWindowViewModelFactory : ICreateNewProjectWindowViewModelFactory
+	public CreateNewProjectWindowViewModel Create()
 	{
-		private readonly IMediator _mediator;
-		private readonly IViewManager _viewManager;
-
-		public CreateNewProjectWindowViewModelFactory(IMediator mediator, IViewManager viewManager)
-		{
-			_mediator = mediator;
-			_viewManager = viewManager;
-		}
-
-		public CreateNewProjectWindowViewModel Create()
-		{
-			return new CreateNewProjectWindowViewModel(_mediator, _viewManager);
-		}
+		return new CreateNewProjectWindowViewModel(_mediator, _viewManager);
 	}
 }

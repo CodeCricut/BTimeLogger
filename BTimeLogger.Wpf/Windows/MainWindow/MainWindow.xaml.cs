@@ -1,22 +1,20 @@
-﻿using HackerNews.WPF.Core.View;
-using System.Windows;
+﻿using System.Windows;
 
-namespace BTimeLogger.Wpf.Windows
+namespace BTimeLogger.Wpf.Windows;
+
+/// <summary>
+/// Interaction logic for MainWindow.xaml
+/// </summary>
+public partial class MainWindow : Window, IHaveViewModel<MainWindowViewModel>
 {
-	/// <summary>
-	/// Interaction logic for MainWindow.xaml
-	/// </summary>
-	public partial class MainWindow : Window, IHaveViewModel<MainWindowViewModel>
+	public MainWindowViewModel ViewModel { get; set; }
+	public MainWindow()
 	{
-		public MainWindowViewModel ViewModel { get; set; }
-		public MainWindow()
-		{
-			InitializeComponent();
-		}
+		InitializeComponent();
+	}
 
-		public void SetViewModel(MainWindowViewModel viewModel)
-		{
-			ViewModel = viewModel;
-		}
+	public void SetViewModel(MainWindowViewModel viewModel)
+	{
+		ViewModel = viewModel;
 	}
 }

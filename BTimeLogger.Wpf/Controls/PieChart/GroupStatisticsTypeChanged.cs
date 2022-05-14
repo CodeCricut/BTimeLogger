@@ -1,17 +1,16 @@
-﻿namespace BTimeLogger.Wpf.Controls
+﻿namespace BTimeLogger.Wpf.Controls;
+
+public class GroupStatisticsTypeChanged
 {
-	public class GroupStatisticsTypeChanged
+	public GroupStatisticsTypeChanged(Activity newGroupType)
 	{
-		public GroupStatisticsTypeChanged(Activity newGroupType)
-		{
-			NewGroupType = newGroupType;
-		}
-
-		public static GroupStatisticsTypeChanged NoGroup()
-		{
-			return new GroupStatisticsTypeChanged(null);
-		}
-
-		public Activity NewGroupType { get; }
+		NewGroupType = newGroupType;
 	}
+
+	public static GroupStatisticsTypeChanged NoGroup()
+	{
+		return new GroupStatisticsTypeChanged(null);
+	}
+
+	public Activity NewGroupType { get; }
 }

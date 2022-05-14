@@ -1,13 +1,12 @@
 ﻿using System.Windows.Media;
 
-namespace BTimeLogger.Wpf.Model
+namespace BTimeLogger.Wpf.Model;
+
+public class Category
 {
-	public class Category
-	{
-		public string Id { get; set; }
-		public string Title { get; set; }
-		public float Percentage { get; set; }
-		public Color Color { get; set; }
-		public string Note { get; set; }
-	}
+	public string Id { get; set; }
+	public string Title { get; set; }
+	public float Percentage { get; set; }
+	public Color Color { get; set; }
+	public string Note { get; set; }
 }

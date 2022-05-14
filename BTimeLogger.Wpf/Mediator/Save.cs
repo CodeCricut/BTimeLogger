@@ -5,62 +5,60 @@ using BTimeLogger.Wpf.Windows;
 using MediatR;
 using System.Threading;
 using System.Threading.Tasks;
-using WpfCore.Services;
 
-namespace BTimeLogger.Wpf.Mediator
+namespace BTimeLogger.Wpf.Mediator;
+
+public class Save : IRequest
 {
-	public class Save : IRequest
+}
+
+public class SaveHandler : IRequestHandler<Save>
+{
+	private readonly ICsvLocationPrincipal _csvLocationPrincipal;
+	private readonly IIntervalsCsvWriter _intervalsCsvWriter;
+	private readonly ISaveAsWindowViewModelFactory _saveAsWindowViewModelFactory;
+	private readonly IViewManager _viewManager;
+	private readonly ICsvChangeTracker _csvChangeTracker;
+	private readonly IReportLocationsPrincipal _reportLocationsPrincipal;
+
+	public SaveHandler(
+		ICsvLocationPrincipal csvLocationPrincipal,
+		IIntervalsCsvWriter intervalsCsvWriter,
+		ISaveAsWindowViewModelFactory saveAsWindowViewModelFactory,
+		IViewManager viewManager,
+		ICsvChangeTracker csvChangeTracker,
+		IReportLocationsPrincipal reportLocationsPrincipal)
 	{
+		_csvLocationPrincipal = csvLocationPrincipal;
+		_intervalsCsvWriter = intervalsCsvWriter;
+		_saveAsWindowViewModelFactory = saveAsWindowViewModelFactory;
+		_viewManager = viewManager;
+		_csvChangeTracker = csvChangeTracker;
+		_reportLocationsPrincipal = reportLocationsPrincipal;
 	}
 
-	public class SaveHandler : IRequestHandler<Save>
+	public async Task<Unit> Handle(Save request, CancellationToken cancellationToken)
 	{
-		private readonly ICsvLocationPrincipal _csvLocationPrincipal;
-		private readonly IIntervalsCsvWriter _intervalsCsvWriter;
-		private readonly ISaveAsWindowViewModelFactory _saveAsWindowViewModelFactory;
-		private readonly IViewManager _viewManager;
-		private readonly ICsvChangeTracker _csvChangeTracker;
-		private readonly IReportLocationsPrincipal _reportLocationsPrincipal;
+		if (!_csvChangeTracker.ChangesMade) return Unit.Value;
 
-		public SaveHandler(
-			ICsvLocationPrincipal csvLocationPrincipal,
-			IIntervalsCsvWriter intervalsCsvWriter,
-			ISaveAsWindowViewModelFactory saveAsWindowViewModelFactory,
-			IViewManager viewManager,
-			ICsvChangeTracker csvChangeTracker,
-			IReportLocationsPrincipal reportLocationsPrincipal)
+		if (_csvLocationPrincipal.LocationsAreSelected)
 		{
-			_csvLocationPrincipal = csvLocationPrincipal;
-			_intervalsCsvWriter = intervalsCsvWriter;
-			_saveAsWindowViewModelFactory = saveAsWindowViewModelFactory;
-			_viewManager = viewManager;
-			_csvChangeTracker = csvChangeTracker;
-			_reportLocationsPrincipal = reportLocationsPrincipal;
+			await _intervalsCsvWriter.WriteIntervals(_csvLocationPrincipal.CsvLocation);
+			_reportLocationsPrincipal.AddReportLocation(_csvLocationPrincipal.CsvLocation);
+
+			_csvChangeTracker.ClearChanges();
+		}
+		else
+		{
+			PromptUserToSaveAs();
 		}
 
-		public async Task<Unit> Handle(Save request, CancellationToken cancellationToken)
-		{
-			if (!_csvChangeTracker.ChangesMade) return Unit.Value;
+		return Unit.Value;
+	}
 
-			if (_csvLocationPrincipal.LocationsAreSelected)
-			{
-				await _intervalsCsvWriter.WriteIntervals(_csvLocationPrincipal.CsvLocation);
-				_reportLocationsPrincipal.AddReportLocation(_csvLocationPrincipal.CsvLocation);
-
-				_csvChangeTracker.ClearChanges();
-			}
-			else
-			{
-				PromptUserToSaveAs();
-			}
-
-			return Unit.Value;
-		}
-
-		private void PromptUserToSaveAs()
-		{
-			SaveAsWindowViewModel vm = _saveAsWindowViewModelFactory.Create();
-			_viewManager.ShowDialog(vm);
-		}
+	private void PromptUserToSaveAs()
+	{
+		SaveAsWindowViewModel vm = _saveAsWindowViewModelFactory.Create();
+		_viewManager.ShowDialog(vm);
 	}
 }

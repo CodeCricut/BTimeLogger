@@ -6,82 +6,80 @@ using BTimeLogger.Wpf.Util;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using WpfCore.MessageBus;
 
-namespace BTimeLogger.Wpf.Controls
+namespace BTimeLogger.Wpf.Controls;
+
+public class PaginatedIntervalListViewModel : PaginatedItemListViewModel<IntervalListItemViewModel>
 {
-	public class PaginatedIntervalListViewModel : PaginatedItemListViewModel<IntervalListItemViewModel>
+	private readonly IIntervalRepository _intervalRepository;
+	private readonly IIntervalListItemViewModelFactory _intervalListItemViewModelFactory;
+
+	private readonly IntervalSearchFilter _intervalSearchFilter = new();
+
+	private bool _matchingIntervalsLoaded;
+	private IOrderedEnumerable<Interval> _allMatchingIntervals;
+
+	public override IOrderedEnumerable<IntervalListItemViewModel> Items
+		=> Page?.Items.OrderByDescending(listItem => listItem.Interval.Interval.From);
+
+	public PaginatedIntervalListViewModel(
+		IEventAggregator ea,
+		IIntervalRepository intervalRepository,
+		IIntervalListItemViewModelFactory intervalListItemViewModelFactory)
 	{
-		private readonly IIntervalRepository _intervalRepository;
-		private readonly IIntervalListItemViewModelFactory _intervalListItemViewModelFactory;
+		_intervalRepository = intervalRepository;
+		_intervalListItemViewModelFactory = intervalListItemViewModelFactory;
 
-		private readonly IntervalSearchFilter _intervalSearchFilter = new();
+		ea.RegisterHandler<IncludedIntervalActivitiesChanged>(HandleIncludedActivitiesChanged);
+		ea.RegisterHandler<IntervalsTimeSpanChanged>(HandleIntervalTimeSpanChanged);
+	}
 
-		private bool _matchingIntervalsLoaded;
-		private IOrderedEnumerable<Interval> _allMatchingIntervals;
+	protected override async Task<PaginatedList<IntervalListItemViewModel>> GetCurrentPageAsync()
+	{
+		await LoadUnloadedIntervals();
 
-		public override IOrderedEnumerable<IntervalListItemViewModel> Items
-			=> Page?.Items.OrderByDescending(listItem => listItem.Interval.Interval.From);
+		PaginatedList<Interval> intervalPage = await _allMatchingIntervals.AsQueryable()
+			.PaginatedListAsync(CurrentPagingParams);
+		var y = intervalPage.TotalCount;
+		PaginatedList<IntervalListItemViewModel> listItemPage = intervalPage.ToMappedPagedList(interval => MapIntervalToListItem(interval, intervalPage.Items));
+		return listItemPage;
+	}
 
-		public PaginatedIntervalListViewModel(
-			IEventAggregator ea,
-			IIntervalRepository intervalRepository,
-			IIntervalListItemViewModelFactory intervalListItemViewModelFactory)
-		{
-			_intervalRepository = intervalRepository;
-			_intervalListItemViewModelFactory = intervalListItemViewModelFactory;
+	private IntervalListItemViewModel MapIntervalToListItem(Interval interval, IEnumerable<Interval> otherIntervals)
+	{
+		bool isLast = interval.IsLastOnDate(otherIntervals);
+		return _intervalListItemViewModelFactory.Create(interval, isLast);
+	}
 
-			ea.RegisterHandler<IncludedIntervalActivitiesChanged>(HandleIncludedActivitiesChanged);
-			ea.RegisterHandler<IntervalsTimeSpanChanged>(HandleIntervalTimeSpanChanged);
-		}
+	private async Task LoadUnloadedIntervals()
+	{
+		if (!_matchingIntervalsLoaded)
+			await LoadAllIntervals();
+	}
+	private async Task LoadAllIntervals()
+	{
+		_allMatchingIntervals = (await _intervalRepository.GetIntervals(_intervalSearchFilter.IncludedActivities,
+			_intervalSearchFilter.From, _intervalSearchFilter.To))
+			.OrderByDescending(interval => interval.From);
+		_matchingIntervalsLoaded = true;
+	}
 
-		protected override async Task<PaginatedList<IntervalListItemViewModel>> GetCurrentPageAsync()
-		{
-			await LoadUnloadedIntervals();
+	private void HandleIncludedActivitiesChanged(IncludedIntervalActivitiesChanged msg)
+	{
+		_intervalSearchFilter.IncludedActivities = msg.NewIncludedActivities;
 
-			PaginatedList<Interval> intervalPage = await _allMatchingIntervals.AsQueryable()
-				.PaginatedListAsync(CurrentPagingParams);
-			var y = intervalPage.TotalCount;
-			PaginatedList<IntervalListItemViewModel> listItemPage = intervalPage.ToMappedPagedList(interval => MapIntervalToListItem(interval, intervalPage.Items));
-			return listItemPage;
-		}
+		_matchingIntervalsLoaded = false;
 
-		private IntervalListItemViewModel MapIntervalToListItem(Interval interval, IEnumerable<Interval> otherIntervals)
-		{
-			bool isLast = interval.IsLastOnDate(otherIntervals);
-			return _intervalListItemViewModelFactory.Create(interval, isLast);
-		}
+		ResetToStartingPageCommand.Execute();
+	}
 
-		private async Task LoadUnloadedIntervals()
-		{
-			if (!_matchingIntervalsLoaded)
-				await LoadAllIntervals();
-		}
-		private async Task LoadAllIntervals()
-		{
-			_allMatchingIntervals = (await _intervalRepository.GetIntervals(_intervalSearchFilter.IncludedActivities,
-				_intervalSearchFilter.From, _intervalSearchFilter.To))
-				.OrderByDescending(interval => interval.From);
-			_matchingIntervalsLoaded = true;
-		}
+	private void HandleIntervalTimeSpanChanged(IntervalsTimeSpanChanged msg)
+	{
+		_intervalSearchFilter.From = msg.From;
+		_intervalSearchFilter.To = msg.To;
 
-		private void HandleIncludedActivitiesChanged(IncludedIntervalActivitiesChanged msg)
-		{
-			_intervalSearchFilter.IncludedActivities = msg.NewIncludedActivities;
+		_matchingIntervalsLoaded = false;
 
-			_matchingIntervalsLoaded = false;
-
-			ResetToStartingPageCommand.Execute();
-		}
-
-		private void HandleIntervalTimeSpanChanged(IntervalsTimeSpanChanged msg)
-		{
-			_intervalSearchFilter.From = msg.From;
-			_intervalSearchFilter.To = msg.To;
-
-			_matchingIntervalsLoaded = false;
-
-			ResetToStartingPageCommand.Execute();
-		}
+		ResetToStartingPageCommand.Execute();
 	}
 }

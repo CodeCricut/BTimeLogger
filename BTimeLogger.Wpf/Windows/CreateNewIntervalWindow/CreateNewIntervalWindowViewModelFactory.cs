@@ -1,29 +1,28 @@
 ﻿using BTimeLogger.Wpf.Controls;
 
-namespace BTimeLogger.Wpf.Windows
+namespace BTimeLogger.Wpf.Windows;
+
+public interface ICreateNewIntervalWindowViewModelFactory
 {
-	public interface ICreateNewIntervalWindowViewModelFactory
+	CreateNewIntervalWindowViewModel Create();
+}
+class CreateNewIntervalWindowViewModelFactory : ICreateNewIntervalWindowViewModelFactory
+{
+	private readonly IWindowButtonsViewModelFactory _windowButtonsViewModelFactory;
+	private readonly ICreateNewIntervalViewModelFactory _createNewIntervalViewModelFactory;
+
+	public CreateNewIntervalWindowViewModelFactory(IWindowButtonsViewModelFactory windowButtonsViewModelFactory,
+		ICreateNewIntervalViewModelFactory createNewIntervalViewModelFactory)
 	{
-		CreateNewIntervalWindowViewModel Create();
+		_windowButtonsViewModelFactory = windowButtonsViewModelFactory;
+		_createNewIntervalViewModelFactory = createNewIntervalViewModelFactory;
 	}
-	class CreateNewIntervalWindowViewModelFactory : ICreateNewIntervalWindowViewModelFactory
+	public CreateNewIntervalWindowViewModel Create()
 	{
-		private readonly IWindowButtonsViewModelFactory _windowButtonsViewModelFactory;
-		private readonly ICreateNewIntervalViewModelFactory _createNewIntervalViewModelFactory;
+		var windowButtonsVM = _windowButtonsViewModelFactory.Create();
+		var createNewIntervalVM = _createNewIntervalViewModelFactory.Create();
 
-		public CreateNewIntervalWindowViewModelFactory(IWindowButtonsViewModelFactory windowButtonsViewModelFactory,
-			ICreateNewIntervalViewModelFactory createNewIntervalViewModelFactory)
-		{
-			_windowButtonsViewModelFactory = windowButtonsViewModelFactory;
-			_createNewIntervalViewModelFactory = createNewIntervalViewModelFactory;
-		}
-		public CreateNewIntervalWindowViewModel Create()
-		{
-			var windowButtonsVM = _windowButtonsViewModelFactory.Create();
-			var createNewIntervalVM = _createNewIntervalViewModelFactory.Create();
+		return new CreateNewIntervalWindowViewModel(windowButtonsVM, createNewIntervalVM);
 
-			return new CreateNewIntervalWindowViewModel(windowButtonsVM, createNewIntervalVM);
-
-		}
 	}
 }

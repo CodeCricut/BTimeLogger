@@ -4,44 +4,42 @@ using BTimeLogger.Wpf.Controls;
 using MediatR;
 using System.Threading;
 using System.Threading.Tasks;
-using WpfCore.MessageBus;
 
-namespace BTimeLogger.Wpf.Mediator
+namespace BTimeLogger.Wpf.Mediator;
+
+public class DeleteInterval : IRequest
 {
-	public class DeleteInterval : IRequest
+	public DeleteInterval(Interval interval)
 	{
-		public DeleteInterval(Interval interval)
-		{
-			Interval = interval;
-		}
-
-		public Interval Interval { get; }
+		Interval = interval;
 	}
 
-	public class DeleteIntervalHandler : IRequestHandler<DeleteInterval>
+	public Interval Interval { get; }
+}
+
+public class DeleteIntervalHandler : IRequestHandler<DeleteInterval>
+{
+	private readonly IIntervalRepository _intervalRepository;
+	private readonly IEventAggregator _ea;
+	private readonly ICsvChangeTracker _csvChangeTracker;
+
+	public DeleteIntervalHandler(IIntervalRepository intervalRepository,
+		IEventAggregator ea,
+		ICsvChangeTracker csvChangeTracker)
 	{
-		private readonly IIntervalRepository _intervalRepository;
-		private readonly IEventAggregator _ea;
-		private readonly ICsvChangeTracker _csvChangeTracker;
+		_intervalRepository = intervalRepository;
+		_ea = ea;
+		_csvChangeTracker = csvChangeTracker;
+	}
 
-		public DeleteIntervalHandler(IIntervalRepository intervalRepository,
-			IEventAggregator ea,
-			ICsvChangeTracker csvChangeTracker)
-		{
-			_intervalRepository = intervalRepository;
-			_ea = ea;
-			_csvChangeTracker = csvChangeTracker;
-		}
+	public async Task<Unit> Handle(DeleteInterval request, CancellationToken cancellationToken)
+	{
+		await _intervalRepository.DeleteInterval(request.Interval.Guid);
+		await _intervalRepository.SaveChanges();
+		_csvChangeTracker.MakeChange();
 
-		public async Task<Unit> Handle(DeleteInterval request, CancellationToken cancellationToken)
-		{
-			await _intervalRepository.DeleteInterval(request.Interval.Guid);
-			await _intervalRepository.SaveChanges();
-			_csvChangeTracker.MakeChange();
+		_ea.SendMessage(new ReportSourceChanged());
 
-			_ea.SendMessage(new ReportSourceChanged());
-
-			return Unit.Value;
-		}
+		return Unit.Value;
 	}
 }

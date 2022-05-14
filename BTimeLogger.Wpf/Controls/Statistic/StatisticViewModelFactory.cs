@@ -1,15 +1,14 @@
-﻿namespace BTimeLogger.Wpf.Controls
-{
-	public interface IStatisticViewModelFactory
-	{
-		StatisticViewModel Create(Statistic statistic);
-	}
+﻿namespace BTimeLogger.Wpf.Controls;
 
-	class StatisticViewModelFactory : IStatisticViewModelFactory
+public interface IStatisticViewModelFactory
+{
+	StatisticViewModel Create(Statistic statistic);
+}
+
+class StatisticViewModelFactory : IStatisticViewModelFactory
+{
+	public StatisticViewModel Create(Statistic statistic)
 	{
-		public StatisticViewModel Create(Statistic statistic)
-		{
-			return new(statistic);
-		}
+		return new(statistic);
 	}
 }

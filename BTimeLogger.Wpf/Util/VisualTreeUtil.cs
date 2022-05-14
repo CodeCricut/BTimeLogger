@@ -1,24 +1,23 @@
 ﻿using System.Windows;
 using System.Windows.Media;
 
-namespace BTimeLogger.Wpf.Util
+namespace BTimeLogger.Wpf.Util;
+
+public static class VisualTreeUtil
 {
-	public static class VisualTreeUtil
+	public static T FindParent<T>(DependencyObject child) where T : DependencyObject
 	{
-		public static T FindParent<T>(DependencyObject child) where T : DependencyObject
-		{
-			//get parent item
-			DependencyObject parentObject = VisualTreeHelper.GetParent(child);
+		//get parent item
+		DependencyObject parentObject = VisualTreeHelper.GetParent(child);
 
-			//we've reached the end of the tree
-			if (parentObject == null) return null;
+		//we've reached the end of the tree
+		if (parentObject == null) return null;
 
-			//check if the parent matches the type we're looking for
-			T parent = parentObject as T;
-			if (parent != null)
-				return parent;
-			else
-				return FindParent<T>(parentObject);
-		}
+		//check if the parent matches the type we're looking for
+		T parent = parentObject as T;
+		if (parent != null)
+			return parent;
+		else
+			return FindParent<T>(parentObject);
 	}
 }

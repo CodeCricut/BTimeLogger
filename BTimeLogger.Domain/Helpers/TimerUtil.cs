@@ -1,16 +1,15 @@
 ﻿using System;
 using System.Diagnostics;
 
-namespace BTimeLogger.Domain.Helpers
+namespace BTimeLogger.Domain.Helpers;
+
+public static class TimerUtil
 {
-	public static class TimerUtil
+	public static TimeSpan Time(Action action)
 	{
-		public static TimeSpan Time(Action action)
-		{
-			Stopwatch stopwatch = Stopwatch.StartNew();
-			action();
-			stopwatch.Stop();
-			return stopwatch.Elapsed;
-		}
+		Stopwatch stopwatch = Stopwatch.StartNew();
+		action();
+		stopwatch.Stop();
+		return stopwatch.Elapsed;
 	}
 }

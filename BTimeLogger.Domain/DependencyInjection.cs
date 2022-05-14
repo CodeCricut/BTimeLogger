@@ -2,19 +2,18 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace BTimeLogger.Domain
+namespace BTimeLogger.Domain;
+
+public static class DependencyInjection
 {
-	public static class DependencyInjection
+	public static IServiceCollection AddDomain(this IServiceCollection services, IConfiguration config)
 	{
-		public static IServiceCollection AddDomain(this IServiceCollection services, IConfiguration config)
-		{
-			services.AddSingleton<IActivityRepository, ActivityRepository>();
-			services.AddSingleton<IIntervalRepository, IntervalRepository>();
-			services.AddSingleton<IGroupStatisticGenerator, GroupStatisticGenerator>();
+		services.AddSingleton<IActivityRepository, ActivityRepository>();
+		services.AddSingleton<IIntervalRepository, IntervalRepository>();
+		services.AddSingleton<IGroupStatisticGenerator, GroupStatisticGenerator>();
 
-			services.AddSingleton<IStatisticsGenerator, StatisticsGenerator>();
+		services.AddSingleton<IStatisticsGenerator, StatisticsGenerator>();
 
-			return services;
-		}
+		return services;
 	}
 }

@@ -8,56 +8,54 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Windows;
-using WpfCore;
 
-namespace BTimeLogger.Wpf
+namespace BTimeLogger.Wpf;
+
+/// <summary>
+/// Encapsulates startup logic for this WPF app.
+/// </summary>
+public partial class App : Application
 {
 	/// <summary>
-	/// Encapsulates startup logic for this WPF app.
+	/// The services provider for this app.
 	/// </summary>
-	public partial class App : Application
+	public IServiceProvider Services { get; init; }
+
+	public ISkinManager SkinManager { get; private set; }
+
+	public App()
 	{
-		/// <summary>
-		/// The services provider for this app.
-		/// </summary>
-		public IServiceProvider Services { get; init; }
+		Services = BuildServiceProvider();
+		SkinManager = Services.GetRequiredService<ISkinManager>();
+	}
 
-		public ISkinManager SkinManager { get; private set; }
+	protected override void OnStartup(StartupEventArgs e)
+	{
+		OpenLoginWindow();
+	}
 
-		public App()
-		{
-			Services = BuildServiceProvider();
-			SkinManager = Services.GetRequiredService<ISkinManager>();
-		}
+	private IServiceProvider BuildServiceProvider()
+	{
+		var services = new ServiceCollection();
+		var config = AppConfiguration.GetServiceConfiguration();
 
-		protected override void OnStartup(StartupEventArgs e)
-		{
-			OpenLoginWindow();
-		}
+		ConfigureServices(services, config);
 
-		private IServiceProvider BuildServiceProvider()
-		{
-			var services = new ServiceCollection();
-			var config = AppConfiguration.GetServiceConfiguration();
+		return services.BuildServiceProvider();
+	}
 
-			ConfigureServices(services, config);
+	private static void ConfigureServices(IServiceCollection services, IConfiguration config)
+	{
+		services.AddDomain(config);
+		services.AddCsv(config);
+		services.AddWpfCore(config);
+		services.AddWpf(config);
+	}
 
-			return services.BuildServiceProvider();
-		}
-
-		private static void ConfigureServices(IServiceCollection services, IConfiguration config)
-		{
-			services.AddDomain(config);
-			services.AddCsv(config);
-			services.AddWpfCore(config);
-			services.AddWpf(config);
-		}
-
-		private void OpenLoginWindow()
-		{
-			Services.GetRequiredService<IMediator>()
-				.Send(new OpenMainWindowRequest())
-				.GetAwaiter().GetResult();
-		}
+	private void OpenLoginWindow()
+	{
+		Services.GetRequiredService<IMediator>()
+			.Send(new OpenMainWindowRequest())
+			.GetAwaiter().GetResult();
 	}
 }

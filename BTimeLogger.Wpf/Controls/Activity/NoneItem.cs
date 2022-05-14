@@ -1,16 +1,13 @@
-﻿using System;
+﻿namespace BTimeLogger.Wpf.Controls;
 
-namespace BTimeLogger.Wpf.Controls
+public class NoneItem : ActivityViewModel
 {
-	public class NoneItem : ActivityViewModel
+	public NoneItem() : base(new Activity()
 	{
-		public NoneItem() : base(new Activity()
-		{
-			IsGroup = true,
-			Name = "None",
-			Parent = null
-		})
-		{
-		}
+		IsGroup = true,
+		Name = "None",
+		Parent = null
+	})
+	{
 	}
 }

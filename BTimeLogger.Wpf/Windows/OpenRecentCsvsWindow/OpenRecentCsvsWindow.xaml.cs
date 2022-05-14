@@ -1,23 +1,21 @@
-﻿using HackerNews.WPF.Core.View;
-using System.Windows;
+﻿using System.Windows;
 
-namespace BTimeLogger.Wpf.Windows
+namespace BTimeLogger.Wpf.Windows;
+
+/// <summary>
+/// Interaction logic for OpenRecentCsvsWindow.xaml
+/// </summary>
+public partial class OpenRecentCsvsWindow : Window, IHaveViewModel<OpenRecentCsvsWindowViewModel>
 {
-	/// <summary>
-	/// Interaction logic for OpenRecentCsvsWindow.xaml
-	/// </summary>
-	public partial class OpenRecentCsvsWindow : Window, IHaveViewModel<OpenRecentCsvsWindowViewModel>
+	public OpenRecentCsvsWindowViewModel ViewModel { get; private set; }
+
+	public OpenRecentCsvsWindow()
 	{
-		public OpenRecentCsvsWindowViewModel ViewModel { get; private set; }
+		InitializeComponent();
+	}
 
-		public OpenRecentCsvsWindow()
-		{
-			InitializeComponent();
-		}
-
-		public void SetViewModel(OpenRecentCsvsWindowViewModel viewModel)
-		{
-			ViewModel = viewModel;
-		}
+	public void SetViewModel(OpenRecentCsvsWindowViewModel viewModel)
+	{
+		ViewModel = viewModel;
 	}
 }

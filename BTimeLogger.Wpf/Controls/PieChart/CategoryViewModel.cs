@@ -2,62 +2,60 @@
 using BTimeLogger.Wpf.Util;
 using System;
 using System.Windows.Media;
-using WpfCore.ViewModel;
 
-namespace BTimeLogger.Wpf.Controls
+namespace BTimeLogger.Wpf.Controls;
+
+public class CategoryViewModel : BaseViewModel
 {
-	public class CategoryViewModel : BaseViewModel
+	public Category Category { get; }
+
+	public string Title
 	{
-		public Category Category { get; }
-
-		public string Title
+		get => Category.Title;
+		set
 		{
-			get => Category.Title;
-			set
+			if (!Category.Title.Equals(value))
 			{
-				if (!Category.Title.Equals(value))
-				{
-					Category.Title = value;
-					RaisePropertyChanged();
-				}
+				Category.Title = value;
+				RaisePropertyChanged();
 			}
 		}
+	}
 
-		public string Percentage
-		{
-			get => Category.Percentage.ToString("n2");
-		}
+	public string Percentage
+	{
+		get => Category.Percentage.ToString("n2");
+	}
 
-		public SolidColorBrush Color
+	public SolidColorBrush Color
+	{
+		get => Category.Color.ToSolidColorBrush();
+		set
 		{
-			get => Category.Color.ToSolidColorBrush();
-			set
+			if (!Category.Color.ToSolidColorBrush().Equals(value))
 			{
-				if (!Category.Color.ToSolidColorBrush().Equals(value))
-				{
-					Category.Color = value.Color;
-					RaisePropertyChanged();
-				}
+				Category.Color = value.Color;
+				RaisePropertyChanged();
 			}
 		}
+	}
 
-		public string Note
+	public string Note
+	{
+		get => Category.Note; set
 		{
-			get => Category.Note; set
+			if (!Category.Note.Equals(value))
 			{
-				if (!Category.Note.Equals(value))
-				{
-					Category.Note = value;
-					RaisePropertyChanged();
-				}
+				Category.Note = value;
+				RaisePropertyChanged();
 			}
 		}
+	}
 
-		public string Id => Category.Id;
+	public string Id => Category.Id;
 
-		public CategoryViewModel(Category category)
-		{
-			Category = category ?? throw new ArgumentNullException(nameof(category));
-		}
+	public CategoryViewModel(Category category)
+	{
+		Category = category ?? throw new ArgumentNullException(nameof(category));
 	}
 }

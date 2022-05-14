@@ -2,50 +2,49 @@
 using BTimeLogger.Wpf.Resources;
 using System.Windows;
 
-namespace BTimeLogger.Wpf.Services
+namespace BTimeLogger.Wpf.Services;
+
+/// <summary>
+/// Manager for the app's skin/theme.
+/// </summary>
+public interface ISkinManager
 {
-	/// <summary>
-	/// Manager for the app's skin/theme.
-	/// </summary>
-	public interface ISkinManager
+	Skin AppSkin { get; set; }
+	void ToggleSkin();
+}
+
+class SkinManager : ISkinManager
+{
+	private Skin _appSkin = Skin.Dark;
+	public Skin AppSkin
 	{
-		Skin AppSkin { get; set; }
-		void ToggleSkin();
+		get => _appSkin;
+		set
+		{
+			_appSkin = value;
+			UpdateSkinResourceDictionaries();
+		}
 	}
 
-	class SkinManager : ISkinManager
+	public void ToggleSkin()
 	{
-		private Skin _appSkin = Skin.Dark;
-		public Skin AppSkin
+		AppSkin = AppSkin == Skin.Dark
+			? Skin.Light
+			: Skin.Dark;
+	}
+
+	private void UpdateSkinResourceDictionaries()
+	{
+		foreach (ResourceDictionary dictionary in App.Current.Resources.MergedDictionaries)
 		{
-			get => _appSkin;
-			set
+			if (dictionary is SkinResourceDictionary skinDict)
 			{
-				_appSkin = value;
-				UpdateSkinResourceDictionaries();
+				skinDict.UpdateSource();
 			}
-		}
-
-		public void ToggleSkin()
-		{
-			AppSkin = AppSkin == Skin.Dark
-				? Skin.Light
-				: Skin.Dark;
-		}
-
-		private void UpdateSkinResourceDictionaries()
-		{
-			foreach (ResourceDictionary dictionary in App.Current.Resources.MergedDictionaries)
+			else
 			{
-				if (dictionary is SkinResourceDictionary skinDict)
-				{
-					skinDict.UpdateSource();
-				}
-				else
-				{
-					// I think this refreshes dictionaries, not too sure
-					dictionary.Source = dictionary.Source;
-				}
+				// I think this refreshes dictionaries, not too sure
+				dictionary.Source = dictionary.Source;
 			}
 		}
 	}

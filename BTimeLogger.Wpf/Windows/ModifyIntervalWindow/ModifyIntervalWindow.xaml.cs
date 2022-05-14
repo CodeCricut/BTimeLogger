@@ -1,23 +1,21 @@
-﻿using HackerNews.WPF.Core.View;
-using System.Windows;
+﻿using System.Windows;
 
-namespace BTimeLogger.Wpf.Windows
+namespace BTimeLogger.Wpf.Windows;
+
+/// <summary>
+/// Interaction logic for ModifyIntervalWindow.xaml
+/// </summary>
+public partial class ModifyIntervalWindow : Window, IHaveViewModel<ModifyIntervalWindowViewModel>
 {
-	/// <summary>
-	/// Interaction logic for ModifyIntervalWindow.xaml
-	/// </summary>
-	public partial class ModifyIntervalWindow : Window, IHaveViewModel<ModifyIntervalWindowViewModel>
+	public ModifyIntervalWindowViewModel ViewModel { get; set; }
+
+	public ModifyIntervalWindow()
 	{
-		public ModifyIntervalWindowViewModel ViewModel { get; set; }
+		InitializeComponent();
+	}
 
-		public ModifyIntervalWindow()
-		{
-			InitializeComponent();
-		}
-
-		public void SetViewModel(ModifyIntervalWindowViewModel viewModel)
-		{
-			ViewModel = viewModel;
-		}
+	public void SetViewModel(ModifyIntervalWindowViewModel viewModel)
+	{
+		ViewModel = viewModel;
 	}
 }

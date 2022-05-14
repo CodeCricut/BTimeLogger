@@ -1,7 +1,6 @@
-﻿namespace BTimeLogger.Wpf.Model
+﻿namespace BTimeLogger.Wpf.Model;
+
+public enum Skin
 {
-	public enum Skin
-	{
-		Light, Dark
-	}
+	Light, Dark
 }

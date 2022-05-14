@@ -1,12 +1,11 @@
 ﻿using System;
 
-namespace BTimeLogger.Wpf.Util
+namespace BTimeLogger.Wpf.Util;
+
+public static class DateTimeExtensions
 {
-	public static class DateTimeExtensions
+	public static string DateTimeString(this DateTime dt)
 	{
-		public static string DateTimeString(this DateTime dt)
-		{
-			return dt.ToString("g");
-		}
+		return dt.ToString("g");
 	}
 }

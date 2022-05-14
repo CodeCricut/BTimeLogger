@@ -1,33 +1,30 @@
 ﻿using MediatR;
-using WpfCore.MessageBus;
-using WpfCore.Services;
 
-namespace BTimeLogger.Wpf.Windows
+namespace BTimeLogger.Wpf.Windows;
+
+public interface IOpenCsvsWindowViewModelFactory
 {
-	public interface IOpenCsvsWindowViewModelFactory
+	OpenCsvsWindowViewModel Create();
+}
+
+class OpenCsvsWindowViewModelFactory : IOpenCsvsWindowViewModelFactory
+{
+	private readonly IViewManager _viewManager;
+	private readonly IEventAggregator _ea;
+	private readonly IMediator _mediator;
+
+	public OpenCsvsWindowViewModelFactory(
+		IViewManager viewManager,
+		IEventAggregator ea,
+		IMediator mediator)
 	{
-		OpenCsvsWindowViewModel Create();
+		_viewManager = viewManager;
+		_ea = ea;
+		_mediator = mediator;
 	}
 
-	class OpenCsvsWindowViewModelFactory : IOpenCsvsWindowViewModelFactory
+	public OpenCsvsWindowViewModel Create()
 	{
-		private readonly IViewManager _viewManager;
-		private readonly IEventAggregator _ea;
-		private readonly IMediator _mediator;
-
-		public OpenCsvsWindowViewModelFactory(
-			IViewManager viewManager,
-			IEventAggregator ea,
-			IMediator mediator)
-		{
-			_viewManager = viewManager;
-			_ea = ea;
-			_mediator = mediator;
-		}
-
-		public OpenCsvsWindowViewModel Create()
-		{
-			return new OpenCsvsWindowViewModel(_viewManager, _mediator);
-		}
+		return new OpenCsvsWindowViewModel(_viewManager, _mediator);
 	}
 }

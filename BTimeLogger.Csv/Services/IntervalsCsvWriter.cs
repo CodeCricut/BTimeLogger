@@ -6,113 +6,112 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace BTimeLogger.Csv.Services
-{
-	/// <summary>
-	/// Writes interval data to a CSV file
-	/// </summary>
-	public interface IIntervalsCsvWriter
-	{
-		Task WriteIntervals(string fileLocation);
+namespace BTimeLogger.Csv.Services;
 
+/// <summary>
+/// Writes interval data to a CSV file
+/// </summary>
+public interface IIntervalsCsvWriter
+{
+	Task WriteIntervals(string fileLocation);
+
+}
+
+/// <summary>
+/// Write interval data currently saved to the <see cref="IIntervalRepository"/> to
+/// a CSV file.
+/// </summary>
+class IntervalsCsvWriter : IIntervalsCsvWriter
+{
+	private readonly IIntervalRepository _intervalRepository;
+
+	private IOrderedEnumerable<Interval> _intervals;
+	private int _numGroupCols = 0;
+
+	public IntervalsCsvWriter(IIntervalRepository intervalRepository)
+	{
+		_intervalRepository = intervalRepository;
 	}
 
-	/// <summary>
-	/// Write interval data currently saved to the <see cref="IIntervalRepository"/> to
-	/// a CSV file.
-	/// </summary>
-	class IntervalsCsvWriter : IIntervalsCsvWriter
+	public async Task WriteIntervals(string fileLocation)
 	{
-		private readonly IIntervalRepository _intervalRepository;
+		using StreamWriter writer = new(fileLocation, false);
+		using CsvWriter csv = new(writer, CultureInfo.InvariantCulture);
 
-		private IOrderedEnumerable<Interval> _intervals;
-		private int _numGroupCols = 0;
+		_intervals = (await _intervalRepository.GetIntervals())
+			.OrderByDescending(interval => interval.From);
+		_numGroupCols = GetNumGroupColumns();
 
-		public IntervalsCsvWriter(IIntervalRepository intervalRepository)
+		WriteHeader(csv);
+		await WriteRecords(csv);
+	}
+
+	private void WriteHeader(CsvWriter csv)
+	{
+		for (int i = 0; i < _numGroupCols; i++)
+			csv.WriteField("Group");
+
+		csv.WriteField("Activity type");
+		csv.WriteField("Duration");
+		csv.WriteField("From");
+		csv.WriteField("To");
+		csv.WriteField("Comment");
+
+		csv.NextRecord();
+	}
+
+	private Task WriteRecords(CsvWriter csv)
+	{
+		return Task.Factory.StartNew(() =>
 		{
-			_intervalRepository = intervalRepository;
-		}
+			foreach (var interval in _intervals)
+				WriteIntervalAsRecord(csv, interval);
+		});
+	}
 
-		public async Task WriteIntervals(string fileLocation)
+	private void WriteIntervalAsRecord(CsvWriter csv, Interval interval)
+	{
+		WriteGroupCols(csv, interval);
+
+		csv.WriteField(interval.Activity.Name);
+		csv.WriteField(interval.Duration.ToCsvFormat());
+		csv.WriteField(interval.From.ToCsvFormat());
+		csv.WriteField(interval.To.ToCsvFormat());
+		csv.WriteField(interval.Comment, shouldQuote: true);
+
+		csv.NextRecord();
+	}
+
+	private void WriteGroupCols(CsvWriter csv, Interval interval)
+	{
+		string[] groupNames = interval.Activity.Code.GroupNames;
+
+		int numEmptyCols = _numGroupCols - groupNames.Length;
+
+		WriteEmptyGroupCols(csv, numEmptyCols);
+
+		for (int i = 0; i < groupNames.Length; i++)
 		{
-			using StreamWriter writer = new(fileLocation, false);
-			using CsvWriter csv = new(writer, CultureInfo.InvariantCulture);
-
-			_intervals = (await _intervalRepository.GetIntervals())
-				.OrderByDescending(interval => interval.From);
-			_numGroupCols = GetNumGroupColumns();
-
-			WriteHeader(csv);
-			await WriteRecords(csv);
+			csv.WriteField(groupNames[i]);
 		}
+	}
 
-		private void WriteHeader(CsvWriter csv)
+	private void WriteEmptyGroupCols(CsvWriter csv, int numEmptyCols)
+	{
+		for (int i = 0; i < numEmptyCols; i++)
 		{
-			for (int i = 0; i < _numGroupCols; i++)
-				csv.WriteField("Group");
-
-			csv.WriteField("Activity type");
-			csv.WriteField("Duration");
-			csv.WriteField("From");
-			csv.WriteField("To");
-			csv.WriteField("Comment");
-
-			csv.NextRecord();
+			csv.WriteField(string.Empty);
 		}
+	}
 
-		private Task WriteRecords(CsvWriter csv)
-		{
-			return Task.Factory.StartNew(() =>
-			{
-				foreach (var interval in _intervals)
-					WriteIntervalAsRecord(csv, interval);
-			});
-		}
+	private int GetNumGroupColumns()
+	{
+		if (_intervals.Count() <= 0) return 0;
 
-		private void WriteIntervalAsRecord(CsvWriter csv, Interval interval)
-		{
-			WriteGroupCols(csv, interval);
+		Interval intervalWithMostAncestors = _intervals.OrderByDescending(interval =>
+			interval.Activity.Code.Parts.Length).First();
 
-			csv.WriteField(interval.Activity.Name);
-			csv.WriteField(interval.Duration.ToCsvFormat());
-			csv.WriteField(interval.From.ToCsvFormat());
-			csv.WriteField(interval.To.ToCsvFormat());
-			csv.WriteField(interval.Comment, shouldQuote: true);
-
-			csv.NextRecord();
-		}
-
-		private void WriteGroupCols(CsvWriter csv, Interval interval)
-		{
-			string[] groupNames = interval.Activity.Code.GroupNames;
-
-			int numEmptyCols = _numGroupCols - groupNames.Length;
-
-			WriteEmptyGroupCols(csv, numEmptyCols);
-
-			for (int i = 0; i < groupNames.Length; i++)
-			{
-				csv.WriteField(groupNames[i]);
-			}
-		}
-
-		private void WriteEmptyGroupCols(CsvWriter csv, int numEmptyCols)
-		{
-			for (int i = 0; i < numEmptyCols; i++)
-			{
-				csv.WriteField(string.Empty);
-			}
-		}
-
-		private int GetNumGroupColumns()
-		{
-			if (_intervals.Count() <= 0) return 0;
-
-			Interval intervalWithMostAncestors = _intervals.OrderByDescending(interval =>
-				interval.Activity.Code.Parts.Length).First();
-
-			int numGroupColumns = intervalWithMostAncestors.Activity.Code.AncestorCodes.Count() - 1;
-			return numGroupColumns;
-		}
+		int numGroupColumns = intervalWithMostAncestors.Activity.Code.AncestorCodes.Count() - 1;
+		return numGroupColumns;
 	}
 }

@@ -1,73 +1,72 @@
 ﻿using System;
 using System.IO;
 
-namespace BTimeLogger.Wpf.Services.AppData
+namespace BTimeLogger.Wpf.Services.AppData;
+
+/// <summary>
+/// Interface for working with files in the app data directory.
+/// </summary>
+public interface IAppDataService
 {
+	bool DataFileExists(string fileName);
+	string GetFileLocation(string fileName);
+	string GetOrCreate(string fileName);
+}
+
+class AppDataService : IAppDataService
+{
+	private const string AppDataFolderName = "BTimeLogger";
+
 	/// <summary>
-	/// Interface for working with files in the app data directory.
+	/// Does a file with the name <paramref name="fileName"/> exist within the app data directory.
 	/// </summary>
-	public interface IAppDataService
+	/// <param name="fileName"></param>
+	/// <returns></returns>
+	public bool DataFileExists(string fileName)
 	{
-		bool DataFileExists(string fileName);
-		string GetFileLocation(string fileName);
-		string GetOrCreate(string fileName);
+		string fileLocation = GetFileLocation(fileName);
+		return File.Exists(fileLocation);
 	}
 
-	class AppDataService : IAppDataService
+	/// <summary>
+	/// Get the location of the file in the app data directory, which may or may not exist. 
+	/// </summary>
+	/// <returns>The location of the file, consisting <paramref name="fileName"/> prefixed by the app data directory path.</returns>
+	public string GetFileLocation(string fileName)
 	{
-		private const string AppDataFolderName = "BTimeLogger";
+		if (string.IsNullOrWhiteSpace(fileName)) throw new ArgumentException(nameof(fileName));
 
-		/// <summary>
-		/// Does a file with the name <paramref name="fileName"/> exist within the app data directory.
-		/// </summary>
-		/// <param name="fileName"></param>
-		/// <returns></returns>
-		public bool DataFileExists(string fileName)
-		{
-			string fileLocation = GetFileLocation(fileName);
-			return File.Exists(fileLocation);
-		}
+		string appDataFolder = GetAppDataFolderLocation();
+		return Path.Combine(appDataFolder, fileName);
+	}
 
-		/// <summary>
-		/// Get the location of the file in the app data directory, which may or may not exist. 
-		/// </summary>
-		/// <returns>The location of the file, consisting <paramref name="fileName"/> prefixed by the app data directory path.</returns>
-		public string GetFileLocation(string fileName)
-		{
-			if (string.IsNullOrWhiteSpace(fileName)) throw new ArgumentException(nameof(fileName));
+	/// <summary>
+	/// If a file with the name <paramref name="fileName"/> exists with the app data directory, return the 
+	/// location of the file. Otherwise, create the file and return the location of the new file.
+	/// </summary>
+	public string GetOrCreate(string fileName)
+	{
+		string fileLocation = GetFileLocation(fileName);
+		if (DataFileExists(fileName)) return fileLocation;
 
-			string appDataFolder = GetAppDataFolderLocation();
-			return Path.Combine(appDataFolder, fileName);
-		}
+		EnsureDataFolderCreated();
 
-		/// <summary>
-		/// If a file with the name <paramref name="fileName"/> exists with the app data directory, return the 
-		/// location of the file. Otherwise, create the file and return the location of the new file.
-		/// </summary>
-		public string GetOrCreate(string fileName)
-		{
-			string fileLocation = GetFileLocation(fileName);
-			if (DataFileExists(fileName)) return fileLocation;
+		FileStream fs = File.Create(fileLocation);
+		fs.Close();
 
-			EnsureDataFolderCreated();
+		return fileLocation;
+	}
 
-			FileStream fs = File.Create(fileLocation);
-			fs.Close();
+	private string GetAppDataFolderLocation()
+	{
+		string dataFolder = Environment.GetFolderPath(
+								 Environment.SpecialFolder.ApplicationData);
+		return Path.Combine(dataFolder, AppDataFolderName);
+	}
 
-			return fileLocation;
-		}
-
-		private string GetAppDataFolderLocation()
-		{
-			string dataFolder = Environment.GetFolderPath(
-									 Environment.SpecialFolder.ApplicationData);
-			return Path.Combine(dataFolder, AppDataFolderName);
-		}
-
-		private void EnsureDataFolderCreated()
-		{
-			string dataFolderLocation = GetAppDataFolderLocation();
-			if (!Directory.Exists(dataFolderLocation)) Directory.CreateDirectory(dataFolderLocation);
-		}
+	private void EnsureDataFolderCreated()
+	{
+		string dataFolderLocation = GetAppDataFolderLocation();
+		if (!Directory.Exists(dataFolderLocation)) Directory.CreateDirectory(dataFolderLocation);
 	}
 }

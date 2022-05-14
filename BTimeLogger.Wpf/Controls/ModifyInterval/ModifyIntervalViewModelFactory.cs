@@ -1,25 +1,24 @@
 ﻿using MediatR;
 
-namespace BTimeLogger.Wpf.Controls
+namespace BTimeLogger.Wpf.Controls;
+
+public interface IModifyIntervalViewModelFactory
 {
-	public interface IModifyIntervalViewModelFactory
+	ModifyIntervalViewModel Create(IntervalViewModel intervalViewModel,
+		ActivityTypeSelectorViewModel activityTypeSelectorViewModel);
+}
+class ModifyIntervalViewModelFactory : IModifyIntervalViewModelFactory
+{
+	private readonly IMediator _mediator;
+
+	public ModifyIntervalViewModelFactory(IMediator mediator)
 	{
-		ModifyIntervalViewModel Create(IntervalViewModel intervalViewModel,
-			ActivityTypeSelectorViewModel activityTypeSelectorViewModel);
+		_mediator = mediator;
 	}
-	class ModifyIntervalViewModelFactory : IModifyIntervalViewModelFactory
+
+	public ModifyIntervalViewModel Create(IntervalViewModel intervalViewModel,
+		ActivityTypeSelectorViewModel activityTypeSelectorViewModel)
 	{
-		private readonly IMediator _mediator;
-
-		public ModifyIntervalViewModelFactory(IMediator mediator)
-		{
-			_mediator = mediator;
-		}
-
-		public ModifyIntervalViewModel Create(IntervalViewModel intervalViewModel,
-			ActivityTypeSelectorViewModel activityTypeSelectorViewModel)
-		{
-			return new ModifyIntervalViewModel(intervalViewModel, activityTypeSelectorViewModel, _mediator);
-		}
+		return new ModifyIntervalViewModel(intervalViewModel, activityTypeSelectorViewModel, _mediator);
 	}
 }
