@@ -16,6 +16,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="CodeCricut.WpfCore" Version="1.0.0" />
     <PackageReference Include="MediatR" Version="10.0.1" />
     <PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="10.0.1" />
     <PackageReference Include="Microsoft.Extensions.Caching.Abstractions" Version="6.0.0" />
@@ -35,7 +36,6 @@
   <ItemGroup>
     <ProjectReference Include="..\BTimeLogger.Csv\BTimeLogger.Csv.csproj" />
     <ProjectReference Include="..\BTimeLogger.Domain\BTimeLogger.Domain.csproj" />
-    <ProjectReference Include="..\WpfCore\WpfCore.csproj" />
   </ItemGroup>
 
   
